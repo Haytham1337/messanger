@@ -65,19 +65,11 @@ namespace Infrastructure.Services
                     PhoneNumber = model.PhoneNumber,
                     Sex = model.Sex,
                     Email = model.Email,
+                    Photo= model.Sex == Sex.Male ? _config.GetValue<string>("defaultmale") : _config.GetValue<string>("defaultfemale"),
                     Id = user.Id
                 };
 
-                var photo = new Photo()
-                {
-                    UserId = user.Id,
-                    Path = $"{_config.GetValue<string>("defaultimagepath")}{(model.Sex == Sex.Male ? "defaultmale.png" : "defaultfemale.png")}",
-                    Name = model.Sex == Sex.Male ? _config.GetValue<string>("defaultmale") : _config.GetValue<string>("defaultfemale")
-                };
-
                 await _unit.UserRepository.CreateAsync(appUser);
-
-                await _unit.PhotoRepository.CreateAsync(photo);
 
                 await _unit.Commit();
             }

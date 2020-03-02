@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Application.IServices;
 using Application.Models.ChatDto.Requests;
+using Application.Models.PhotoDto;
 using Application.Models.UserDto;
 using Application.Models.UserDto.Requests;
 using AutoMapper;
@@ -79,5 +80,23 @@ namespace MessengerAPI.Controllers
 
             return Ok();
         }
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> ChangePhoto(IFormCollection collection)
+        {
+            if (ModelState.IsValid && collection.Files[0] != null)
+            {
+                await _userService.ChangePhotoAsync(new AddPhotoDto()
+                {
+                    UserId = (int)HttpContext.Items["id"],
+                    UploadedFile = collection.Files[0]
+                });
+
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
     }
 }

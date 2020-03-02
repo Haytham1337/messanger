@@ -52,16 +52,17 @@ export class UserService  {
 
   public async SetCurrentUser(){
     let url=await this.config.getConfig("getuserinfo");
+    let imgpath=await this.config.getConfig("photopath");
     
     let headers = new HttpHeaders();
     headers= headers.append('content-type', 'application/json');
 
-    await this.photoservice.GetPhoto();
-
     return await this.http.get<User>(url,{headers:headers}).toPromise()
     .then( res=>
-      {res.photoName=this.photoservice.imageUrl; 
-      this.updateCurrentUser(res);});
+      {
+        res.photoName=`${imgpath}/${res.photoName}`;
+        this.updateCurrentUser(res);
+      });
   }
 
   updateCurrentUser(user:User){

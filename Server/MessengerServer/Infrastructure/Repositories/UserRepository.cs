@@ -27,7 +27,6 @@ namespace Infrastructure.Repositories
           return await this.db.Users
                 .Where(u =>u.NickName.Contains(filter) || u.Email.Contains(filter))
                 .Take(5)
-                .Include(u=>u.Photo)
                 .ToListAsync();
         }
 

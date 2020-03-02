@@ -39,7 +39,7 @@
                 <p class="textrigth">{{item.content}}</p>
             </div>
             <div class="col-1 m-0 pl-1 imgrigth text-right" id="divwithrigth" *ngIf="item.userId==currentUser.id">
-              <img [src]="photoservice.imageUrl" class="rigthimgcontent">
+              <img [src]="currentUser.photoName" class="rigthimgcontent">
             </div>  
             </div>
     

@@ -25,8 +25,5 @@ namespace Application.IServices
         Task<bool> CheckStatusAsync(AddMessageDto request);
 
         Task ChangePhotoAsync(AddPhotoDto model);
-
-        Task CreateGroupAsync(AddGroupRequest request);
-
     }
 }

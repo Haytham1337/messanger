@@ -34,6 +34,7 @@ namespace Infrastructure.Repositories
         public async Task<List<Conversation>> GetUserChatsAsync(int userid)
         {
             return await this.db.Conversations
+                .Include(conv=>conv.ConversationInfo)
                 .Include(conv => conv.UserConversations)
                 .Where(conv => conv.UserConversations.Any(uconv => uconv.UserId == userid))
                 .Include(c => c.LastMessage)

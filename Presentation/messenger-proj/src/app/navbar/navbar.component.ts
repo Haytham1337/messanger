@@ -16,8 +16,7 @@ export class NavbarComponent implements OnInit {
   constructor(private auth:AuthService,private userservice:UserService,private photoser:PhotoService) { }
 
   ngOnInit() {
-    this.userservice.SetCurrentUser();
-    this.userservice.data.subscribe(user=>{this.currentUser=user;});
+    this.userservice.data.subscribe(user=>this.currentUser=user);
   }
 
   async fileselected(event){

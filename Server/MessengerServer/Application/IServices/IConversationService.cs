@@ -10,7 +10,7 @@ namespace Application.IServices
     {
         Task CreateChatAsync(AddChatRequest request);
 
-        Task<List<GetChatDto>> GetChatsAsync(GetChatsRequestDto request);
+        Task<List<GetConversationDto>> GetChatsAsync(GetChatsRequestDto request);
 
         Task CreateGroupAsync(AddGroupRequest request);
     }

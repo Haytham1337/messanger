@@ -79,7 +79,7 @@ namespace Infrastructure.Services
             }
         }
 
-        public async Task<List<GetChatDto>> GetChatsAsync(GetChatsRequestDto request)
+        public async Task<List<GetConversationDto>> GetChatsAsync(GetChatsRequestDto request)
         {
             var user = await this._unit.UserRepository.GetUserWithBlackList(request.UserName);
 
@@ -88,7 +88,7 @@ namespace Infrastructure.Services
 
             var conversationList = await _unit.ConversationRepository.GetUserChatsAsync(user.Id);
 
-            var res = new List<GetChatDto>();
+            var res = new List<GetConversationDto>();
 
             foreach (var conversation in conversationList)
             {
@@ -99,14 +99,25 @@ namespace Infrastructure.Services
 
                     var secondUser = await _auth.FindByIdUserAsync(secondUserId);
 
-                    res.Add(new GetChatDto()
+                    res.Add(new GetConversationDto()
                     {
                         Id = conversation.Id,
                         Photo = secondUser.Photo,
                         Content = conversation.LastMessage == null ? null : conversation.LastMessage.Content,
                         SecondUserId = secondUserId,
+                        Type = conversation.Type,
                         IsBlocked = user.BlockedUsers.Any(
                         bl => bl.UserToBlockId == secondUserId) ? true : false
+                    });
+                }
+                else
+                {
+                    res.Add(new GetConversationDto()
+                    {
+                        Id=conversation.Id,
+                        Photo=conversation.ConversationInfo.PhotoName,
+                        Content= conversation.LastMessage == null ? null : conversation.LastMessage.Content,
+                        Type=conversation.Type
                     });
                 }
             }

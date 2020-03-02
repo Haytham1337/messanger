@@ -34,7 +34,7 @@ namespace MessengerAPI.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<List<GetChatDto>> GetChats([FromQuery]GetChatsRequestDto request)
+        public async Task<List<GetConversationDto>> GetChats([FromQuery]GetChatsRequestDto request)
         {
             request.UserName = User.Identity.Name;
 

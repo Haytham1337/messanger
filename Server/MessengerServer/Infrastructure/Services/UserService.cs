@@ -137,11 +137,11 @@ namespace Infrastructure.Services
         {
             var chat = await this._unit.ConversationRepository.GetWithUsersConversationsAsync(request.chatId);
 
-            if (chat.Type != ConversationType.Chat)
-                return false;
-
             if (chat == null)
                 throw new ChatNotExistException("Given chat not exist!!", 400);
+
+            if (chat.Type != ConversationType.Chat)
+                return false;
 
             var currentUser = await this._auth.FindByIdUserAsync(request.userId);
 

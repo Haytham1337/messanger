@@ -9,7 +9,7 @@ using Moq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Http;
 
-namespace ApplicationTests.PhotoServiceTests
+namespace ApplicationTests.UserServiceTests
 {
     public class ChangePhotoTests
     {
@@ -45,7 +45,7 @@ namespace ApplicationTests.PhotoServiceTests
                 .Returns("photo.extension");
 
             var request = fixture.Build<AddPhotoDto>()
-                .With(p => p.UploadedFile,fileMock.Object)
+                .With(p => p.UploadedFile, fileMock.Object)
                 .Create();
 
             var userService = fixture.Create<UserService>();

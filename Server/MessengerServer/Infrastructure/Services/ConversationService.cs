@@ -121,6 +121,8 @@ namespace Infrastructure.Services
             if (user == null)
                 throw new UserNotExistException("Given user not exist!!", 400);
 
+            request.UsersId.Add(user.Id);
+
             var conversationInfo = new ConversationInfo
             {
                 AdminId=user.Id,
@@ -134,16 +136,19 @@ namespace Infrastructure.Services
                 ConversationInfo=conversationInfo
             };
 
+            await _unit.ConversationRepository.CreateAsync(conversation);
+
+            await _unit.ConversationInfoRepository.CreateAsync(conversationInfo);
+
             foreach(var id in request.UsersId)
             {
                 if((await _auth.FindByIdUserAsync(id)) != null)
                 {
-                    conversation.UserConversations.Add(
-                        new UserConversation 
-                        { 
-                            UserId=id,
-                            Conversation=conversation
-                        });
+                    await _unit.UserConversationRepository.CreateAsync(new UserConversation
+                            {
+                                UserId = id,
+                                Conversation = conversation
+                            });
                 }
             }
 

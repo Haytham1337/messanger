@@ -30,17 +30,17 @@ namespace Infrastructure
                     await userManager.AddToRoleAsync(secadmin, "Chatter");
                 }
 
-                User admin = new User() { NickName = "admin_captain", Sex = Sex.Male, Email = username,Id=secadmin.Id};
+                User admin = new User() 
+                { 
+                    NickName = "admin_captain", 
+                    Sex = Sex.Male, 
+                    Email = username,
+                    Id=secadmin.Id,
+                    Photo = _config.GetValue<string>("defaultmale")
+                };
+                
                 mescontext.Users.Add(admin);
 
-                var photo = new Photo()
-                {
-                    UserId = secadmin.Id,
-                    Path = _config.GetValue<string>("defaultimagepath"),
-                    Name = _config.GetValue<string>("defaultmale")
-                };
-
-                mescontext.Photos.Add(photo);
                 mescontext.SaveChanges();
              }
         }

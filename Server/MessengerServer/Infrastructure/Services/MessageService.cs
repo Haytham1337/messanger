@@ -39,7 +39,7 @@ namespace Infrastructure.Services
             if (user == null)
                 throw new UserNotExistException("Given user not exist!!", 400);
 
-            var chat = await _unit.ChatRepository.GetAsync(message.chatId);
+            var chat = await _unit.ConversationRepository.GetAsync(message.chatId);
 
             if (chat == null)
                 throw new ChatNotExistException("Given chatid is incorrect!!",400);
@@ -69,15 +69,20 @@ namespace Infrastructure.Services
 
         public async Task<AllMessagesDto> GetMessageByChatAsync(GetChatMessagesRequest request)
         {
-            var chatContent= await this._unit.ChatRepository.GetChatContentAsync(request.Id);
+            var chatContent = await this._unit.ConversationRepository.GetChatContentAsync(request.Id);
+
+            var users = await this._unit.ConversationRepository.GetUsersByConversationAsync(request.Id);
+
 
             if (chatContent == null)
                 throw new ChatNotExistException("Given chat not exist!!", 400);
 
             var result = new AllMessagesDto()
             {
-                Users = _map.Map<List<GetUserDto>>(new List<User>() { chatContent.FirstUser, chatContent.SecondUser }),
-                Messages = _map.Map<List<GetMessageDto>>(chatContent.Messages.OrderBy(m => m.TimeCreated))
+                Users = _map.Map<List<GetUserDto>>(users.Select(u => u.User)),
+                Messages = _map.Map<List<GetMessageDto>>(chatContent.Messages.OrderBy(m => m.TimeCreated)),
+                Type=chatContent.Type,
+                AdminId=chatContent.Type!=ConversationType.Chat?(int?)chatContent.ConversationInfo.AdminId:null
             };
 
             return result;

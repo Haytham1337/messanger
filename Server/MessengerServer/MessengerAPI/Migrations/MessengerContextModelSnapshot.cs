@@ -41,34 +41,55 @@ namespace MessengerAPI.Migrations
                     b.ToTable("BlockedUsers");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Chat", b =>
+            modelBuilder.Entity("Domain.Entities.Conversation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("FirstUserId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("LastMessageId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("LastMessageId1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SecondUserId")
+                    b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FirstUserId");
+                    b.HasIndex("LastMessageId");
 
-                    b.HasIndex("LastMessageId1");
+                    b.ToTable("Conversations");
+                });
 
-                    b.HasIndex("SecondUserId");
+            modelBuilder.Entity("Domain.Entities.ConversationInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.ToTable("Chats");
+                    b.Property<int>("AdminId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ConversationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("GroupName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhotoName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdminId");
+
+                    b.HasIndex("ConversationId")
+                        .IsUnique();
+
+                    b.ToTable("ConversationInfo");
                 });
 
             modelBuilder.Entity("Domain.Entities.Message", b =>
@@ -100,32 +121,6 @@ namespace MessengerAPI.Migrations
                     b.ToTable("Messages");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Photo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Path")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("Photos");
-                });
-
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -146,12 +141,38 @@ namespace MessengerAPI.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Photo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Sex")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Domain.Entities.UserConversation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ConversationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConversationId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserConversations");
                 });
 
             modelBuilder.Entity("Domain.Entities.BlockedUser", b =>
@@ -169,28 +190,31 @@ namespace MessengerAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.Chat", b =>
+            modelBuilder.Entity("Domain.Entities.Conversation", b =>
                 {
-                    b.HasOne("Domain.Entities.User", "FirstUser")
-                        .WithMany("Chats")
-                        .HasForeignKey("FirstUserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("Domain.Entities.Message", "LastMessage")
                         .WithMany()
-                        .HasForeignKey("LastMessageId1");
+                        .HasForeignKey("LastMessageId");
+                });
 
-                    b.HasOne("Domain.Entities.User", "SecondUser")
+            modelBuilder.Entity("Domain.Entities.ConversationInfo", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "Admin")
                         .WithMany()
-                        .HasForeignKey("SecondUserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasForeignKey("AdminId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Conversation", "Conversation")
+                        .WithOne("ConversationInfo")
+                        .HasForeignKey("Domain.Entities.ConversationInfo", "ConversationId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Entities.Message", b =>
                 {
-                    b.HasOne("Domain.Entities.Chat", "Chat")
+                    b.HasOne("Domain.Entities.Conversation", "Chat")
                         .WithMany("Messages")
                         .HasForeignKey("ChatId")
                         .OnDelete(DeleteBehavior.NoAction);
@@ -202,12 +226,18 @@ namespace MessengerAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.Photo", b =>
+            modelBuilder.Entity("Domain.Entities.UserConversation", b =>
                 {
+                    b.HasOne("Domain.Entities.Conversation", "Conversation")
+                        .WithMany("UserConversations")
+                        .HasForeignKey("ConversationId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entities.User", "User")
-                        .WithOne("Photo")
-                        .HasForeignKey("Domain.Entities.Photo", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany("UserConversation")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Exceptions.PhotoExceptions
+namespace Domain.Exceptions.UserExceptions
 {
     public class PhotoInCorrectException:BaseException
     {

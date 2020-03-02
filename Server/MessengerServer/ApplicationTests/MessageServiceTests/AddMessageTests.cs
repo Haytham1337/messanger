@@ -41,8 +41,8 @@ namespace ApplicationTests.MessageServiceTests
             var fixture = new Fixture().Customize(new AutoMoqCustomization());
 
             var mockAuth = fixture.Freeze<Mock<IUnitOfWork>>();
-            mockAuth.Setup(a => a.ChatRepository.GetAsync(It.IsAny<int>()))
-                .ReturnsAsync(default(Chat));
+            mockAuth.Setup(a => a.ConversationRepository.GetAsync(It.IsAny<int>()))
+                .ReturnsAsync(default(Conversation));
 
             var messageService = fixture.Create<MessageService>();
 

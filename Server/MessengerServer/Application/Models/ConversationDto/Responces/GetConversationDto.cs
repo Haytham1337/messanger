@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Domain.Entities;
 
 namespace Application.Models.ChatDto.Responces
 {
-   public class GetChatDto
+    public class GetConversationDto
     {
         public int Id { get; set; }
 
@@ -12,8 +10,8 @@ namespace Application.Models.ChatDto.Responces
 
         public string Content { get; set; }
 
-        public int SecondUserId { get; set; }
+        public int? SecondUserId { get; set; }
 
-        public bool IsBlocked { get; set; }
+        public bool? IsBlocked { get; set; }
     }
 }

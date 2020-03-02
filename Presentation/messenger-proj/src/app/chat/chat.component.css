@@ -193,3 +193,7 @@
 #contentdiv::-webkit-scrollbar{
   width:1px;
 }
+
+.stretchform{
+  height: 55px;
+}

@@ -9,7 +9,7 @@ import { AuthGuard } from './auth.guard';
 import { ConfigService } from './services/config.service';
 import { AuthService } from './services/auth.service';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -26,6 +26,9 @@ import { FilluserinfoComponent } from './filluserinfo/filluserinfo.component';
 import { ChatlistComponent } from './chatlist/chatlist.component';
 import { SearchComponent } from './search/search.component';
 import { FriendinfoComponent } from './friendinfo/friendinfo.component';
+import { ChannelCreateComponent } from './channel-create/channel-create.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+
 
 const appRoutes: Routes = [
    { path: '', redirectTo:'/chat',pathMatch:'full' },
@@ -34,7 +37,8 @@ const appRoutes: Routes = [
    { path: 'signin', component:LoginComponent },
    { path: 'friendinfo', component:FriendinfoComponent },
    { path: 'register', component:RegisterComponent },
-   { path: 'fillinfo', component:FilluserinfoComponent ,canActivate:[RegisterGuard]}
+   { path: 'fillinfo', component:FilluserinfoComponent ,canActivate:[RegisterGuard]},
+   { path: 'createchannel', component:ChannelCreateComponent ,canActivate:[RegisterGuard]}
 ]
 
 
@@ -51,14 +55,16 @@ const appRoutes: Routes = [
       DatePipe,
       ChatlistComponent,
       SearchComponent,
-      FriendinfoComponent
+      FriendinfoComponent,
+      ChannelCreateComponent
    ],
    imports: [
       RouterModule.forRoot(appRoutes),
       BrowserModule,
       HttpClientModule,
       AppRoutingModule,
-      FormsModule
+      FormsModule,
+      NgMultiSelectDropDownModule.forRoot()
    ],
    providers: [
       CookieService,

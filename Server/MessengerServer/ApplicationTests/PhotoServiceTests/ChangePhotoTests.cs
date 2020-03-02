@@ -7,7 +7,6 @@ using Infrastructure.Services;
 using Xunit;
 using Moq;
 using Microsoft.Extensions.Configuration;
-using Domain.Exceptions.PhotoExceptions;
 using Microsoft.AspNetCore.Http;
 
 namespace ApplicationTests.PhotoServiceTests
@@ -24,11 +23,11 @@ namespace ApplicationTests.PhotoServiceTests
             mockAuth.Setup(a => a.FindByIdUserAsync(It.IsAny<int>()))
                 .ReturnsAsync(default(User));
 
-            var photoService = fixture.Create<PhotoService>();
+            var userService = fixture.Create<UserService>();
 
             //assert
             await Assert.ThrowsAsync<UserNotExistException>
-                (async () => await photoService.ChangePhotoAsync(new AddPhotoDto()));
+                (async () => await userService.ChangePhotoAsync(new AddPhotoDto()));
         }
 
         [Fact]
@@ -49,10 +48,10 @@ namespace ApplicationTests.PhotoServiceTests
                 .With(p => p.UploadedFile,fileMock.Object)
                 .Create();
 
-            var photoService = fixture.Create<PhotoService>();
+            var userService = fixture.Create<UserService>();
 
             //assert
-            await Assert.ThrowsAsync<PhotoInCorrectException>(async () => await photoService.ChangePhotoAsync(request));
+            await Assert.ThrowsAsync<PhotoInCorrectException>(async () => await userService.ChangePhotoAsync(request));
         }
     }
 }

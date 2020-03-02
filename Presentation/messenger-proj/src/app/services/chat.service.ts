@@ -17,7 +17,15 @@ export interface Message{
 
 export interface ChatContent{
   users:User[],
-  messages:Message[]
+  messages:Message[],
+  type:number,
+  adminId
+}
+
+export class Group{
+  UsersId:number[];
+  IsChannel:boolean;
+  GroupName:string;
 }
 
 export interface Chat{
@@ -25,7 +33,8 @@ export interface Chat{
   photo:string,
   content:string,
   secondUserId:number,
-  isBlocked
+  isBlocked,
+  Type:number
 }
 
 @Injectable({
@@ -49,6 +58,10 @@ export class ChatService {
   public currentChatId:number;
 
   public photourl:string;
+
+  public  currentChatType:number;
+
+  public currentChatAdmin:number;
 
   messagesUpdate = this.messages.asObservable();
 
@@ -77,6 +90,10 @@ export class ChatService {
             
     return await this.http.get<ChatContent>(url,{headers:headers}).toPromise()
         .then((data)=>{
+          console.log(data);
+          this.currentChatType=data.type;
+          this.currentChatAdmin=data.adminId;
+          console.log(this.currentChatAdmin);
           this.MessagesUpdate(data.messages);
           this.UsersUpdate(data.users);})
     }
@@ -181,5 +198,22 @@ export class ChatService {
   public Reconnect(){
     this.hubConnection.stop()
     .then(()=>this.hubConnection.start());
+  }
+
+  public async CreateGroup(data:Group){
+    let url=await this.config.getConfig("creategroup");
+
+    let headers = new HttpHeaders();
+    headers= headers.append('content-type', 'application/json');
+
+    this.http.post(url,JSON.stringify(data),{headers:headers}).subscribe(
+      res=>{
+        this.GetChats();
+        this.Reconnect();
+      },
+      err=>{
+        console.log(err);
+      }
+    )
   }
 }

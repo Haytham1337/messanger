@@ -80,7 +80,9 @@ namespace Infrastructure.Services
             var result = new AllMessagesDto()
             {
                 Users = _map.Map<List<GetUserDto>>(users.Select(u => u.User)),
-                Messages = _map.Map<List<GetMessageDto>>(chatContent.Messages.OrderBy(m => m.TimeCreated))
+                Messages = _map.Map<List<GetMessageDto>>(chatContent.Messages.OrderBy(m => m.TimeCreated)),
+                Type=chatContent.Type,
+                AdminId=chatContent.Type!=ConversationType.Chat?(int?)chatContent.ConversationInfo.AdminId:null
             };
 
             return result;

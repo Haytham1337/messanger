@@ -15,14 +15,6 @@ namespace Infrastructure.Repositories
 
         public async Task<bool> ChatExistAsync(int firstUserId, int secondUserId)
         {
-            //return (await this.db.UserConversations
-            //    .Include(c => c.Conversation)
-            //    .Where(c => c.Conversation.Type == ConversationType.Chat)
-            //    .Where(c => (c.UserId == firstUserId || c.UserId == secondUserId))
-            //    .GroupBy(c => c.ConversationId)
-            //     .Where(g => g.Count() == 2)
-            //    .CountAsync()) == 0;
-
             return await this.db.Conversations
                  .Where(conv => conv.Type == ConversationType.Chat)
                  .Include(conv => conv.UserConversations)
@@ -46,6 +38,7 @@ namespace Infrastructure.Repositories
         {
             return await this.db.Conversations
                   .Where(c => c.Id == id)
+                  .Include(conv=>conv.ConversationInfo)
                   .Include(c => c.Messages)
                   .Include(c => c.UserConversations)
                   .FirstOrDefaultAsync();

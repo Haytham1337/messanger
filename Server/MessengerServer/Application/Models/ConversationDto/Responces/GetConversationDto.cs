@@ -10,8 +10,6 @@ namespace Application.Models.ChatDto.Responces
 
         public string Content { get; set; }
 
-        public ConversationType Type { get; set; }
-
         public int? SecondUserId { get; set; }
 
         public bool? IsBlocked { get; set; }

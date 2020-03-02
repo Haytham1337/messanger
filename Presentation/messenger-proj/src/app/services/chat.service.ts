@@ -17,7 +17,9 @@ export interface Message{
 
 export interface ChatContent{
   users:User[],
-  messages:Message[]
+  messages:Message[],
+  type:number,
+  adminId
 }
 
 export class Group{
@@ -57,6 +59,10 @@ export class ChatService {
 
   public photourl:string;
 
+  public  currentChatType:number;
+
+  public currentChatAdmin:number;
+
   messagesUpdate = this.messages.asObservable();
 
   constructor(private http:HttpClient,private config:ConfigService,private sanitizer:DomSanitizer, private photo: PhotoService) { }
@@ -84,6 +90,10 @@ export class ChatService {
             
     return await this.http.get<ChatContent>(url,{headers:headers}).toPromise()
         .then((data)=>{
+          console.log(data);
+          this.currentChatType=data.type;
+          this.currentChatAdmin=data.adminId;
+          console.log(this.currentChatAdmin);
           this.MessagesUpdate(data.messages);
           this.UsersUpdate(data.users);})
     }

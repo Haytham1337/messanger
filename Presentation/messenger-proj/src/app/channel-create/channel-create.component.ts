@@ -1,3 +1,4 @@
+import { ChatService, Group } from './../services/chat.service';
 import { UserService, User } from './../services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
@@ -12,9 +13,10 @@ export class ChannelCreateComponent implements OnInit {
   SearchUsers:User[];
   selectedItems :User [];
   dropdownSettings:IDropdownSettings = {};
-  UsersId:number[]=[];
+ 
+  group:Group=new Group();
 
-  constructor(private userservice:UserService) { }
+  constructor(private userservice:UserService,private chatservice:ChatService) { }
 
   ngOnInit() {
     this.userservice.searchdata.subscribe((res)=>this.SearchUsers=res);
@@ -32,15 +34,21 @@ export class ChannelCreateComponent implements OnInit {
       allowRemoteDataSearch:true,
       clearSearchFilter:true
     };
-    
+
+    this.group.UsersId=[];
+
   }
 
   onItemSelect(item: User) {
-     this.UsersId.push(item.id);
+     this.group.UsersId.push(item.id);
   }
 
   onFilterChange(filter:string) {
     this.userservice.SearchUsers(filter);
   }
 
+  createGroup(){
+    console.log(this.group);
+    this.chatservice.CreateGroup(this.group);
+  }
 }

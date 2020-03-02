@@ -45,7 +45,7 @@
     
           </div>
         </div>
-        <nav class="navbar navbar-dark mt-2" id="sendform">
+        <nav class="navbar navbar-dark mt-2" id="sendform" *ngIf>
           <form class="form-inline col-sm" (ngSubmit)="sendMessage()">
             <input class="form-control col-sm" id="sendinput" type="text" placeholder="Type"  [(ngModel)]="newMessage" name="message" aria-label="Search" autocomplete="off">
             <button class="btn btn-outline-white btn-md my-2 my-sm-0 ml-3" type="submit">Send</button>

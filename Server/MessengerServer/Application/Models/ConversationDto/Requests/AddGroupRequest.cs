@@ -10,9 +10,8 @@ namespace Application.Models.ConversationDto.Requests
         [Required]
         public string GroupName { get; set; }
 
-        [Required]
         public bool IsChannel { get; set; }
 
-        public List<int> UsersId { get; set; }
+        public List<int> UsersId { get; set; } = new List<int>();
     }
 }

@@ -20,12 +20,19 @@ export interface ChatContent{
   messages:Message[]
 }
 
+export class Group{
+  UsersId:number[];
+  IsChannel:boolean;
+  GroupName:string;
+}
+
 export interface Chat{
   id:number,
   photo:string,
   content:string,
   secondUserId:number,
-  isBlocked
+  isBlocked,
+  Type:number
 }
 
 @Injectable({
@@ -181,5 +188,22 @@ export class ChatService {
   public Reconnect(){
     this.hubConnection.stop()
     .then(()=>this.hubConnection.start());
+  }
+
+  public async CreateGroup(data:Group){
+    let url=await this.config.getConfig("creategroup");
+
+    let headers = new HttpHeaders();
+    headers= headers.append('content-type', 'application/json');
+
+    this.http.post(url,JSON.stringify(data),{headers:headers}).subscribe(
+      res=>{
+        this.GetChats();
+        this.Reconnect();
+      },
+      err=>{
+        console.log(err);
+      }
+    )
   }
 }

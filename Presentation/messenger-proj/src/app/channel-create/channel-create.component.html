@@ -13,8 +13,20 @@
         <div class="modal-body">
             <form class="text-center border border-light p-5" action="#!">            
 
-                <input type="text" id="" class="form-control mb-4" placeholder="Name">
+              <div class="row m-0 p-0">
+                <div class="col-8 m-0 p-0">
+                  <input  [(ngModel)]="group.GroupName"  name="GroupName" type="text" id="" class="form-control mb-4" placeholder="Name">
+                </div>
+               
+                <div class="col-sm m-0 p-0 mt-1">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox"  [(ngModel)]="group.IsChannel" name="ischannel" class="custom-control-input text-left" id="defaultUnchecked">
+                    <label class="custom-control-label" for="defaultUnchecked">Channel</label>
+                  </div>
+                </div>
 
+              </div>
+        
                 <ng-multiselect-dropdown
                 [placeholder]="'Users'"
                 [data]="SearchUsers"
@@ -26,7 +38,7 @@
                 >
                 </ng-multiselect-dropdown>
  
-                <button class="btn btn-info my-4 btn-block" type="submit">Create</button>          
+                <button class="btn btn-info my-4 btn-block" type="submit" (click)="createGroup()">Create</button>          
            </form>
         </div>
       </div>

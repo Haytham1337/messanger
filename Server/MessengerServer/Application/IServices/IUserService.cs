@@ -1,4 +1,5 @@
-﻿using Application.Models.MessageDto;
+﻿using Application.Models.ConversationDto.Requests;
+using Application.Models.MessageDto;
 using Application.Models.PhotoDto;
 using Application.Models.UserDto;
 using Application.Models.UserDto.Requests;
@@ -24,5 +25,8 @@ namespace Application.IServices
         Task<bool> CheckStatusAsync(AddMessageDto request);
 
         Task ChangePhotoAsync(AddPhotoDto model);
+
+        Task CreateGroupAsync(AddGroupRequest request);
+
     }
 }

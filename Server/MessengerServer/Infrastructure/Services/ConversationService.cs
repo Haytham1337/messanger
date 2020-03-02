@@ -1,6 +1,7 @@
 ﻿using Application.IServices;
 using Application.Models.ChatDto.Requests;
 using Application.Models.ChatDto.Responces;
+using Application.Models.ConversationDto.Requests;
 using Domain;
 using Domain.Entities;
 using Domain.Exceptions.ChatExceptions;
@@ -111,6 +112,42 @@ namespace Infrastructure.Services
             }
 
             return res;
+        }
+
+        public async Task CreateGroupAsync(AddGroupRequest request)
+        {
+            var user = await _auth.FindByIdUserAsync(request.UserId);
+
+            if (user == null)
+                throw new UserNotExistException("Given user not exist!!", 400);
+
+            var conversationInfo = new ConversationInfo
+            {
+                AdminId=user.Id,
+                PhotoName=String.IsNullOrEmpty(request.Photo)? _config.GetValue<string>("defaultgroup"):request.Photo
+            };
+
+            var conversation = new Conversation
+            {
+                Type=request.IsChannel==true?ConversationType.Channel:ConversationType.Group,
+                
+                ConversationInfo=conversationInfo
+            };
+
+            foreach(var id in request.UsersId)
+            {
+                if((await _auth.FindByIdUserAsync(id)) != null)
+                {
+                    conversation.UserConversations.Add(
+                        new UserConversation 
+                        { 
+                            UserId=id,
+                            Conversation=conversation
+                        });
+                }
+            }
+
+            await _unit.Commit();
         }
     }
 }

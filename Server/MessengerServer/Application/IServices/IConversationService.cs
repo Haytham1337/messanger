@@ -1,8 +1,7 @@
 ﻿using Application.Models.ChatDto.Requests;
 using Application.Models.ChatDto.Responces;
-using System;
+using Application.Models.ConversationDto.Requests;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.IServices
@@ -12,5 +11,7 @@ namespace Application.IServices
         Task CreateChatAsync(AddChatRequest request);
 
         Task<List<GetChatDto>> GetChatsAsync(GetChatsRequestDto request);
+
+        Task CreateGroupAsync(AddGroupRequest request);
     }
 }

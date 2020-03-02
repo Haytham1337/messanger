@@ -21,7 +21,7 @@ export class ChatComponent implements OnInit {
 
   currentChatUser:User=new User();
 
-  constructor(private http:HttpClient,private chatservice:ChatService,private userservice:UserService,private photoservice:PhotoService) 
+  constructor(private chatservice:ChatService,private userservice:UserService) 
   { 
     chatservice.messagesUpdate.subscribe(res=>this.messages=res);
   }

@@ -1,35 +1,35 @@
 <nav class="avbar navbar-expand-lg navbar-light bg-light" id="appnav">
- <div class="container">
-  <div class="collapse navbar-collapse">
-
-    <ul class="navbar-nav p-2">
-      <li class="nav-item">
-        <a class="navbar-brand" routerLink="/chat" id="title">
-          <img src="../../assets/mainicon.png" width="30" height="30" class="d-inline-block align-top mr-1" alt="">Chatter</a>
-      </li>
-    </ul>
-
-    <ul class="navbar-nav ml-auto">
-      <li class="mt-2 mr-1" *ngIf="auth.looggedIn()">
-        <app-channel-create></app-channel-create>
-      </li>
-      <div class="dropdown" *ngIf="auth.looggedIn()">
-        <img [src]="photoser.imageUrl" id="userphoto">
-        <div class="dropdown-content">
-          <a class="dropdown-item dropitem" routerLink="/profile">Profile</a>
-          <label class="dropitem" for="file_input_id">Upload photo</label>
-          <input  type="file" id="file_input_id" accept=".jpg,.jpeg,.png" (change)="fileselected($event)">
-          <a class="dropdown-item dropitem" href="#" (click)="auth.signout()">SignOut</a>
-        </div>
-      </div>
-        <li class="nav-item" *ngIf="!auth.looggedIn()">
-          <a class="nav-link" id="title" routerLink="/signin">SignIn</a>
-        </li>
-        <li class="nav-item" *ngIf="!auth.looggedIn()">
-          <a class="nav-link" id="title" routerLink="/register">SignUp</a>
-        </li>
-  </ul>
-
+  <div class="container">
+   <div class="collapse navbar-collapse">
+ 
+     <ul class="navbar-nav p-2">
+       <li class="nav-item">
+         <a class="navbar-brand" routerLink="/chat" id="title">
+           <img src="../../assets/mainicon.png" width="30" height="30" class="d-inline-block align-top mr-1" alt="">Chatter</a>
+       </li>
+     </ul>
+ 
+     <ul class="navbar-nav ml-auto">
+       <li class="mt-2 mr-1" *ngIf="auth.looggedIn()">
+         <app-channel-create></app-channel-create>
+       </li>
+       <div class="dropdown" *ngIf="auth.looggedIn()">
+         <img [src]="currentUser.photoName" id="userphoto">
+         <div class="dropdown-content">
+           <a class="dropdown-item dropitem" routerLink="/profile">Profile</a>
+           <label class="dropitem" for="file_input_id">Upload photo</label>
+           <input  type="file" id="file_input_id" accept=".jpg,.jpeg,.png" (change)="fileselected($event)">
+           <a class="dropdown-item dropitem" href="#" (click)="auth.signout()">SignOut</a>
+         </div>
+       </div>
+         <li class="nav-item" *ngIf="!auth.looggedIn()">
+           <a class="nav-link" id="title" routerLink="/signin">SignIn</a>
+         </li>
+         <li class="nav-item" *ngIf="!auth.looggedIn()">
+           <a class="nav-link" id="title" routerLink="/register">SignUp</a>
+         </li>
+   </ul>
+ 
+   </div>
   </div>
- </div>
-</nav>
+ </nav>

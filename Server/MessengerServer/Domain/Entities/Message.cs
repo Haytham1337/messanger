@@ -16,6 +16,6 @@ namespace Domain.Entities
         public User User { get; set; }
 
         public int? ChatId { get; set; }
-        public Chat Chat { get; set; }
+        public Conversation Chat { get; set; }
     }
 }

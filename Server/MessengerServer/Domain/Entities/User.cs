@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Domain.Entities
 {
@@ -24,11 +22,11 @@ namespace Domain.Entities
 
         public Sex Sex { get; set; }
 
-        public Photo Photo { get; set; }
+        public string Photo { get; set; }
 
         public ICollection<Message> Messages { get; private set; }
 
-        public ICollection<Chat> Chats { get; private set; }
+        public ICollection<UserConversation> UserConversation { get; private set; }
 
         public ICollection<BlockedUser> BlockedUsers { get; private set; }
 
@@ -36,7 +34,7 @@ namespace Domain.Entities
         {
             Messages = new List<Message>();
 
-            Chats = new List<Chat>();
+            UserConversation = new List<UserConversation>();
 
             BlockedUsers = new List<BlockedUser>();
         }

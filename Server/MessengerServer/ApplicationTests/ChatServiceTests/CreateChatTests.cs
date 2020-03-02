@@ -25,7 +25,7 @@ namespace ApplicationTests.ChatServiceTests
             mockAuth.Setup(a => a.FindByIdUserAsync(It.IsAny<int>()))
                 .ReturnsAsync(default(User));
 
-            var chatService = fixture.Create<ChatService>();
+            var chatService = fixture.Create<ConversationService>();
 
             //assert
             await Assert.ThrowsAsync<UserNotExistException>
@@ -39,10 +39,10 @@ namespace ApplicationTests.ChatServiceTests
             var fixture = new Fixture().Customize(new AutoMoqCustomization());
 
             var mockUnit = fixture.Freeze<Mock<IUnitOfWork>>();
-            mockUnit.Setup(a => a.ChatRepository.ChatExistAsync(It.IsAny<int>(),It.IsAny<int>()))
+            mockUnit.Setup(a => a.ConversationRepository.ChatExistAsync(It.IsAny<int>(),It.IsAny<int>()))
                 .ReturnsAsync(false);
 
-            var chatService = fixture.Create<ChatService>();
+            var chatService = fixture.Create<ConversationService>();
 
             //assert
             await Assert.ThrowsAsync<ChatAlreadyExistException>
@@ -56,16 +56,16 @@ namespace ApplicationTests.ChatServiceTests
             var fixture = new Fixture().Customize(new AutoMoqCustomization());
 
             var mockUnit = fixture.Freeze<Mock<IUnitOfWork>>();
-            mockUnit.Setup(a => a.ChatRepository.ChatExistAsync(It.IsAny<int>(), It.IsAny<int>()))
+            mockUnit.Setup(a => a.ConversationRepository.ChatExistAsync(It.IsAny<int>(), It.IsAny<int>()))
                 .ReturnsAsync(true);
 
-            var chatService = fixture.Create<ChatService>();
+            var chatService = fixture.Create<ConversationService>();
 
             //act
             await chatService.CreateChatAsync(new AddChatRequest());
 
             //assert
-            mockUnit.Verify(u => u.ChatRepository.CreateAsync(It.IsAny<Chat>()), Times.Once);
+            mockUnit.Verify(u => u.ConversationRepository.CreateAsync(It.IsAny<Conversation>()), Times.Once);
         }
     }
 }

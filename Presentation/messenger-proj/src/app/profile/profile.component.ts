@@ -11,7 +11,7 @@ export class ProfileComponent implements OnInit {
 
   currentUser:User=new User();
 
-  constructor(private photo:PhotoService,private userservice:UserService) { }
+  constructor(private userservice:UserService) { }
 
  ngOnInit() {
     this.userservice.data.subscribe(user=>this.currentUser=user);

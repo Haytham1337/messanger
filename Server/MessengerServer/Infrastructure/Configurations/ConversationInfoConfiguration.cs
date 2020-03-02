@@ -15,6 +15,9 @@ namespace Infrastructure.Configurations
             builder.Property(p => p.PhotoName)
                    .IsRequired();
 
+            builder.Property(p => p.GroupName)
+                   .IsRequired();
+
             builder.HasOne(c => c.Admin);
 
             builder.HasOne(c => c.Conversation)

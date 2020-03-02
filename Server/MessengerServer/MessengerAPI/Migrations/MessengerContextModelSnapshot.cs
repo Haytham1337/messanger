@@ -74,6 +74,10 @@ namespace MessengerAPI.Migrations
                     b.Property<int>("ConversationId")
                         .HasColumnType("int");
 
+                    b.Property<string>("GroupName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PhotoName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

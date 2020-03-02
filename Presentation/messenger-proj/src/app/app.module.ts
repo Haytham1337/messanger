@@ -27,6 +27,8 @@ import { ChatlistComponent } from './chatlist/chatlist.component';
 import { SearchComponent } from './search/search.component';
 import { FriendinfoComponent } from './friendinfo/friendinfo.component';
 import { ChannelCreateComponent } from './channel-create/channel-create.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+
 
 const appRoutes: Routes = [
    { path: '', redirectTo:'/chat',pathMatch:'full' },
@@ -61,7 +63,8 @@ const appRoutes: Routes = [
       BrowserModule,
       HttpClientModule,
       AppRoutingModule,
-      FormsModule
+      FormsModule,
+      NgMultiSelectDropDownModule.forRoot()
    ],
    providers: [
       CookieService,

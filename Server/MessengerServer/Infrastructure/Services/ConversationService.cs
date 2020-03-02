@@ -137,7 +137,8 @@ namespace Infrastructure.Services
             var conversationInfo = new ConversationInfo
             {
                 AdminId=user.Id,
-                PhotoName= _config.GetValue<string>("defaultgroup")
+                PhotoName= _config.GetValue<string>("defaultgroup"),
+                GroupName=request.GroupName
             };
 
             var conversation = new Conversation

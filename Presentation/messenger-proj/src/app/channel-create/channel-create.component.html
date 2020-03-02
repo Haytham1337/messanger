@@ -15,7 +15,16 @@
 
                 <input type="text" id="" class="form-control mb-4" placeholder="Name">
 
-                <select ng-options="s for s in values"></select>
+                <ng-multiselect-dropdown
+                [placeholder]="'Users'"
+                [data]="SearchUsers"
+                [(ngModel)]="selectedItems"
+                [settings]="dropdownSettings"
+                (onSelect)="onItemSelect($event)"
+                (onFilterChange)="onFilterChange($event)"
+                name="searchusers"
+                >
+                </ng-multiselect-dropdown>
  
                 <button class="btn btn-info my-4 btn-block" type="submit">Create</button>          
            </form>

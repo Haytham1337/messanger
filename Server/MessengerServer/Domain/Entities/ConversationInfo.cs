@@ -7,6 +7,8 @@
         public int AdminId { get; set; }
         public User Admin { get; set; }
 
+        public string GroupName { get; set; }
+
         public string PhotoName { get; set; }
 
         public int ConversationId { get; set; }

@@ -27,13 +27,11 @@ namespace Infrastructure.Extensions
         {
             services.AddScoped<IAuthService, AuthService>();
 
-            services.AddScoped<IPhotoService, PhotoService>();
-
             services.AddScoped<IMessageService, MessageService>();
 
             services.AddScoped<IUserService, UserService>();
 
-            services.AddScoped<IChatService, ChatService>();
+            services.AddScoped<IConversationService, ConversationService>();
 
             services.AddScoped<ICache, MemoryCache>();
         }

@@ -26,7 +26,7 @@ namespace Domain.Entities
 
         public ICollection<Message> Messages { get; private set; }
 
-        public ICollection<UserConversation> Conversations { get; private set; }
+        public ICollection<UserConversation> UserConversation { get; private set; }
 
         public ICollection<BlockedUser> BlockedUsers { get; private set; }
 
@@ -34,7 +34,7 @@ namespace Domain.Entities
         {
             Messages = new List<Message>();
 
-            Conversations = new List<UserConversation>();
+            UserConversation = new List<UserConversation>();
 
             BlockedUsers = new List<BlockedUser>();
         }

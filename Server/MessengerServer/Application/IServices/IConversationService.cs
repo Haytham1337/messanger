@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.IServices
 {
-    public interface IChatService
+    public interface IConversationService
     {
         Task CreateChatAsync(AddChatRequest request);
 

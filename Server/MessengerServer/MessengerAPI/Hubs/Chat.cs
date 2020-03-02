@@ -37,7 +37,7 @@ namespace MessengerAPI.Hubs
         {
             var userId =Context.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var userChats = await this._unit.ChatRepository.GetUserChatsAsync(int.Parse(userId));
+            var userChats = await this._unit.ConversationRepository.GetUserChatsAsync(int.Parse(userId));
 
             userChats.ForEach(async chat =>
             {
@@ -72,7 +72,7 @@ namespace MessengerAPI.Hubs
         {
             var userId = Context.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var userChats = await this._unit.ChatRepository.GetUserChatsAsync(int.Parse(userId));
+            var userChats = await this._unit.ConversationRepository.GetUserChatsAsync(int.Parse(userId));
 
             userChats.ForEach(async chat =>
             {

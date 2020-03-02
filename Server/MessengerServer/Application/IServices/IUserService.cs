@@ -1,4 +1,5 @@
 ﻿using Application.Models.MessageDto;
+using Application.Models.PhotoDto;
 using Application.Models.UserDto;
 using Application.Models.UserDto.Requests;
 using System;
@@ -21,5 +22,7 @@ namespace Application.IServices
         Task UnBlockUserAsync(BlockUserRequest request);
 
         Task<bool> CheckStatusAsync(AddMessageDto request);
+
+        Task ChangePhotoAsync(AddPhotoDto model);
     }
 }

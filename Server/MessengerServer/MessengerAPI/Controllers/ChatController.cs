@@ -18,9 +18,9 @@ namespace MessengerAPI.Controllers
     [ApiController]
     public class ChatController : ControllerBase
     {
-        private readonly IChatService _chatService;
+        private readonly IConversationService _chatService;
 
-        public ChatController(IChatService chatService)
+        public ChatController(IConversationService chatService)
         {
             _chatService = chatService;
         }

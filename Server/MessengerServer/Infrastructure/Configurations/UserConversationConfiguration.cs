@@ -13,12 +13,14 @@ namespace Infrastructure.Configurations
             builder.HasKey(bu => bu.Id);
 
             builder.HasOne(uc => uc.Conversation)
-                .WithMany(uc => uc.Users)
-                .HasForeignKey(uc => uc.ConversationId);
+                .WithMany(uc => uc.UserConversations)
+                .HasForeignKey(uc => uc.ConversationId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(uc => uc.User)
-                .WithMany(uc => uc.Conversations)
-                .HasForeignKey(uc => uc.UserId);
+                .WithMany(uc => uc.UserConversation)
+                .HasForeignKey(uc => uc.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

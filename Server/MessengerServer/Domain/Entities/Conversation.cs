@@ -17,7 +17,7 @@ namespace Domain.Entities
 
         public ICollection<Message> Messages { get; private set; }
 
-        public List<UserConversation> Users { get; set; }
+        public List<UserConversation> UserConversations { get; set; }
 
         public ConversationType Type { get; set; }
         public ConversationInfo ConversationInfo { get; set; }
@@ -26,7 +26,7 @@ namespace Domain.Entities
         {
             this.Messages = new List<Message>();
 
-            this.Users=new List<UserConversation>();
+            this.UserConversations=new List<UserConversation>();
         }
     }
 }

@@ -7,8 +7,6 @@ namespace Application.Models.ConversationDto.Requests
     {
         public int UserId { get; set; }
 
-        public string Photo { get; set; }
-
         [Required]
         public bool IsChannel { get; set; }
 

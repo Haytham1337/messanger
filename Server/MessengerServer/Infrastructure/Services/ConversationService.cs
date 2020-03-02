@@ -124,7 +124,7 @@ namespace Infrastructure.Services
             var conversationInfo = new ConversationInfo
             {
                 AdminId=user.Id,
-                PhotoName=String.IsNullOrEmpty(request.Photo)? _config.GetValue<string>("defaultgroup"):request.Photo
+                PhotoName= _config.GetValue<string>("defaultgroup")
             };
 
             var conversation = new Conversation

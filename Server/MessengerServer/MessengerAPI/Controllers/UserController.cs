@@ -97,6 +97,5 @@ namespace MessengerAPI.Controllers
 
             return BadRequest();
         }
-
     }
 }

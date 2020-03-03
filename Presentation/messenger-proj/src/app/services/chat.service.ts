@@ -6,7 +6,6 @@ import * as signalR from "@aspnet/signalr"
 import {DomSanitizer} from '@angular/platform-browser';
 import { User } from './user.service';
 import { BehaviorSubject } from 'rxjs';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 export interface Message{
   content:string,
@@ -55,10 +54,12 @@ export class ChatService {
   private currentChatUser=new BehaviorSubject<User>(null);
   currentChatUserSource=this.currentChatUser.asObservable();
 
-  private currentChatContent=new BehaviorSubject<ChatContent>(null);
+  public currentChatContent=new BehaviorSubject<ChatContent>(null);
   currentChatContentSource=this.currentChatContent.asObservable();
 
   public currentChatId:number;
+
+  public currentChatAdmin:number;
 
   public photourl:string;
 
@@ -93,6 +94,7 @@ export class ChatService {
         .then((data)=>{
           this. CurrentContentUpdate(data);
           this.currentChatType=data.type;
+          this.currentChatAdmin=data.adminId;
           this.MessagesUpdate(data.messages);
           this.UsersUpdate(data.users);})
     }
@@ -164,7 +166,7 @@ export class ChatService {
     )
   }
 
-  public async GetChats(){
+  public async GetChats(leaveCurrent:boolean=false){
     let url=await this.config.getConfig("getchats");
     let imgpath=await this.config.getConfig("photopath");
 
@@ -174,10 +176,15 @@ export class ChatService {
           chat.photo=`${imgpath}/${chat.photo}`;
           return chat;
         })
-
-        this.currentChatId=mappedres[0].id;
-        this.getMessages(this.currentChatId);
-        this.ChatsUpdate(res);
+        if(!leaveCurrent){
+          this.currentChatId=mappedres[0].id;
+          this.getMessages(this.currentChatId);
+          this.ChatsUpdate(res);
+        }
+        else{
+          this.ChatsUpdate(res);
+        }
+        
         return res;
       })
   }

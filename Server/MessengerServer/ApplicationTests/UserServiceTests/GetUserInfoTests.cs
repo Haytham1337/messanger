@@ -21,7 +21,7 @@ namespace ApplicationTests.UserServiceTests
             mock.Setup(u => u.UserRepository.GetWithPhotoAsync(It.IsAny<string>()))
                     .ReturnsAsync(default(User));
 
-            var userService = new UserService(mock.Object, null, null,null,null);
+            var userService = new UserService(mock.Object, null, null,null);
 
             var request = new GetUserInfoRequest()
             {
@@ -75,7 +75,7 @@ namespace ApplicationTests.UserServiceTests
             mockMapper.Setup(m => m.Map<GetUserDto>(It.IsIn(user)))
                 .Returns(new GetUserDto() { NickName = user.NickName });
 
-            var userService = new UserService(mockUnit.Object, mockMapper.Object, null,null,null);
+            var userService = new UserService(mockUnit.Object, mockMapper.Object, null,null);
 
             var request = new GetUserInfoRequest() { UserName = "TestUserName" };
 

@@ -48,7 +48,6 @@ export class ChannelCreateComponent implements OnInit {
   }
 
   createGroup(){
-    console.log(this.group);
     this.chatservice.CreateGroup(this.group);
   }
 }

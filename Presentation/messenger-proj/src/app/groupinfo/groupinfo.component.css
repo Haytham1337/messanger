@@ -1,0 +1,21 @@
+#groupinfolink{
+    margin-top: 4px;
+    font-size: 20px;
+}
+
+#groupName{
+    font-size: 30px;
+}
+
+.isadmin{
+    color: cyan;
+}
+
+#matesdiv{
+    max-height: 120px;
+}
+
+#matesdiv::-webkit-scrollbar{
+    width:1px;
+  }
+  

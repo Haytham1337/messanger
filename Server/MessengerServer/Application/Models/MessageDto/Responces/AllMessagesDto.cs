@@ -13,5 +13,7 @@ namespace Application.Models.MessageDto
         public ConversationType Type { get; set; }
 
         public int? AdminId  { get; set; }
+
+        public string Name { get; set; }
     }
 }

@@ -7,6 +7,7 @@
       <div class="row m-0 p-0">
         <div class="col-sm" id="curuser">
           <app-friendinfo *ngIf="chatservice.currentChatType==0"></app-friendinfo>
+          <app-groupinfo *ngIf="chatservice.currentChatType!==0"></app-groupinfo>
         </div>
       </div>
       <div class="col-sm p-0 m-0 overflow-auto" id="contentdiv">

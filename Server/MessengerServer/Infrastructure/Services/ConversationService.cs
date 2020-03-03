@@ -2,6 +2,7 @@
 using Application.Models.ChatDto.Requests;
 using Application.Models.ChatDto.Responces;
 using Application.Models.ConversationDto.Requests;
+using Application.Models.PhotoDto;
 using Domain;
 using Domain.Entities;
 using Domain.Exceptions.ChatExceptions;
@@ -21,13 +22,18 @@ namespace Infrastructure.Services
         private readonly IAuthService _auth;
 
         private readonly IConfiguration _config;
-        public ConversationService(IUnitOfWork unit, IAuthService auth, IConfiguration config)
+
+        private readonly IPhotoHelper _photoHelper;
+
+        public ConversationService(IUnitOfWork unit, IAuthService auth, IConfiguration config,IPhotoHelper photoHelper)
         {
             _unit = unit;
 
             _auth = auth;
 
             _config = config;
+
+            _photoHelper = photoHelper;
         }
 
         public async Task CreateChatAsync(AddChatRequest request)
@@ -161,6 +167,21 @@ namespace Infrastructure.Services
                             });
                 }
             }
+
+            await _unit.Commit();
+        }
+
+        public async Task ChangePhotoAsync(AddPhotoDto model)
+        {
+            if (model.ConversationId == null)
+                throw new ChatNotExistException("Given id is null", 400);
+
+            var conversation = await _unit.ConversationRepository.GetChatContentAsync((int)model.ConversationId);
+
+            if(conversation==null||conversation.ConversationInfo.AdminId!=model.UserId)
+                throw new ChatNotExistException("Conversation photo cannot be changed!!", 400);
+
+            conversation.ConversationInfo.PhotoName = await this._photoHelper.SavePhotoAsync(model);
 
             await _unit.Commit();
         }

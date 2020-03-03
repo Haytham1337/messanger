@@ -1,3 +1,4 @@
+import { PhotoService } from './../services/photo.service';
 import { UserService } from './../services/user.service';
 import { ChatService, ChatContent } from './../services/chat.service';
 import { Component, OnInit } from '@angular/core';
@@ -15,7 +16,7 @@ export class GroupinfoComponent implements OnInit {
 
   admin:User=new User();
 
-  constructor(private chatservice:ChatService) { }
+  constructor(private chatservice:ChatService,private photoser:PhotoService) { }
 
   ngOnInit() {
     this.chatservice.currentChatContentSource.subscribe(data=>
@@ -34,6 +35,15 @@ export class GroupinfoComponent implements OnInit {
 
   public GetUrl(photo:string){
     return `${this.chatservice.photourl}/${photo}`; 
+  }
+
+  async photoselected(event){
+    (await this.photoser.UploadGroupPhoto(event.target.files[0],this.chatservice.currentChatId))
+        .subscribe(res=>this.chatservice.GetChats(true))
+  }
+
+  photoCliked(){
+    document.getElementById("group_photo_id").click();
   }
 
 }

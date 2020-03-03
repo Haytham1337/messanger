@@ -19,7 +19,10 @@
   
             </div>
             <div class="col-sm m-0 p-0" id="friendinfophoto">
-              <img [src]="getPhoto()" id="userinfophoto" width="70" height="70">
+              <a (click)="photoCliked()">
+                <img [src]="getPhoto()" id="groupinfophoto" width="70" height="70" for="group_photo_id">
+              </a>
+              <input style="display: none;" type="file" id="group_photo_id" accept=".jpg,.jpeg,.png" (change)="photoselected($event)">
             </div>
             <div class="col-sm m-0 p-0 mt-3" id="groupName">
               <p>

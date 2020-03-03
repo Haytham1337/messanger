@@ -19,4 +19,8 @@
 #matesdiv::-webkit-scrollbar{
     width:1px;
   }
+
+  #groupinfophoto{
+      border-radius: 10px;
+  }
   

@@ -155,7 +155,7 @@ namespace Infrastructure.Services
 
         public async Task ChangePhotoAsync(AddPhotoDto model)
         {
-            var user = await _auth.FindByIdUserAsync(model.Id);
+            var user = await _auth.FindByIdUserAsync(model.UserId);
 
             if (user == null)
                 throw new UserNotExistException("Given user not exist!!", 400);

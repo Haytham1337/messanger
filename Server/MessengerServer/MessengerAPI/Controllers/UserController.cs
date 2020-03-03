@@ -88,7 +88,7 @@ namespace MessengerAPI.Controllers
             {
                 await _userService.ChangePhotoAsync(new AddPhotoDto()
                 {
-                    Id = (int)HttpContext.Items["id"],
+                    UserId = (int)HttpContext.Items["id"],
                     UploadedFile = collection.Files[0]
                 });
 
@@ -97,6 +97,5 @@ namespace MessengerAPI.Controllers
 
             return BadRequest();
         }
-
     }
 }

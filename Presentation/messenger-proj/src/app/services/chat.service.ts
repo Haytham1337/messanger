@@ -166,7 +166,7 @@ export class ChatService {
     )
   }
 
-  public async GetChats(){
+  public async GetChats(leaveCurrent:boolean=false){
     let url=await this.config.getConfig("getchats");
     let imgpath=await this.config.getConfig("photopath");
 
@@ -176,10 +176,15 @@ export class ChatService {
           chat.photo=`${imgpath}/${chat.photo}`;
           return chat;
         })
-
-        this.currentChatId=mappedres[0].id;
-        this.getMessages(this.currentChatId);
-        this.ChatsUpdate(res);
+        if(!leaveCurrent){
+          this.currentChatId=mappedres[0].id;
+          this.getMessages(this.currentChatId);
+          this.ChatsUpdate(res);
+        }
+        else{
+          this.ChatsUpdate(res);
+        }
+        
         return res;
       })
   }

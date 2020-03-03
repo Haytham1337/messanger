@@ -28,7 +28,7 @@ namespace Infrastructure.Services
 
             if (this._config[$"PhotoExtensions:{ext}"] != null)
             {
-                var photo = $"{model.Id}{model.UploadedFile.Name}";
+                var photo = $"{model.UserId}{model.UploadedFile.Name}";
 
                 var path = $"{_env.WebRootPath}\\avatars\\{photo}";
 

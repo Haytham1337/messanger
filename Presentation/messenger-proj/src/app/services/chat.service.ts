@@ -6,6 +6,7 @@ import * as signalR from "@aspnet/signalr"
 import {DomSanitizer} from '@angular/platform-browser';
 import { User } from './user.service';
 import { BehaviorSubject } from 'rxjs';
+import { $ } from 'protractor';
 
 export interface Message{
   content:string,

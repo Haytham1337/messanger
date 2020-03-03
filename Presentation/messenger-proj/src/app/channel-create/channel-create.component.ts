@@ -19,6 +19,7 @@ export class ChannelCreateComponent implements OnInit {
   constructor(private userservice:UserService,private chatservice:ChatService) { }
 
   ngOnInit() {
+
     this.userservice.searchdata.subscribe((res)=>this.SearchUsers=res);
 
     this.dropdownSettings= {
@@ -48,6 +49,11 @@ export class ChannelCreateComponent implements OnInit {
   }
 
   createGroup(){
-    this.chatservice.CreateGroup(this.group);
+    this.chatservice.CreateGroup(this.group).then(()=>{
+      this.selectedItems=[];
+      this.group.IsChannel=false;
+      this.group.GroupName="";
+    });
+
   }
 }

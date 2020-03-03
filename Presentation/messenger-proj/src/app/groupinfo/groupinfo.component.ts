@@ -1,8 +1,7 @@
 import { PhotoService } from './../services/photo.service';
-import { UserService } from './../services/user.service';
+import { UserService, User } from './../services/user.service';
 import { ChatService, ChatContent } from './../services/chat.service';
 import { Component, OnInit } from '@angular/core';
-import { User } from '../services/user.service';
 
 @Component({
   selector: 'app-groupinfo',
@@ -16,7 +15,7 @@ export class GroupinfoComponent implements OnInit {
 
   admin:User=new User();
 
-  constructor(private chatservice:ChatService,private photoser:PhotoService) { }
+  constructor(private chatservice:ChatService,private photoser:PhotoService,private userservice:UserService) { }
 
   ngOnInit() {
     this.chatservice.currentChatContentSource.subscribe(data=>
@@ -43,7 +42,11 @@ export class GroupinfoComponent implements OnInit {
   }
 
   photoCliked(){
-    document.getElementById("group_photo_id").click();
+    let elem=document.getElementById("group_photo_id");
+    if(elem!=null)
+    {
+      elem.click();
+    }
   }
 
 }

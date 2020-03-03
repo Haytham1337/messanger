@@ -18,21 +18,28 @@
             <div class="col-1">
   
             </div>
-            <div class="col-sm m-0 p-0" id="friendinfophoto">
+            <div class="col-4 m-0 p-0 text-right"  id="friendinfophoto">
               <a (click)="photoCliked()">
                 <img [src]="getPhoto()" id="groupinfophoto" width="70" height="70" for="group_photo_id">
               </a>
-              <input style="display: none;" type="file" id="group_photo_id" accept=".jpg,.jpeg,.png" (change)="photoselected($event)">
+              <input *ngIf="userservice.currentUser.value.id==chatContent.adminId" style="display: none;" type="file" id="group_photo_id" accept=".jpg,.jpeg,.png" (change)="photoselected($event)">
             </div>
-            <div class="col-sm m-0 p-0 mt-3" id="groupName">
+            <div class="col-sm m-0 p-0 mt-3 ml-4 text-left" id="groupName">
               <p>
                {{chatContent.name}}
               </p>
             </div>
           </div>
           <hr>
-          <h4 *ngIf="chatContent.type==1">Group Mates :</h4>
-          <h4 *ngIf="chatContent.type==2">Channel Mates :</h4>
+          <div class="row m-0 p-0 pl-1 pt-1" id="matestitle">
+
+            <div class="col-sm m-0 p-0">
+              <h4 *ngIf="chatContent.type==1">Group Mates :</h4>
+              <h4 *ngIf="chatContent.type==2">Channel Mates :</h4>       
+            </div>
+
+          </div>
+         
           <div class="overflow-auto m-0 p-0" id="matesdiv">
             <div class="row m-0 p-0 mt-3" id="friendinfoemail" *ngFor="let user of chatContent.users">
               <div class="col-5 text-right">

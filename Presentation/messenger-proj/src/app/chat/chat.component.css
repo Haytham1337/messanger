@@ -191,9 +191,13 @@
 }
 
 #contentdiv::-webkit-scrollbar{
-  width:1px;
+  width:3px;
 }
 
 .stretchform{
   height: 55px;
+}
+
+#contentdiv::-webkit-scrollbar-thumb{
+  background: cadetblue;
 }

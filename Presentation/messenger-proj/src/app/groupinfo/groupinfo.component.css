@@ -17,10 +17,19 @@
 }
 
 #matesdiv::-webkit-scrollbar{
-    width:1px;
+    width:3px;
+  }
+
+  #matesdiv::-webkit-scrollbar-thumb{
+    background: cadetblue;
   }
 
   #groupinfophoto{
       border-radius: 10px;
+  }
+
+  #matestitle{
+      background-color: cornflowerblue;
+      border-radius: 8px;
   }
   

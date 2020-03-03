@@ -48,10 +48,10 @@ namespace ApplicationTests.UserServiceTests
                 .With(p => p.UploadedFile, fileMock.Object)
                 .Create();
 
-            var userService = fixture.Create<UserService>();
+            var photoHelper = fixture.Create<PhotoHelper>();
 
             //assert
-            await Assert.ThrowsAsync<PhotoInCorrectException>(async () => await userService.ChangePhotoAsync(request));
+            await Assert.ThrowsAsync<PhotoInCorrectException>(async () => await photoHelper.SavePhotoAsync(request));
         }
     }
 }

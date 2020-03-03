@@ -6,7 +6,6 @@ import * as signalR from "@aspnet/signalr"
 import {DomSanitizer} from '@angular/platform-browser';
 import { User } from './user.service';
 import { BehaviorSubject } from 'rxjs';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 export interface Message{
   content:string,
@@ -55,10 +54,12 @@ export class ChatService {
   private currentChatUser=new BehaviorSubject<User>(null);
   currentChatUserSource=this.currentChatUser.asObservable();
 
-  private currentChatContent=new BehaviorSubject<ChatContent>(null);
+  public currentChatContent=new BehaviorSubject<ChatContent>(null);
   currentChatContentSource=this.currentChatContent.asObservable();
 
   public currentChatId:number;
+
+  public currentChatAdmin:number;
 
   public photourl:string;
 
@@ -93,6 +94,7 @@ export class ChatService {
         .then((data)=>{
           this. CurrentContentUpdate(data);
           this.currentChatType=data.type;
+          this.currentChatAdmin=data.adminId;
           this.MessagesUpdate(data.messages);
           this.UsersUpdate(data.users);})
     }

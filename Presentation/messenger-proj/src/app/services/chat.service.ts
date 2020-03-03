@@ -4,7 +4,7 @@ import { HttpClient ,HttpHeaders} from '@angular/common/http';
 import { Injectable, OnInit, ɵConsole, ComponentFactoryResolver } from '@angular/core';
 import * as signalR from "@aspnet/signalr"
 import {DomSanitizer} from '@angular/platform-browser';
-import { User } from './user.service';
+import { User, UserService } from './user.service';
 import { BehaviorSubject } from 'rxjs';
 import { $ } from 'protractor';
 
@@ -42,6 +42,8 @@ export interface Chat{
 })
 export class ChatService {
   private hubConnection:signalR.HubConnection;
+
+  error:boolean=false;
 
   private messages=new BehaviorSubject<Message[]>([]);
   messagessource=this.messages.asObservable();
@@ -219,11 +221,13 @@ export class ChatService {
 
     this.http.post(url,JSON.stringify(data),{headers:headers}).subscribe(
       res=>{
+        this.error=false;
         this.GetChats();
         this.Reconnect();
+        document.getElementById("closecreate").click();
       },
       err=>{
-        console.log(err);
+        this.error=true;
       }
     )
   }

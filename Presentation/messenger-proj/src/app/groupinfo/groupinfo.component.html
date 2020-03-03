@@ -1,0 +1,47 @@
+<a data-toggle="modal" data-target="#friendinfo" id="groupinfolink" *ngIf="chatContent!==null">
+   {{chatContent.name}}
+  </a>
+  
+  <div class="modal fade" id="friendinfo" tabindex="-1" role="dialog" aria-labelledby="friendinfoLabel" aria-hidden="true" *ngIf="chatContent!==null">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Group Info</h5>    
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&#10006;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row m-0 p-0">
+            <div class="col-1">
+  
+            </div>
+            <div class="col-sm m-0 p-0" id="friendinfophoto">
+              <img [src]="getPhoto()" id="userinfophoto" width="70" height="70">
+            </div>
+            <div class="col-sm m-0 p-0 mt-3" id="groupName">
+              <p>
+               {{chatContent.name}}
+              </p>
+            </div>
+          </div>
+          <hr>
+          <h4>GroupMates :</h4>
+          <div class="overflow-auto m-0 p-0" id="matesdiv">
+            <div class="row m-0 p-0 mt-3" id="friendinfoemail" *ngFor="let user of chatContent.users">
+              <div class="col-sm ml-5">
+                <img [src]="GetUrl(user.photoName)" id="userinfophoto" width="40" height="40">
+              </div>
+              <div class="col-sm mr-5" [class.isadmin]="user.id==chatContent.adminId">
+               <h5>{{user.nickName}}</h5>
+              </div>         
+            </div>  
+          </div>
+          
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+  

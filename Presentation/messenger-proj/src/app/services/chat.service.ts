@@ -15,11 +15,11 @@ export interface Message{
   chatId:number
 }
 
-export interface ChatContent{
-  users:User[],
-  messages:Message[],
-  type:number,
-  adminId
+export class ChatContent{
+  users:User[];
+  messages:Message[];
+  type:number;
+  adminId;
 }
 
 export class Group{
@@ -55,13 +55,14 @@ export class ChatService {
   private currentChatUser=new BehaviorSubject<User>(null);
   currentChatUserSource=this.currentChatUser.asObservable();
 
+  private currentChatContent=new BehaviorSubject<ChatContent>(null);
+  currentChatContentSource=this.currentChatContent.asObservable();
+
   public currentChatId:number;
 
   public photourl:string;
 
   public  currentChatType:number;
-
-  public currentChatAdmin:number;
 
   messagesUpdate = this.messages.asObservable();
 
@@ -90,10 +91,8 @@ export class ChatService {
             
     return await this.http.get<ChatContent>(url,{headers:headers}).toPromise()
         .then((data)=>{
-          console.log(data);
+          this. CurrentContentUpdate(data);
           this.currentChatType=data.type;
-          this.currentChatAdmin=data.adminId;
-          console.log(this.currentChatAdmin);
           this.MessagesUpdate(data.messages);
           this.UsersUpdate(data.users);})
     }
@@ -134,6 +133,10 @@ export class ChatService {
 
   ChatsUpdate(chats:Chat[]){
     this.chats.next(chats);
+  }
+
+  CurrentContentUpdate(content:ChatContent){
+    this.currentChatContent.next(content);
   }
 
   CurrentChatUserUpdate(user:User){

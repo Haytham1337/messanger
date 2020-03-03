@@ -14,5 +14,7 @@
     "getchatmessages":"https://localhost:44334/api/Message/GetChatMessages",
     "blockuser":"https://localhost:44334/api/User/BlockUser",
     "unblockuser":"https://localhost:44334/api/User/UnBlockUser",
-    "exchangetokens":"https://localhost:44334/api/Auth/ExchangeTokens"
+    "exchangetokens":"https://localhost:44334/api/Auth/ExchangeTokens",
+    "creategroup":"https://localhost:44334/api/Chat/CreateGroup",
+    "updateGroupphoto":"https://localhost:44334/api/Chat/ChangeGroupPhoto"
 }

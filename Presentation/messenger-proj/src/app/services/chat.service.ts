@@ -4,9 +4,9 @@ import { HttpClient ,HttpHeaders} from '@angular/common/http';
 import { Injectable, OnInit, ɵConsole, ComponentFactoryResolver } from '@angular/core';
 import * as signalR from "@aspnet/signalr"
 import {DomSanitizer} from '@angular/platform-browser';
-import { User } from './user.service';
+import { User, UserService } from './user.service';
 import { BehaviorSubject } from 'rxjs';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { $ } from 'protractor';
 
 export interface Message{
   content:string,
@@ -15,9 +15,17 @@ export interface Message{
   chatId:number
 }
 
-export interface ChatContent{
-  users:User[],
-  messages:Message[]
+export class ChatContent{
+  users:User[];
+  messages:Message[];
+  type:number;
+  adminId;
+}
+
+export class Group{
+  UsersId:number[];
+  IsChannel:boolean;
+  GroupName:string;
 }
 
 export interface Chat{
@@ -25,7 +33,8 @@ export interface Chat{
   photo:string,
   content:string,
   secondUserId:number,
-  isBlocked
+  isBlocked,
+  Type:number
 }
 
 @Injectable({
@@ -33,6 +42,8 @@ export interface Chat{
 })
 export class ChatService {
   private hubConnection:signalR.HubConnection;
+
+  error:boolean=false;
 
   private messages=new BehaviorSubject<Message[]>([]);
   messagessource=this.messages.asObservable();
@@ -46,9 +57,16 @@ export class ChatService {
   private currentChatUser=new BehaviorSubject<User>(null);
   currentChatUserSource=this.currentChatUser.asObservable();
 
+  public currentChatContent=new BehaviorSubject<ChatContent>(null);
+  currentChatContentSource=this.currentChatContent.asObservable();
+
   public currentChatId:number;
 
+  public currentChatAdmin:number;
+
   public photourl:string;
+
+  public  currentChatType:number;
 
   messagesUpdate = this.messages.asObservable();
 
@@ -77,6 +95,9 @@ export class ChatService {
             
     return await this.http.get<ChatContent>(url,{headers:headers}).toPromise()
         .then((data)=>{
+          this. CurrentContentUpdate(data);
+          this.currentChatType=data.type;
+          this.currentChatAdmin=data.adminId;
           this.MessagesUpdate(data.messages);
           this.UsersUpdate(data.users);})
     }
@@ -119,6 +140,10 @@ export class ChatService {
     this.chats.next(chats);
   }
 
+  CurrentContentUpdate(content:ChatContent){
+    this.currentChatContent.next(content);
+  }
+
   CurrentChatUserUpdate(user:User){
     let chat=this.chats.value.find(chat=>chat.secondUserId==user.id);
     user.isblocked=chat.isBlocked;
@@ -144,7 +169,7 @@ export class ChatService {
     )
   }
 
-  public async GetChats(){
+  public async GetChats(leaveCurrent:boolean=false){
     let url=await this.config.getConfig("getchats");
     let imgpath=await this.config.getConfig("photopath");
 
@@ -154,10 +179,15 @@ export class ChatService {
           chat.photo=`${imgpath}/${chat.photo}`;
           return chat;
         })
-
-        this.currentChatId=mappedres[0].id;
-        this.getMessages(this.currentChatId);
-        this.ChatsUpdate(res);
+        if(!leaveCurrent){
+          this.currentChatId=mappedres[0].id;
+          this.getMessages(this.currentChatId);
+          this.ChatsUpdate(res);
+        }
+        else{
+          this.ChatsUpdate(res);
+        }
+        
         return res;
       })
   }
@@ -181,5 +211,24 @@ export class ChatService {
   public Reconnect(){
     this.hubConnection.stop()
     .then(()=>this.hubConnection.start());
+  }
+
+  public async CreateGroup(data:Group){
+    let url=await this.config.getConfig("creategroup");
+
+    let headers = new HttpHeaders();
+    headers= headers.append('content-type', 'application/json');
+
+    this.http.post(url,JSON.stringify(data),{headers:headers}).subscribe(
+      res=>{
+        this.error=false;
+        this.GetChats();
+        this.Reconnect();
+        document.getElementById("closecreate").click();
+      },
+      err=>{
+        this.error=true;
+      }
+    )
   }
 }

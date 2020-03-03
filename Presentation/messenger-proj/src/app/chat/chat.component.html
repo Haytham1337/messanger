@@ -6,7 +6,8 @@
     <div class="container-fluid col-sm p-0 m-0">
       <div class="row m-0 p-0">
         <div class="col-sm" id="curuser">
-          <app-friendinfo></app-friendinfo>
+          <app-friendinfo *ngIf="chatservice.currentChatType==0"></app-friendinfo>
+          <app-groupinfo *ngIf="chatservice.currentChatType!==0"></app-groupinfo>
         </div>
       </div>
       <div class="col-sm p-0 m-0 overflow-auto" id="contentdiv">
@@ -45,8 +46,8 @@
     
           </div>
         </div>
-        <nav class="navbar navbar-dark mt-2" id="sendform">
-          <form class="form-inline col-sm" (ngSubmit)="sendMessage()">
+        <nav class="navbar navbar-dark mt-2" id="sendform"  [class.stretchform]="chatservice.currentChatType!==0">
+          <form class="form-inline col-sm" (ngSubmit)="sendMessage()" *ngIf="chatservice.currentChatType!==2 || currentUser.id==chatservice.currentChatAdmin">
             <input class="form-control col-sm" id="sendinput" type="text" placeholder="Type"  [(ngModel)]="newMessage" name="message" aria-label="Search" autocomplete="off">
             <button class="btn btn-outline-white btn-md my-2 my-sm-0 ml-3" type="submit">Send</button>
           </form>

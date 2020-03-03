@@ -1,6 +1,7 @@
 ﻿using Application.Models.ChatDto.Requests;
 using Application.Models.ChatDto.Responces;
 using Application.Models.ConversationDto.Requests;
+using Application.Models.PhotoDto;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,8 +11,10 @@ namespace Application.IServices
     {
         Task CreateChatAsync(AddChatRequest request);
 
-        Task<List<GetChatDto>> GetChatsAsync(GetChatsRequestDto request);
+        Task<List<GetConversationDto>> GetChatsAsync(GetChatsRequestDto request);
 
         Task CreateGroupAsync(AddGroupRequest request);
+
+        Task ChangePhotoAsync(AddPhotoDto model);
     }
 }

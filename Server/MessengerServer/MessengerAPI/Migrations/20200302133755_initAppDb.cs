@@ -56,6 +56,7 @@ namespace MessengerAPI.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AdminId = table.Column<int>(nullable: false),
+                    GroupName = table.Column<string>(nullable: false),
                     PhotoName = table.Column<string>(nullable: false),
                     ConversationId = table.Column<int>(nullable: false)
                 },

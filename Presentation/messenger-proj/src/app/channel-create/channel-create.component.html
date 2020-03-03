@@ -4,20 +4,43 @@
   </a>
   
   <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog uk-modal-dialog-lightbox" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLongTitle">New Group</h5>
-
+          <button type="button" id="closecreate" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&#10006;</span>
+          </button>
         </div>
         <div class="modal-body">
             <form class="text-center border border-light p-5" action="#!">            
+              <div class="row m-0 p-0">
+                <div class="col-8 m-0 p-0">
+                  <input  [(ngModel)]="group.GroupName"  name="GroupName" type="text" id="" class="form-control mb-4" placeholder="Name" autocomplete="off">
+                </div>
+               
+                <div class="col-sm m-0 p-0 mt-1">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox"  [(ngModel)]="group.IsChannel" name="ischannel" class="custom-control-input text-left" id="defaultUnchecked">
+                    <label class="custom-control-label" for="defaultUnchecked">Channel</label>
+                  </div>
+                </div>
 
-                <input type="text" id="" class="form-control mb-4" placeholder="Name">
-
-                <select ng-options="s for s in values"></select>
+              </div>
+        
+                <ng-multiselect-dropdown
+                [placeholder]="'Users'"
+                [data]="SearchUsers"
+                [(ngModel)]="selectedItems"
+                [settings]="dropdownSettings"
+                (onSelect)="onItemSelect($event)"
+                (onFilterChange)="onFilterChange($event)"
+                name="searchusers"
+                >
+                </ng-multiselect-dropdown>
  
-                <button class="btn btn-info my-4 btn-block" type="submit">Create</button>          
+                <button class="btn btn-info my-4 btn-block" type="submit" (click)="createGroup()">Create</button>
+                <h5 id="errormes" *ngIf="chatservice.error">Invalid data</h5>     
            </form>
         </div>
       </div>

@@ -31,7 +31,7 @@ export class ChatComponent implements OnInit {
     this.chatservice.startConnection();  
     
     this.chatservice.updateChat();
-    
+
     this.chatservice.messagessource.subscribe(mess=>this.messages=mess);
     
     this.userservice.data.subscribe(user=>this.currentUser=user);

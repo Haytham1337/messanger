@@ -1,0 +1,35 @@
+#groupinfolink{
+    margin-top: 4px;
+    font-size: 20px;
+}
+
+#groupName{
+    font-size: 30px;
+    color:burlywood;
+}
+
+.isadmin{
+    color:burlywood;
+}
+
+#matesdiv{
+    max-height: 120px;
+}
+
+#matesdiv::-webkit-scrollbar{
+    width:3px;
+  }
+
+  #matesdiv::-webkit-scrollbar-thumb{
+    background: cadetblue;
+  }
+
+  #groupinfophoto{
+      border-radius: 10px;
+  }
+
+  #matestitle{
+      background-color: cornflowerblue;
+      border-radius: 8px;
+  }
+  

@@ -21,12 +21,10 @@ namespace Infrastructure.Services
     {
         private readonly IUnitOfWork _unit;
         private readonly IMapper _map;
-        private readonly IConfiguration _config;
-        private readonly IHostingEnvironment _env;
+        private readonly IPhotoHelper _photoHelper;
         private readonly IAuthService _auth;
 
-        public UserService(IUnitOfWork unit,IMapper map,IAuthService auth,IConfiguration config,
-            IHostingEnvironment env)
+        public UserService(IUnitOfWork unit,IMapper map,IAuthService auth,IPhotoHelper photoHelper)
         {
             _unit = unit;
 
@@ -34,10 +32,7 @@ namespace Infrastructure.Services
 
             _map = map;
 
-            _config = config;
-
-            _env = env;
-
+            _photoHelper = photoHelper;
         }
 
         public async Task<GetUserDto> GetUserInfoAsync(GetUserInfoRequest request)
@@ -137,11 +132,11 @@ namespace Infrastructure.Services
         {
             var chat = await this._unit.ConversationRepository.GetWithUsersConversationsAsync(request.chatId);
 
-            if (chat.Type != ConversationType.Chat)
-                return false;
-
             if (chat == null)
                 throw new ChatNotExistException("Given chat not exist!!", 400);
+
+            if (chat.Type != ConversationType.Chat)
+                return false;
 
             var currentUser = await this._auth.FindByIdUserAsync(request.userId);
 
@@ -165,25 +160,9 @@ namespace Infrastructure.Services
             if (user == null)
                 throw new UserNotExistException("Given user not exist!!", 400);
 
-            var ext = model.UploadedFile.FileName.Substring(model.UploadedFile.FileName.LastIndexOf('.'));
+            user.Photo = await this._photoHelper.SavePhotoAsync(model);
 
-            if (this._config[$"PhotoExtensions:{ext}"] != null)
-            {
-                user.Photo = $"{user.Id}{model.UploadedFile.Name}";
-
-                var path = $"{_env.WebRootPath}\\avatars\\{user.Photo}";
-
-                using (var fileStream = new FileStream(path, FileMode.Create))
-                {
-                    await model.UploadedFile.CopyToAsync(fileStream);
-                }
-
-                await _unit.Commit();
-            }
-            else
-            {
-                throw new PhotoInCorrectException("Given extension is incorrect!!", 400);
-            }
+            await _unit.Commit();
         }
     }
 }

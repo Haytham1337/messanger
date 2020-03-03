@@ -2,6 +2,7 @@
 using Application.Models.ChatDto.Requests;
 using Application.Models.ChatDto.Responces;
 using Application.Models.ConversationDto.Requests;
+using Application.Models.PhotoDto;
 using Domain;
 using Domain.Entities;
 using Domain.Exceptions.ChatExceptions;
@@ -21,13 +22,18 @@ namespace Infrastructure.Services
         private readonly IAuthService _auth;
 
         private readonly IConfiguration _config;
-        public ConversationService(IUnitOfWork unit, IAuthService auth, IConfiguration config)
+
+        private readonly IPhotoHelper _photoHelper;
+
+        public ConversationService(IUnitOfWork unit, IAuthService auth, IConfiguration config,IPhotoHelper photoHelper)
         {
             _unit = unit;
 
             _auth = auth;
 
             _config = config;
+
+            _photoHelper = photoHelper;
         }
 
         public async Task CreateChatAsync(AddChatRequest request)
@@ -79,7 +85,7 @@ namespace Infrastructure.Services
             }
         }
 
-        public async Task<List<GetChatDto>> GetChatsAsync(GetChatsRequestDto request)
+        public async Task<List<GetConversationDto>> GetChatsAsync(GetChatsRequestDto request)
         {
             var user = await this._unit.UserRepository.GetUserWithBlackList(request.UserName);
 
@@ -88,7 +94,7 @@ namespace Infrastructure.Services
 
             var conversationList = await _unit.ConversationRepository.GetUserChatsAsync(user.Id);
 
-            var res = new List<GetChatDto>();
+            var res = new List<GetConversationDto>();
 
             foreach (var conversation in conversationList)
             {
@@ -99,7 +105,7 @@ namespace Infrastructure.Services
 
                     var secondUser = await _auth.FindByIdUserAsync(secondUserId);
 
-                    res.Add(new GetChatDto()
+                    res.Add(new GetConversationDto()
                     {
                         Id = conversation.Id,
                         Photo = secondUser.Photo,
@@ -107,6 +113,15 @@ namespace Infrastructure.Services
                         SecondUserId = secondUserId,
                         IsBlocked = user.BlockedUsers.Any(
                         bl => bl.UserToBlockId == secondUserId) ? true : false
+                    });
+                }
+                else
+                {
+                    res.Add(new GetConversationDto()
+                    {
+                        Id=conversation.Id,
+                        Photo=conversation.ConversationInfo.PhotoName,
+                        Content= conversation.LastMessage == null ? null : conversation.LastMessage.Content,
                     });
                 }
             }
@@ -126,7 +141,8 @@ namespace Infrastructure.Services
             var conversationInfo = new ConversationInfo
             {
                 AdminId=user.Id,
-                PhotoName= _config.GetValue<string>("defaultgroup")
+                PhotoName= _config.GetValue<string>("defaultgroup"),
+                GroupName=request.GroupName
             };
 
             var conversation = new Conversation
@@ -151,6 +167,21 @@ namespace Infrastructure.Services
                             });
                 }
             }
+
+            await _unit.Commit();
+        }
+
+        public async Task ChangePhotoAsync(AddPhotoDto model)
+        {
+            if (model.ConversationId == null)
+                throw new ChatNotExistException("Given id is null", 400);
+
+            var conversation = await _unit.ConversationRepository.GetChatContentAsync((int)model.ConversationId);
+
+            if(conversation==null||conversation.ConversationInfo.AdminId!=model.UserId)
+                throw new ChatNotExistException("Conversation photo cannot be changed!!", 400);
+
+            conversation.ConversationInfo.PhotoName = await this._photoHelper.SavePhotoAsync(model);
 
             await _unit.Commit();
         }

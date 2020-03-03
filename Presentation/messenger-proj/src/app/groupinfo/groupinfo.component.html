@@ -29,12 +29,15 @@
           <h4>GroupMates :</h4>
           <div class="overflow-auto m-0 p-0" id="matesdiv">
             <div class="row m-0 p-0 mt-3" id="friendinfoemail" *ngFor="let user of chatContent.users">
-              <div class="col-sm ml-5">
+              <div class="col-5 text-right">
                 <img [src]="GetUrl(user.photoName)" id="userinfophoto" width="40" height="40">
               </div>
-              <div class="col-sm mr-5" [class.isadmin]="user.id==chatContent.adminId">
+              <div class="col-sm mt-1" [class.isadmin]="user.id==chatContent.adminId">
                <h5>{{user.nickName}}</h5>
-              </div>         
+              </div>  
+              <div class="col-sm" *ngIf="user.id==chatContent.adminId">
+                <img src="../../assets/admin.png" width="30" height="30">
+              </div>       
             </div>  
           </div>
           

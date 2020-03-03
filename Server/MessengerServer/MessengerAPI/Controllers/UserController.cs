@@ -88,7 +88,7 @@ namespace MessengerAPI.Controllers
             {
                 await _userService.ChangePhotoAsync(new AddPhotoDto()
                 {
-                    UserId = (int)HttpContext.Items["id"],
+                    Id = (int)HttpContext.Items["id"],
                     UploadedFile = collection.Files[0]
                 });
 

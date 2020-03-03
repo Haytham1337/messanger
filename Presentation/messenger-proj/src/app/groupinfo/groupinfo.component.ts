@@ -20,7 +20,6 @@ export class GroupinfoComponent implements OnInit {
   ngOnInit() {
     this.chatservice.currentChatContentSource.subscribe(data=>
       {
-        console.log(data);
          this.chatContent=data;   
       })
   }

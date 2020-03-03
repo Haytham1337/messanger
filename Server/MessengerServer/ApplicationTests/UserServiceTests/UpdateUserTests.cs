@@ -38,7 +38,7 @@ namespace ApplicationTests.UserServiceTests
             mockAuth.Setup(a => a.FindByIdUserAsync(It.IsAny<int>()))
                 .ReturnsAsync(new User());
 
-            var userService = new UserService(mockUnit.Object, null, mockAuth.Object,null,null);
+            var userService = new UserService(mockUnit.Object, null, mockAuth.Object,null);
 
             //act
             await userService.UpdateUserAsync(new UpdateUserDto());

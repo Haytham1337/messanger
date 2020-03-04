@@ -9,6 +9,7 @@ using Application.Models.PhotoDto;
 using Application.Models.UserDto;
 using Application.Models.UserDto.Requests;
 using AutoMapper;
+using Infrastructure.Extensions;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -43,7 +44,7 @@ namespace MessengerAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateUser(UpdateUserDto model)
         {
-            model.UserId = (int)HttpContext.Items["id"];
+            model.UserId = HttpContext.GetUserId();
 
             await _userService.UpdateUserAsync(model);
 
@@ -54,7 +55,7 @@ namespace MessengerAPI.Controllers
         [Authorize]
         public async Task<List<SearchUserDto>> Search([FromQuery]SearchRequest request )
         {
-           request.UserId = (int)HttpContext.Items["id"];
+           request.UserId = HttpContext.GetUserId();
 
             return await this._userService.SearchUserAsync(request);
         }
@@ -63,7 +64,7 @@ namespace MessengerAPI.Controllers
         [Authorize]
         public async Task<IActionResult> BlockUser([FromBody]BlockUserRequest request)
         {
-            request.UserId = (int)HttpContext.Items["id"]; ;
+            request.UserId = HttpContext.GetUserId();
 
             await this._userService.BlockUserAsync(request);
 
@@ -74,7 +75,7 @@ namespace MessengerAPI.Controllers
         [Authorize]
         public async Task<IActionResult> UnBlockUser([FromBody]BlockUserRequest request)
         {
-            request.UserId = (int)HttpContext.Items["id"];
+            request.UserId = HttpContext.GetUserId();
 
             await this._userService.UnBlockUserAsync(request);
 
@@ -88,7 +89,7 @@ namespace MessengerAPI.Controllers
             {
                 await _userService.ChangePhotoAsync(new AddPhotoDto()
                 {
-                    UserId = (int)HttpContext.Items["id"],
+                    UserId = HttpContext.GetUserId(),
                     UploadedFile = collection.Files[0]
                 });
 

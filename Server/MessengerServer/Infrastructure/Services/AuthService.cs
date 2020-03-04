@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Infrastructure.Services
 {
@@ -38,13 +40,17 @@ namespace Infrastructure.Services
 
         private readonly IConfiguration _config;
 
-        public AuthService(UserManager<SecurityUser> userManager,
+        private readonly JWToptions options;
+
+        public AuthService(UserManager<SecurityUser> userManager, IOptions<JWToptions> options,
             SignInManager<SecurityUser> signInManager,IUnitOfWork unit,IConfiguration config)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _unit = unit;
             _config = config;
+            this.options = options.Value;
+            
         }
 
         public async Task<IdentityResult> RegisterAsync(RegisterModel model)
@@ -105,16 +111,16 @@ namespace Infrastructure.Services
             var now = DateTime.Now;
 
             var jwt = new JwtSecurityToken(
-                    issuer: AuthOptions.ISSUER,
-                    audience: AuthOptions.AUDIENCE,
+                    issuer: options.Issuer,
+                    audience: options.Audience,
                     notBefore: now,
                     claims: identity.Claims,
-                    expires: now.Add(TimeSpan.FromSeconds(AuthOptions.LIFETIME)),
-                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+                    expires: now.Add(TimeSpan.FromSeconds(options.LifeTime)),
+                    signingCredentials: new SigningCredentials(options.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
-            return new SignInResponce { Access_Token=encodedJwt,ExpiresIn= now.Add(TimeSpan.FromSeconds(AuthOptions.LIFETIME)),
+            return new SignInResponce { Access_Token=encodedJwt,ExpiresIn= now.Add(TimeSpan.FromSeconds(options.LifeTime)),
                 Refresh_Token=refreshToken};
         }
 
@@ -141,19 +147,19 @@ namespace Infrastructure.Services
             var now = DateTime.Now;
 
             var jwt = new JwtSecurityToken(
-                    issuer: AuthOptions.ISSUER,
-                    audience: AuthOptions.AUDIENCE,
+                    issuer: options.Issuer,
+                    audience: options.Audience,
                     notBefore: now,
                     claims: principal.Claims,
-                    expires: now.Add(TimeSpan.FromSeconds(AuthOptions.LIFETIME)),
-                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+                    expires: now.Add(TimeSpan.FromSeconds(options.LifeTime)),
+                    signingCredentials: new SigningCredentials(options.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
             return new SignInResponce
             {
                 Access_Token = encodedJwt,
-                ExpiresIn = now.Add(TimeSpan.FromSeconds(AuthOptions.LIFETIME)),
+                ExpiresIn = now.Add(TimeSpan.FromSeconds(options.LifeTime)),
                 Refresh_Token = newRefreshToken
             };
         }
@@ -202,10 +208,10 @@ namespace Infrastructure.Services
             {
                 ValidateAudience = true,
                 ValidateIssuer = true,
-                ValidIssuer=AuthOptions.ISSUER,
-                ValidAudience=AuthOptions.AUDIENCE,
+                ValidIssuer= options.Issuer,
+                ValidAudience= options.Audience,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                IssuerSigningKey = options.GetSymmetricSecurityKey(),
                 ValidateLifetime = false 
             };
 

@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -34,6 +35,8 @@ namespace MessengerAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<JWToptions>(Configuration);
+
             services.AddControllers();
 
             services.AddDbContext<MessengerContext>(options =>
@@ -46,6 +49,11 @@ namespace MessengerAPI
 
             services.AddIdentity<SecurityUser, IdentityRole<int>>()
                     .AddEntityFrameworkStores<SecurityContext>();
+
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            var authOptions = serviceProvider.GetService<IOptions<JWToptions>>().Value;
 
             services.AddAuthentication(options=> 
             {
@@ -61,13 +69,13 @@ namespace MessengerAPI
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
-                        ValidIssuer = AuthOptions.ISSUER,
-                        ValidAudience = AuthOptions.AUDIENCE,
+                        ValidIssuer = authOptions.Issuer,
+                        ValidAudience = authOptions.Audience,
                         ValidateAudience = true,
                         ValidateLifetime = true,
-                        IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                        IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
                         ValidateIssuerSigningKey = true,
-                        ClockSkew = TimeSpan.FromMinutes(AuthOptions.LIFETIME)
+                        ClockSkew = TimeSpan.FromMinutes(authOptions.LifeTime)
                     };
 
                     options.Events= new JwtBearerEvents

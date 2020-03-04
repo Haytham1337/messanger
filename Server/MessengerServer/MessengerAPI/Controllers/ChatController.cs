@@ -7,9 +7,12 @@ using Application.Models.ConversationDto.Requests;
 using Application.Models.ConversationDto.Responces;
 using Application.Models.PhotoDto;
 using Application.Models.UserDto;
+using Infrastructure.AppSecurity;
+using Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace MessengerAPI.Controllers
 {
@@ -28,7 +31,7 @@ namespace MessengerAPI.Controllers
         [Authorize]
         public async Task<IActionResult> Create([FromBody]AddConversationRequest request)
         {
-            request.userId= (int)HttpContext.Items["id"];
+            request.userId= HttpContext.GetUserId();
 
             await _chatService.CreateChatAsync(request);
 
@@ -48,7 +51,7 @@ namespace MessengerAPI.Controllers
         [Authorize]
         public async Task<IActionResult> CreateGroup([FromBody]AddGroupRequest request)
         {
-            request.UserId = (int)HttpContext.Items["id"];
+            request.UserId = HttpContext.GetUserId();
 
             await _chatService.CreateGroupAsync(request);
 
@@ -59,7 +62,7 @@ namespace MessengerAPI.Controllers
         [Authorize]
         public async Task<IActionResult> AddToGroup([FromBody]AddConversationRequest request)
         {
-            request.userId = (int)HttpContext.Items["id"];
+            request.userId =HttpContext.GetUserId();
 
             await _chatService.AddToGroup(request);
 
@@ -75,8 +78,8 @@ namespace MessengerAPI.Controllers
                 await _chatService.ChangePhotoAsync(new AddPhotoDto()
                 {
                     ConversationId=chatId,
-                    UserId = (int)HttpContext.Items["id"],
-                    UploadedFile = collection.Files[0]
+                    UserId = HttpContext.GetUserId(),
+                UploadedFile = collection.Files[0]
                 });
 
                 return Ok();
@@ -89,7 +92,7 @@ namespace MessengerAPI.Controllers
         [Authorize]
         public async Task<List<SearchConversationResponce>> Search([FromQuery]SearchRequest request)
         {
-            request.UserId = (int)HttpContext.Items["id"];
+            request.UserId = HttpContext.GetUserId();
 
             return await this._chatService.SearchConversation(request);
         }

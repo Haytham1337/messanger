@@ -82,8 +82,8 @@ namespace Infrastructure.Services
                 Users = _map.Map<List<GetUserDto>>(users.Select(u => u.User)),
                 Messages = _map.Map<List<GetMessageDto>>(chatContent.Messages.OrderBy(m => m.TimeCreated)),
                 Type=chatContent.Type,
-                AdminId=chatContent.Type!=ConversationType.Chat?(int?)chatContent.ConversationInfo.AdminId:null,
-                Name= chatContent.Type != ConversationType.Chat?chatContent.ConversationInfo.GroupName:null
+                AdminId=chatContent.ConversationInfo==null?null:(int?)chatContent.ConversationInfo.AdminId,
+                Name= chatContent.ConversationInfo==null?null:chatContent.ConversationInfo.GroupName
             };
 
             return result;

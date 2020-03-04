@@ -9,6 +9,8 @@
     "checkemail":"https://localhost:44334/api/Auth/EmailExist",
     "updateuser":"https://localhost:44334/api/User/UpdateUser",
     "search":"https://localhost:44334/api/User/Search",
+    "searchconversation":"https://localhost:44334/api/Chat/Search",
+    "addToGroup":"https://localhost:44334/api/Chat/AddToGroup",
     "createchat":"https://localhost:44334/api/Chat/Create",
     "getchats":"https://localhost:44334/api/Chat/GetChats",
     "getchatmessages":"https://localhost:44334/api/Message/GetChatMessages",

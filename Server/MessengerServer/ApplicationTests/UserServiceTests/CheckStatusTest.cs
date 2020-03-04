@@ -27,7 +27,7 @@ namespace ApplicationTests.UserServiceTests
             var userService = fixture.Create<UserService>();
 
             //assert
-            await Assert.ThrowsAsync<ChatNotExistException>
+            await Assert.ThrowsAsync<ConversationNotExistException>
                 (async () => await userService.CheckStatusAsync(fixture.Create<AddMessageDto>()));
         }
 

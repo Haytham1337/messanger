@@ -29,7 +29,7 @@ namespace ApplicationTests.ChatServiceTests
 
             //assert
             await Assert.ThrowsAsync<UserNotExistException>
-                (async () => await chatService.CreateChatAsync(new AddChatRequest()));
+                (async () => await chatService.CreateChatAsync(new AddConversationRequest()));
         }
 
         [Fact]
@@ -45,8 +45,8 @@ namespace ApplicationTests.ChatServiceTests
             var chatService = fixture.Create<ConversationService>();
 
             //assert
-            await Assert.ThrowsAsync<ChatAlreadyExistException>
-                (async () => await chatService.CreateChatAsync(new AddChatRequest()));
+            await Assert.ThrowsAsync<ConversationAlreadyExistException>
+                (async () => await chatService.CreateChatAsync(new AddConversationRequest()));
         }
 
         [Fact]
@@ -62,7 +62,7 @@ namespace ApplicationTests.ChatServiceTests
             var chatService = fixture.Create<ConversationService>();
 
             //act
-            await chatService.CreateChatAsync(new AddChatRequest());
+            await chatService.CreateChatAsync(new AddConversationRequest());
 
             //assert
             mockUnit.Verify(u => u.ConversationRepository.CreateAsync(It.IsAny<Conversation>()), Times.Once);

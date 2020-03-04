@@ -52,7 +52,7 @@ namespace MessengerAPI.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<List<SearchUserDto>> Search([FromQuery]SearchUserDtoRequest request )
+        public async Task<List<SearchUserDto>> Search([FromQuery]SearchRequest request )
         {
            request.UserId = (int)HttpContext.Items["id"];
 

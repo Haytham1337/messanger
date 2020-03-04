@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Application.Models.UserDto
 {
-   public class SearchUserDtoRequest
+    public class SearchRequest
     {
         [Required]
         public string Filter { get; set; }

@@ -61,7 +61,7 @@ namespace Infrastructure.Services
             await _unit.Commit();         
         }
 
-        public  async Task<List<SearchUserDto>> SearchUserAsync(SearchUserDtoRequest request)
+        public  async Task<List<SearchUserDto>> SearchUserAsync(SearchRequest request)
         {
             var currentUser = await _auth.FindByIdUserAsync(request.UserId);
 
@@ -133,7 +133,7 @@ namespace Infrastructure.Services
             var chat = await this._unit.ConversationRepository.GetWithUsersConversationsAsync(request.chatId);
 
             if (chat == null)
-                throw new ChatNotExistException("Given chat not exist!!", 400);
+                throw new ConversationNotExistException("Given chat not exist!!", 400);
 
             if (chat.Type != ConversationType.Chat)
                 return false;

@@ -221,7 +221,7 @@ namespace Infrastructure.Services
 
             var users = await _unit.UserRepository.SearchUsersAsync(request.Filter);
 
-            var conversations = await _unit.ConversationRepository.SearchConversationsAsync(request.Filter);
+            var conversations = await _unit.ConversationRepository.SearchConversationsAsync(request.Filter,request.UserId);
 
             responce.AddRange(this._map.Map<List<SearchConversationResponce>>(users));
 

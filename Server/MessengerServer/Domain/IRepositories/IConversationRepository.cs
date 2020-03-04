@@ -14,6 +14,6 @@ namespace Domain.IRepositories
 
         Task<Conversation> GetWithUsersConversationsAsync(int id);
 
-        Task<List<Conversation>> SearchConversationsAsync(string filter);
+        Task<List<Conversation>> SearchConversationsAsync(string filter, int userId);
     }
 }

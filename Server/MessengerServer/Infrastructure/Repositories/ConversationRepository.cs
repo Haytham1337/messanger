@@ -51,10 +51,12 @@ namespace Infrastructure.Repositories
                          .FirstOrDefaultAsync(conv => conv.Id == id);
         }
 
-        public async Task<List<Conversation>> SearchConversationsAsync(string filter)
+        public async Task<List<Conversation>> SearchConversationsAsync(string filter,int userId)
         {
             return await this.db.Conversations
-                .Where(conv => conv.Type == ConversationType.Channel)
+                .Include(conv=>conv.UserConversations)
+                .Where(conv => (conv.Type == ConversationType.Channel ||(conv.Type == ConversationType.Group && 
+                conv.UserConversations.Any(uconv=>uconv.UserId==userId))))
                 .Include(conv => conv.ConversationInfo)
                 .Where(conv => conv.ConversationInfo.GroupName.Contains(filter))
                 .Take(5)

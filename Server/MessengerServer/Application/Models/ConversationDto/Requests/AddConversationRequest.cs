@@ -2,10 +2,10 @@
 
 namespace Application.Models.ChatDto.Requests
 {
-    public class AddChatRequest
+    public class AddConversationRequest
     {
         [Required]
-        public int SecondUserId { get; set; }
+        public int id { get; set; }
 
         public int userId { get; set; }
     }

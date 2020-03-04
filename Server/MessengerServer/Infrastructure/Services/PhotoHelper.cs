@@ -22,6 +22,8 @@ namespace Infrastructure.Services
 
             _env = env;
         }
+
+        [Obsolete]
         public async Task<string> SavePhotoAsync(AddPhotoDto model)
         {
             var ext = model.UploadedFile.FileName.Substring(model.UploadedFile.FileName.LastIndexOf('.'));

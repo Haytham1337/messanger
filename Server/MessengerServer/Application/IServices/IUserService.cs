@@ -16,7 +16,7 @@ namespace Application.IServices
 
         Task UpdateUserAsync(UpdateUserDto model);
 
-        Task<List<SearchUserDto>> SearchUserAsync(SearchUserDtoRequest request);
+        Task<List<SearchUserDto>> SearchUserAsync(SearchRequest request);
 
         Task BlockUserAsync(BlockUserRequest request);
 

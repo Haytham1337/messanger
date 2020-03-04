@@ -4,7 +4,9 @@ using Application.IServices;
 using Application.Models.ChatDto.Requests;
 using Application.Models.ChatDto.Responces;
 using Application.Models.ConversationDto.Requests;
+using Application.Models.ConversationDto.Responces;
 using Application.Models.PhotoDto;
+using Application.Models.UserDto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +26,7 @@ namespace MessengerAPI.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Create([FromBody]AddChatRequest request)
+        public async Task<IActionResult> Create([FromBody]AddConversationRequest request)
         {
             request.userId= (int)HttpContext.Items["id"];
 
@@ -53,6 +55,17 @@ namespace MessengerAPI.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> AddToGroup([FromBody]AddConversationRequest request)
+        {
+            request.userId = (int)HttpContext.Items["id"];
+
+            await _chatService.AddToGroup(request);
+
+            return Ok();
+        }
+
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> ChangeGroupPhoto(IFormCollection collection,[FromQuery(Name ="chatId")] int chatId)
@@ -70,6 +83,15 @@ namespace MessengerAPI.Controllers
             }
 
             return BadRequest();
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<List<SearchConversationResponce>> Search([FromQuery]SearchRequest request)
+        {
+            request.UserId = (int)HttpContext.Items["id"];
+
+            return await this._chatService.SearchConversation(request);
         }
     }
 }

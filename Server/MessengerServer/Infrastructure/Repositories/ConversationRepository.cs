@@ -44,18 +44,21 @@ namespace Infrastructure.Repositories
                   .FirstOrDefaultAsync();
         }
 
-        public async Task<List<UserConversation>> GetUsersByConversationAsync(int id)
-        {
-            return await this.db.UserConversations
-                .Where(uconv => uconv.ConversationId == id)
-                .Include(uconv => uconv.User)
-                .ToListAsync();
-        }
         public async Task<Conversation> GetWithUsersConversationsAsync(int id)
         {
             return await db.Conversations
                          .Include(conv => conv.UserConversations)
                          .FirstOrDefaultAsync(conv => conv.Id == id);
+        }
+
+        public async Task<List<Conversation>> SearchConversationsAsync(string filter)
+        {
+            return await this.db.Conversations
+                .Where(conv => conv.Type == ConversationType.Channel)
+                .Include(conv => conv.ConversationInfo)
+                .Where(conv => conv.ConversationInfo.GroupName.Contains(filter))
+                .Take(5)
+                .ToListAsync();
         }
 
     }

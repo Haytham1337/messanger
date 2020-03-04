@@ -33,7 +33,7 @@ namespace Infrastructure.Extensions
 
             services.AddScoped<IConversationService, ConversationService>();
 
-            services.AddScoped<ICache, MemoryCache>();
+            services.AddSingleton<ICache, MemoryCache>();
 
             services.AddScoped<IPhotoHelper, PhotoHelper>();
 

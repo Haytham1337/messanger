@@ -42,7 +42,7 @@ namespace Infrastructure.Services
             var chat = await _unit.ConversationRepository.GetAsync(message.chatId);
 
             if (chat == null)
-                throw new ChatNotExistException("Given chatid is incorrect!!",400);
+                throw new ConversationNotExistException("Given chatid is incorrect!!",400);
 
             if (!string.IsNullOrEmpty(message.Content))
             {
@@ -71,11 +71,11 @@ namespace Infrastructure.Services
         {
             var chatContent = await this._unit.ConversationRepository.GetChatContentAsync(request.Id);
 
-            var users = await this._unit.ConversationRepository.GetUsersByConversationAsync(request.Id);
+            var users = await this._unit.UserConversationRepository.GetUsersByConversationAsync(request.Id);
 
 
             if (chatContent == null)
-                throw new ChatNotExistException("Given chat not exist!!", 400);
+                throw new ConversationNotExistException("Given chat not exist!!", 400);
 
             var result = new AllMessagesDto()
             {

@@ -10,13 +10,13 @@
     </div>
 
     <div class="dropdown-content w-100" id="searchdiv">
-      <a class="dropdown-item dropitem m-0 p-0 w-100" *ngFor="let user of SearchUsers" (click)="createChat(user.id)">
+      <a class="dropdown-item dropitem m-0 p-0 w-100" *ngFor="let conv of SearchConv" (click)="createChat(conv.id,conv.type)">
         <div class="row m-0 p-1 mt-1">
           <div class="col-1">
-            <img [src]="user.photoName" class="userphoto mr-3 p-0">
+            <img [src]="conv.photo" class="userphoto mr-3 p-0">
           </div>
           <div class="col-sm mt-1 ml-3">
-            <h5 class="dropdowntext m-0 p-0">{{user.nickName}}</h5>
+            <h5 class="dropdowntext m-0 p-0">{{conv.name}}</h5>
           </div>
         </div>
       </a>

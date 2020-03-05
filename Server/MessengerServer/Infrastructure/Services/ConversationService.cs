@@ -166,7 +166,7 @@ namespace Infrastructure.Services
 
                 ConversationInfo = conversationInfo,
 
-                LastMessage=grettingMessage
+                LastMessage = grettingMessage
             };
 
             await _unit.ConversationRepository.CreateAsync(conversation);
@@ -269,7 +269,6 @@ namespace Infrastructure.Services
                 if (conversation.ConversationInfo.AdminId == request.UserId)
                 {
                     await _unit.ConversationRepository.DeleteAsync(conversation.Id);
-
                 }
                 else
                 {

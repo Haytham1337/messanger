@@ -167,9 +167,9 @@ namespace Infrastructure.Services
         {
             var user = await this._userManager.FindByNameAsync(model.Email);
 
-            var isSasswordValid = await _userManager.CheckPasswordAsync(user, model.Password);
+            var isPasswordValid = await _userManager.CheckPasswordAsync(user, model.Password);
 
-            if (isSasswordValid)
+            if (isPasswordValid)
             {
                 var claims = new List<Claim>
                 {

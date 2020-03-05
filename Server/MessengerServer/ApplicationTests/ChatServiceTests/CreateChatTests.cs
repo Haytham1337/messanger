@@ -50,7 +50,7 @@ namespace ApplicationTests.ChatServiceTests
         }
 
         [Fact]
-        public async void CreateChat_Creat_InvokesOnce()
+        public async void CreateChat_CreateMethod_InvokesOnce()
         {
             //arrange
             var fixture = new Fixture().Customize(new AutoMoqCustomization());

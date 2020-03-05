@@ -49,7 +49,7 @@ namespace ApplicationTests.UserServiceTests
         }
 
         [Fact]
-        public async void CheckStatus_UserBlocked_ReturnsFalse()
+        public async void CheckStatus_UserBlocked_ReturnsTrue()
         {
             //arrange
 
@@ -88,7 +88,7 @@ namespace ApplicationTests.UserServiceTests
         }
 
         [Fact]
-        public async void CheckStatus_UserNotBlocked_ReturnsTrue()
+        public async void CheckStatus_UserNotBlocked_ReturnsFalse()
         {
             //arrange
             var conversation = new Conversation

@@ -1,9 +1,6 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Infrastructure.Configurations
 {
@@ -17,11 +14,6 @@ namespace Infrastructure.Configurations
 
             builder.Property(m => m.Content)
                    .HasMaxLength(300);
-
-            builder.HasOne(m => m.Chat)
-                .WithMany(c => c.Messages)
-                .HasForeignKey(m => m.ChatId)
-                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

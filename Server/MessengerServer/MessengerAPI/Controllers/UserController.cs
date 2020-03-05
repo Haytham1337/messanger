@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.IServices;
-using Application.Models.ChatDto.Requests;
 using Application.Models.PhotoDto;
 using Application.Models.UserDto;
 using Application.Models.UserDto.Requests;
-using AutoMapper;
-using Infrastructure.Services;
+using Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +13,7 @@ namespace MessengerAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -27,7 +23,6 @@ namespace MessengerAPI.Controllers
             _userService = userService;
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> UserInfo()
         {
@@ -39,11 +34,10 @@ namespace MessengerAPI.Controllers
             return Ok(userInfo);
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> UpdateUser(UpdateUserDto model)
         {
-            model.UserId = (int)HttpContext.Items["id"];
+            model.UserId = HttpContext.GetUserId();
 
             await _userService.UpdateUserAsync(model);
 
@@ -51,19 +45,17 @@ namespace MessengerAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize]
-        public async Task<List<SearchUserDto>> Search([FromQuery]SearchUserDtoRequest request )
+        public async Task<List<SearchUserDto>> Search([FromQuery]SearchRequest request )
         {
-           request.UserId = (int)HttpContext.Items["id"];
+           request.UserId = HttpContext.GetUserId();
 
             return await this._userService.SearchUserAsync(request);
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> BlockUser([FromBody]BlockUserRequest request)
         {
-            request.UserId = (int)HttpContext.Items["id"]; ;
+            request.UserId = HttpContext.GetUserId();
 
             await this._userService.BlockUserAsync(request);
 
@@ -71,16 +63,15 @@ namespace MessengerAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> UnBlockUser([FromBody]BlockUserRequest request)
         {
-            request.UserId = (int)HttpContext.Items["id"];
+            request.UserId = HttpContext.GetUserId();
 
             await this._userService.UnBlockUserAsync(request);
 
             return Ok();
         }
-        [Authorize]
+
         [HttpPost]
         public async Task<IActionResult> ChangePhoto(IFormCollection collection)
         {
@@ -88,7 +79,7 @@ namespace MessengerAPI.Controllers
             {
                 await _userService.ChangePhotoAsync(new AddPhotoDto()
                 {
-                    UserId = (int)HttpContext.Items["id"],
+                    UserId = HttpContext.GetUserId(),
                     UploadedFile = collection.Files[0]
                 });
 

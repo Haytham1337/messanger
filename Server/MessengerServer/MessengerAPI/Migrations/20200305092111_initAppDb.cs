@@ -129,12 +129,14 @@ namespace MessengerAPI.Migrations
                         name: "FK_UserConversations_Conversations_ConversationId",
                         column: x => x.ConversationId,
                         principalTable: "Conversations",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserConversations_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -196,7 +198,8 @@ namespace MessengerAPI.Migrations
                 table: "Messages",
                 column: "ChatId",
                 principalTable: "Conversations",
-                principalColumn: "Id");
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

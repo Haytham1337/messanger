@@ -3,11 +3,12 @@ using Application.IServices;
 using Infrastructure.Cache;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Extensions
 {
-    public static class StartUpExtensions
+    public static class ExtensionMethods
     {
         public static IApplicationBuilder UseErrorHandling(this IApplicationBuilder app)
         {
@@ -33,10 +34,14 @@ namespace Infrastructure.Extensions
 
             services.AddScoped<IConversationService, ConversationService>();
 
-            services.AddScoped<ICache, MemoryCache>();
+            services.AddSingleton<ICache, MemoryCache>();
 
             services.AddScoped<IPhotoHelper, PhotoHelper>();
+        }
 
+        public static int GetUserId(this HttpContext context)
+        {
+            return (int)context.Items["id"];
         }
     }
 }

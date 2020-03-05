@@ -1,6 +1,8 @@
 ﻿using Domain.Entities;
 using Infrastructure.Configurations;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Infrastructure
 {

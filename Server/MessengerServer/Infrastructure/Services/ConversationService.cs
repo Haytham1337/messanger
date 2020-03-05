@@ -2,7 +2,10 @@
 using Application.Models.ChatDto.Requests;
 using Application.Models.ChatDto.Responces;
 using Application.Models.ConversationDto.Requests;
+using Application.Models.ConversationDto.Responces;
 using Application.Models.PhotoDto;
+using Application.Models.UserDto;
+using AutoMapper;
 using Domain;
 using Domain.Entities;
 using Domain.Exceptions.ChatExceptions;
@@ -25,7 +28,10 @@ namespace Infrastructure.Services
 
         private readonly IPhotoHelper _photoHelper;
 
-        public ConversationService(IUnitOfWork unit, IAuthService auth, IConfiguration config,IPhotoHelper photoHelper)
+        private readonly IMapper _map;
+
+        public ConversationService(IUnitOfWork unit, IAuthService auth, IConfiguration config,
+            IPhotoHelper photoHelper,IMapper map)
         {
             _unit = unit;
 
@@ -34,16 +40,18 @@ namespace Infrastructure.Services
             _config = config;
 
             _photoHelper = photoHelper;
+
+            _map = map;
         }
 
-        public async Task CreateChatAsync(AddChatRequest request)
+        public async Task CreateChatAsync(AddConversationRequest request)
         {
             var user = await _auth.FindByIdUserAsync(request.userId);
 
             if (user == null)
                 throw new UserNotExistException("user not exist", 400);
 
-            if ((await this._unit.ConversationRepository.ChatExistAsync(user.Id, request.SecondUserId)))
+            if ((await this._unit.ConversationRepository.ChatExistAsync(user.Id, request.id)))
             {
                 var grettingMessage = new Message()
                 {
@@ -67,7 +75,7 @@ namespace Infrastructure.Services
 
                 var secondUserConversation = new UserConversation
                 {
-                    UserId = request.SecondUserId,
+                    UserId = request.id,
                     Conversation = chat
                 };
 
@@ -81,11 +89,11 @@ namespace Infrastructure.Services
             }
             else
             {
-                throw new ChatAlreadyExistException("chat already exist", 400);
+                throw new ConversationAlreadyExistException("chat already exist", 400);
             }
         }
 
-        public async Task<List<GetConversationDto>> GetChatsAsync(GetChatsRequestDto request)
+        public async Task<List<GetConversationDto>> GetConversationsAsync(GetChatsRequestDto request)
         {
             var user = await this._unit.UserRepository.GetUserWithBlackList(request.UserName);
 
@@ -138,6 +146,13 @@ namespace Infrastructure.Services
 
             request.UsersId.Add(user.Id);
 
+            var grettingMessage = new Message()
+            {
+                Content = _config.GetValue<string>("greetmessage"),
+                TimeCreated = DateTime.Now,
+                UserId = user.Id
+            };
+
             var conversationInfo = new ConversationInfo
             {
                 AdminId=user.Id,
@@ -147,9 +162,11 @@ namespace Infrastructure.Services
 
             var conversation = new Conversation
             {
-                Type=request.IsChannel==true?ConversationType.Channel:ConversationType.Group,
-                
-                ConversationInfo=conversationInfo
+                Type = request.IsChannel == true ? ConversationType.Channel : ConversationType.Group,
+
+                ConversationInfo = conversationInfo,
+
+                LastMessage=grettingMessage
             };
 
             await _unit.ConversationRepository.CreateAsync(conversation);
@@ -174,14 +191,91 @@ namespace Infrastructure.Services
         public async Task ChangePhotoAsync(AddPhotoDto model)
         {
             if (model.ConversationId == null)
-                throw new ChatNotExistException("Given id is null", 400);
+                throw new ConversationNotExistException("Given id is null", 400);
 
             var conversation = await _unit.ConversationRepository.GetChatContentAsync((int)model.ConversationId);
 
             if(conversation==null||conversation.ConversationInfo.AdminId!=model.UserId)
-                throw new ChatNotExistException("Conversation photo cannot be changed!!", 400);
+                throw new ConversationNotExistException("Conversation photo cannot be changed!!", 400);
 
             conversation.ConversationInfo.PhotoName = await this._photoHelper.SavePhotoAsync(model);
+
+            await _unit.Commit();
+        }
+
+        public async Task AddToGroup(AddConversationRequest request)
+        {
+            var conversation = await _unit.ConversationRepository.GetWithUsersConversationsAsync(request.id);
+
+            if (conversation.Type == ConversationType.Chat)
+                throw new ConversationNotExistException("Cannot be added to chat!!", 400);
+
+            if (conversation.UserConversations.Any(uconv => uconv.UserId == request.userId))
+                throw new UserAlreadyExistException("User is in the group",400);
+
+            var userConversation = new UserConversation
+            {
+                ConversationId = conversation.Id,
+                UserId = request.userId
+            };
+
+            await _unit.UserConversationRepository.CreateAsync(userConversation);
+
+            await _unit.Commit();
+        }
+
+        public async Task<List<SearchConversationResponce>> SearchConversation(SearchRequest request)
+        {
+            var user = await _auth.FindByIdUserAsync(request.UserId);
+
+            if (user == null)
+                throw new UserNotExistException("Given user not exist!!", 400);
+
+            var responce = new List<SearchConversationResponce>();
+
+            var users = await _unit.UserRepository.SearchUsersAsync(request.Filter);
+
+            users.Remove(user);
+
+            var conversations = await _unit.ConversationRepository.SearchConversationsAsync(request.Filter,request.UserId);
+
+            responce.AddRange(this._map.Map<List<SearchConversationResponce>>(users));
+
+            responce.AddRange(this._map.Map<List<SearchConversationResponce>>(conversations));
+
+            return responce.OrderBy(res => res.Name).Take(5).ToList();
+        }
+
+        public async Task DeleteConversationAsync(DeleteRequest request)
+        {
+            var conversation = await _unit.ConversationRepository.GetWithUsersConversationsAsync(request.ConversationId);
+
+            if (conversation == null)
+                throw new ConversationNotExistException("Given id is not set!!", 400);
+
+            if(conversation.Type==ConversationType.Chat)
+            {
+                if (conversation.UserConversations.Any(uconv => uconv.UserId == request.UserId))
+                {
+                    await _unit.ConversationRepository.DeleteAsync(conversation.Id);
+                }
+                else
+                {
+                    throw new UserNotHaveRigthsException("user is not a member!!", 400);
+                }
+            }
+            else
+            {
+                if (conversation.ConversationInfo.AdminId == request.UserId)
+                {
+                    await _unit.ConversationRepository.DeleteAsync(conversation.Id);
+
+                }
+                else
+                {
+                    throw new UserNotHaveRigthsException("user is not an admin!!", 400);
+                }
+            }
 
             await _unit.Commit();
         }

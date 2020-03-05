@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Application.Models.UserDto
+﻿namespace Application.Models.UserDto
 {
     public class SearchUserDto
     {

@@ -11,6 +11,11 @@ namespace Infrastructure.Configurations
             builder.ToTable("Conversations");
 
             builder.HasKey(c => c.Id);
-        }
+
+            builder.HasMany(c => c.Messages)
+                .WithOne(mes => mes.Chat)
+                .HasForeignKey(mes => mes.ChatId)
+                .OnDelete(DeleteBehavior.Cascade);
+       }
     }
 }

@@ -29,7 +29,7 @@ namespace ApplicationTests.UserServiceTests
             var userService = fixture.Create<UserService>();
 
             //assert
-            await Assert.ThrowsAsync<UserNotExistException>(async () => await userService.SearchUserAsync(new SearchUserDtoRequest()));
+            await Assert.ThrowsAsync<UserNotExistException>(async () => await userService.SearchUserAsync(new SearchRequest()));
         }
 
         [Fact]
@@ -63,7 +63,7 @@ namespace ApplicationTests.UserServiceTests
             var userService = fixture.Create<UserService>();
 
             //act
-            await userService.SearchUserAsync(new SearchUserDtoRequest());
+            await userService.SearchUserAsync(new SearchRequest());
 
             //assert
             Assert.DoesNotContain<User>(user,usersSearchResult);
@@ -90,7 +90,7 @@ namespace ApplicationTests.UserServiceTests
             var userService = fixture.Create<UserService>();
 
             //act
-            var res=await userService.SearchUserAsync(new SearchUserDtoRequest());
+            var res=await userService.SearchUserAsync(new SearchRequest());
 
             //assert
             Assert.True(res.Count==searchResult.Count);
@@ -107,7 +107,7 @@ namespace ApplicationTests.UserServiceTests
             var userService = fixture.Create<UserService>();
 
             //act
-            await userService.SearchUserAsync(new SearchUserDtoRequest());
+            await userService.SearchUserAsync(new SearchRequest());
 
             //assert
             mockUnit.Verify(u => u.UserRepository.SearchUsersAsync(It.IsAny<string>()), Times.Once);

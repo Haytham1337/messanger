@@ -28,7 +28,7 @@ namespace ApplicationTests.MessageServiceTests
             var messageService = fixture.Create<MessageService>();
 
             //assert
-            await Assert.ThrowsAsync<ChatNotExistException>
+            await Assert.ThrowsAsync<ConversationNotExistException>
                 (async () => await messageService.GetMessageByChatAsync(new GetChatMessagesRequest()));
         }
     }

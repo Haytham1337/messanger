@@ -37,6 +37,13 @@ export interface Chat{
   Type:number
 }
 
+export  class SearchConversation{
+  id:number;
+  name:string;
+  photo:string;
+  type:number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -50,6 +57,9 @@ export class ChatService {
 
   public users=new BehaviorSubject<User[]>([]);
   userssource=this.users.asObservable();
+
+  public searchConversations=new BehaviorSubject<SearchConversation[]>([]);
+  searchConvSource=this.searchConversations.asObservable();
 
   public chats=new BehaviorSubject<Chat[]>([]);
   chatssource=this.chats.asObservable();
@@ -140,29 +150,39 @@ export class ChatService {
     this.chats.next(chats);
   }
 
+  SearchUpdate(conv:SearchConversation[]){
+    this.searchConversations.next(conv);
+  }
+
   CurrentContentUpdate(content:ChatContent){
     this.currentChatContent.next(content);
   }
 
   CurrentChatUserUpdate(user:User){
-    let chat=this.chats.value.find(chat=>chat.secondUserId==user.id);
-    user.isblocked=chat.isBlocked;
-    this.currentChatUser.next(user);
+    if(user==null)
+    {
+      this.currentChatUser.next(user);
+    }
+    else{
+      let chat=this.chats.value.find(chat=>chat.secondUserId==user.id);
+      user.isblocked=chat.isBlocked;
+      this.currentChatUser.next(user);
+    }
   }
 
-  public async CreateChate(SecondUserId:number){
+  public async CreateChate(id:number){
     let url=await this.config.getConfig("createchat");
     let headers = new HttpHeaders();
     headers= headers.append('content-type', 'application/json');
 
-    this.http.post(url,JSON.stringify({SecondUserId}),{headers:headers}).subscribe(
+    this.http.post(url,JSON.stringify({id: id}),{headers:headers}).subscribe(
       res=>{
         this.GetChats();
         this.Reconnect();
       },
       err=>{
         var chat=this.chats.getValue()
-        .find(c=>c.secondUserId==SecondUserId);
+        .find(c=>c.secondUserId==id);
         this.currentChatId=chat.id;
         this.getMessages(this.currentChatId);
       }
@@ -175,10 +195,17 @@ export class ChatService {
 
     return await this.http.get<Chat[]>(url).toPromise()
       .then(res=>{
+        if(res.length==0)
+        {
+          this.ChatsUpdate([]);
+          this.CurrentChatUserUpdate(null);
+        }
+
         let mappedres= res.map(chat=>{
           chat.photo=`${imgpath}/${chat.photo}`;
           return chat;
         })
+
         if(!leaveCurrent){
           this.currentChatId=mappedres[0].id;
           this.getMessages(this.currentChatId);
@@ -230,5 +257,57 @@ export class ChatService {
         this.error=true;
       }
     )
+  }
+
+  public async SearchConversation(filter:string){
+    let url =await this.config.getConfig("searchconversation")+`?Filter=${filter}`;
+    let imgpath=await this.config.getConfig("photopath");
+    return await this.http.get<SearchConversation[]>(url).toPromise()
+    .then(res=>
+      {
+        let mappedres= res.map(conv=>{
+          conv.photo=`${imgpath}/${conv.photo}`;
+          return conv;
+        })
+
+        console.log(mappedres);
+
+        this.SearchUpdate(mappedres);
+      });
+  }
+
+  public async AddToGroup(id:number){
+    let url =await this.config.getConfig("addToGroup");
+
+    let headers = new HttpHeaders();
+    headers= headers.append('content-type', 'application/json');
+
+    this.http.post(url,JSON.stringify({id: id}),{headers:headers}).subscribe(
+      res=>{
+        this.GetChats(false);
+        this.Reconnect();
+      },
+      err=>{
+        var chat=this.chats.getValue()
+        .find(c=>c.id==id);
+        this.currentChatId=chat.id;
+        this.getMessages(this.currentChatId);
+      });
+  }
+
+  public async DeleteConversation(id:number){
+    let url=await this.config.getConfig("delete");
+
+    let headers = new HttpHeaders();
+    headers= headers.append('content-type', 'application/json');
+
+    this.http.post(url,JSON.stringify({ConversationId: id}),{headers:headers}).subscribe(
+      res=>{
+        this.GetChats();
+      },
+      err=>{
+        console.log("error");
+  });
+
   }
 }

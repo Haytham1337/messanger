@@ -1,0 +1,22 @@
+<a data-toggle="modal" data-target="#checkInfo" id="friendinfolink">
+    <img src="../../assets/dustbin.png" width="30" height="30">
+  </a>
+   
+
+  <div class="modal fade" id="checkInfo" tabindex="-1" role="dialog" aria-labelledby="checkInfoLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button id="closecheck" type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Are you sure you wanna delete this conversation?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="delete()">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>

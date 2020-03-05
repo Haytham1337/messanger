@@ -54,9 +54,7 @@
         
       </div>
       <div class="modal-footer">
-        <a (click)="delete(chatservice.currentChatId)">
-          <img src="../../assets/dustbin.png" width="30" height="30">
-        </a>
+        <app-delete-check [id]="chatservice.currentChatId"></app-delete-check>
       </div>
     </div>
   </div>

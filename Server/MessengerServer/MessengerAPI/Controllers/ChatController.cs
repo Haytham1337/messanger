@@ -16,6 +16,7 @@ namespace MessengerAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize]
     public class ChatController : ControllerBase
     {
         private readonly IConversationService _chatService;
@@ -26,7 +27,6 @@ namespace MessengerAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Create([FromBody]AddConversationRequest request)
         {
             request.userId= HttpContext.GetUserId();
@@ -37,7 +37,6 @@ namespace MessengerAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<List<GetConversationDto>> GetChats([FromQuery]GetChatsRequestDto request)
         {
             request.UserName = User.Identity.Name;
@@ -46,7 +45,6 @@ namespace MessengerAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> CreateGroup([FromBody]AddGroupRequest request)
         {
             request.UserId = HttpContext.GetUserId();
@@ -57,7 +55,6 @@ namespace MessengerAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> AddToGroup([FromBody]AddConversationRequest request)
         {
             request.userId =HttpContext.GetUserId();
@@ -67,7 +64,6 @@ namespace MessengerAPI.Controllers
             return Ok();
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> ChangeGroupPhoto(IFormCollection collection,[FromQuery(Name ="chatId")] int chatId)
         {
@@ -87,7 +83,6 @@ namespace MessengerAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<List<SearchConversationResponce>> Search([FromQuery]SearchRequest request)
         {
             request.UserId = HttpContext.GetUserId();
@@ -96,7 +91,6 @@ namespace MessengerAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Delete([FromBody]DeleteRequest request)
         {
             request.UserId = HttpContext.GetUserId();

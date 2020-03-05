@@ -19,7 +19,7 @@ namespace Infrastructure.Repositories
                  .Where(conv => conv.Type == ConversationType.Chat)
                  .Include(conv => conv.UserConversations)
                  .Where(conv => conv.UserConversations.Any(uconv => uconv.UserId == firstUserId)
-                 && conv.UserConversations.Any(uconv => uconv.UserId == secondUserId))
+                    && conv.UserConversations.Any(uconv => uconv.UserId == secondUserId))
                  .CountAsync() == 0;
         }
 
@@ -40,7 +40,6 @@ namespace Infrastructure.Repositories
                   .Where(c => c.Id == id)
                   .Include(conv=>conv.ConversationInfo)
                   .Include(c => c.Messages)
-                  .Include(c => c.UserConversations)
                   .FirstOrDefaultAsync();
         }
 
@@ -57,12 +56,11 @@ namespace Infrastructure.Repositories
             return await this.db.Conversations
                 .Include(conv=>conv.UserConversations)
                 .Where(conv => (conv.Type == ConversationType.Channel ||(conv.Type == ConversationType.Group && 
-                conv.UserConversations.Any(uconv=>uconv.UserId==userId))))
+                   conv.UserConversations.Any(uconv=>uconv.UserId==userId))))
                 .Include(conv => conv.ConversationInfo)
                 .Where(conv => conv.ConversationInfo.GroupName.Contains(filter))
                 .Take(5)
                 .ToListAsync();
         }
-
     }
 }

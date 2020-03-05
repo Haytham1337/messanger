@@ -18,7 +18,13 @@ export class SearchComponent implements OnInit {
   }
 
   search(){
-    this.chatservice.SearchConversation(this.filter);
+    if(this.filter=="")
+    {
+      this.chatservice.SearchUpdate([]);
+    }
+    else{
+      this.chatservice.SearchConversation(this.filter);
+    }
   }
 
   createChat(id:number,type:number){

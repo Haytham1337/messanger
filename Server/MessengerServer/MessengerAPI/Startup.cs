@@ -131,8 +131,7 @@ namespace MessengerAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,UserManager<SecurityUser>um,RoleManager<IdentityRole<int>>rm,
-            SecurityContext sc,MessengerContext mc,IConfiguration conf)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -144,8 +143,6 @@ namespace MessengerAPI
             app.UseRouting();
 
             app.UseStaticFiles();
-
-            DataInitializer.SeedData(um,rm,sc,mc,conf).Wait();
 
             app.UseCors("CorsPolicy");
 

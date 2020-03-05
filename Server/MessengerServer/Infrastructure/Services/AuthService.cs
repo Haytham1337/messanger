@@ -33,9 +33,7 @@ namespace Infrastructure.Services
     public class AuthService:IAuthService
     {
         private readonly UserManager<SecurityUser> _userManager;
-                
-        private readonly SignInManager<SecurityUser> _signInManager;
-       
+                       
         private readonly IUnitOfWork _unit;
 
         private readonly IConfiguration _config;
@@ -43,14 +41,15 @@ namespace Infrastructure.Services
         private readonly JWToptions options;
 
         public AuthService(UserManager<SecurityUser> userManager, IOptions<JWToptions> options,
-            SignInManager<SecurityUser> signInManager,IUnitOfWork unit,IConfiguration config)
+            IUnitOfWork unit,IConfiguration config)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
+
             _unit = unit;
+
             _config = config;
-            this.options = options.Value;
-            
+
+            this.options = options.Value;       
         }
 
         public async Task<IdentityResult> RegisterAsync(RegisterModel model)

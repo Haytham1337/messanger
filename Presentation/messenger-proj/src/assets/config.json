@@ -18,5 +18,6 @@
     "unblockuser":"https://localhost:44334/api/User/UnBlockUser",
     "exchangetokens":"https://localhost:44334/api/Auth/ExchangeTokens",
     "creategroup":"https://localhost:44334/api/Chat/CreateGroup",
-    "updateGroupphoto":"https://localhost:44334/api/Chat/ChangeGroupPhoto"
+    "updateGroupphoto":"https://localhost:44334/api/Chat/ChangeGroupPhoto",
+    "delete":"https://localhost:44334/api/Chat/Delete"
 }

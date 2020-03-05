@@ -7,12 +7,10 @@ using Application.Models.ConversationDto.Requests;
 using Application.Models.ConversationDto.Responces;
 using Application.Models.PhotoDto;
 using Application.Models.UserDto;
-using Infrastructure.AppSecurity;
 using Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace MessengerAPI.Controllers
 {
@@ -44,7 +42,7 @@ namespace MessengerAPI.Controllers
         {
             request.UserName = User.Identity.Name;
 
-            return await _chatService.GetChatsAsync(request);
+            return await _chatService.GetConversationsAsync(request);
         }
 
         [HttpPost]
@@ -95,6 +93,17 @@ namespace MessengerAPI.Controllers
             request.UserId = HttpContext.GetUserId();
 
             return await this._chatService.SearchConversation(request);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Delete([FromBody]DeleteRequest request)
+        {
+            request.UserId = HttpContext.GetUserId();
+
+            await this._chatService.DeleteConversationAsync(request);
+
+            return Ok();
         }
     }
 }

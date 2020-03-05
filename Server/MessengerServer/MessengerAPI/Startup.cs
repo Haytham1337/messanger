@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -19,7 +18,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 
 namespace MessengerAPI
 {
@@ -133,7 +131,8 @@ namespace MessengerAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,UserManager<SecurityUser>um,RoleManager<IdentityRole<int>>rm,
+            SecurityContext sc,MessengerContext mc,IConfiguration conf)
         {
             if (env.IsDevelopment())
             {
@@ -145,6 +144,8 @@ namespace MessengerAPI
             app.UseRouting();
 
             app.UseStaticFiles();
+
+            DataInitializer.SeedData(um,rm,sc,mc,conf).Wait();
 
             app.UseCors("CorsPolicy");
 

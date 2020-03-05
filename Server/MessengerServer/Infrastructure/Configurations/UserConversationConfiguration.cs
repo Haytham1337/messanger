@@ -15,12 +15,12 @@ namespace Infrastructure.Configurations
             builder.HasOne(uc => uc.Conversation)
                 .WithMany(uc => uc.UserConversations)
                 .HasForeignKey(uc => uc.ConversationId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(uc => uc.User)
                 .WithMany(uc => uc.UserConversation)
                 .HasForeignKey(uc => uc.UserId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

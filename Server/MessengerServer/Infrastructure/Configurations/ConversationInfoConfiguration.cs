@@ -22,7 +22,8 @@ namespace Infrastructure.Configurations
 
             builder.HasOne(c => c.Conversation)
                 .WithOne(c => c.ConversationInfo)
-                .HasForeignKey<ConversationInfo>(c => c.ConversationId);
+                .HasForeignKey<ConversationInfo>(c => c.ConversationId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

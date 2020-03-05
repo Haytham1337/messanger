@@ -49,4 +49,11 @@ export class GroupinfoComponent implements OnInit {
     }
   }
 
+  delete(id:number){
+    this.chatservice.DeleteConversation(id)
+    .then(()=>{
+      document.getElementById("groupclose").click();
+    });
+  }
+
 }

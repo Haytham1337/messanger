@@ -26,7 +26,7 @@ namespace ApplicationTests.ChatServiceTests
 
             //assert
             await Assert.ThrowsAsync<UserNotExistException>
-                (async () => await chatService.GetChatsAsync(new GetChatsRequestDto()));
+                (async () => await chatService.GetConversationsAsync(new GetChatsRequestDto()));
         }
 
         [Fact]
@@ -40,7 +40,7 @@ namespace ApplicationTests.ChatServiceTests
             var chatService = fixture.Create<ConversationService>();
 
             //act
-            await chatService.GetChatsAsync(new GetChatsRequestDto());
+            await chatService.GetConversationsAsync(new GetChatsRequestDto());
 
             //assert
             mockUnit.Verify(u => u.ConversationRepository.GetUserChatsAsync(It.IsAny<int>()), Times.Once);

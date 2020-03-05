@@ -29,6 +29,7 @@ import { FriendinfoComponent } from './friendinfo/friendinfo.component';
 import { ChannelCreateComponent } from './channel-create/channel-create.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { GroupinfoComponent } from './groupinfo/groupinfo.component';
+import { DeleteCheckComponent } from './delete-check/delete-check.component';
 
 
 const appRoutes: Routes = [
@@ -36,6 +37,7 @@ const appRoutes: Routes = [
    { path: 'chat', component:ChatComponent,canActivate:[AuthGuard]},
    { path: 'profile', component:ProfileComponent,canActivate:[AuthGuard]},
    { path: 'signin', component:LoginComponent },
+   { path: 'check', component:DeleteCheckComponent },
    { path: 'friendinfo', component:FriendinfoComponent },
    { path: 'groupinfo', component:GroupinfoComponent },
    { path: 'register', component:RegisterComponent },
@@ -59,7 +61,8 @@ const appRoutes: Routes = [
       SearchComponent,
       FriendinfoComponent,
       ChannelCreateComponent,
-      GroupinfoComponent
+      GroupinfoComponent,
+      DeleteCheckComponent
    ],
    imports: [
       RouterModule.forRoot(appRoutes),

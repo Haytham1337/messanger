@@ -13,7 +13,7 @@ namespace Application.IServices
     {
         Task CreateChatAsync(AddConversationRequest request);
 
-        Task<List<GetConversationDto>> GetChatsAsync(GetChatsRequestDto request);
+        Task<List<GetConversationDto>> GetConversationsAsync(GetChatsRequestDto request);
 
         Task CreateGroupAsync(AddGroupRequest request);
 
@@ -22,5 +22,7 @@ namespace Application.IServices
         Task AddToGroup(AddConversationRequest request);
 
         Task<List<SearchConversationResponce>> SearchConversation(SearchRequest request);
+
+        Task DeleteConversationAsync(DeleteRequest request);
     }
 }

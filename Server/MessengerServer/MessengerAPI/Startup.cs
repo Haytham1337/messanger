@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -18,6 +19,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 namespace MessengerAPI
 {
@@ -180,8 +182,6 @@ namespace MessengerAPI
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 c.RoutePrefix = "";
             });
-
-            DataInitializer.SeedData(um, rm, sc, mc, conf).Wait();
 
             app.UseHttpsRedirection();
 

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MessengerAPI.Migrations
 {
     [DbContext(typeof(MessengerContext))]
-    [Migration("20200302133755_initAppDb")]
+    [Migration("20200305092111_initAppDb")]
     partial class initAppDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -219,7 +219,7 @@ namespace MessengerAPI.Migrations
                     b.HasOne("Domain.Entities.Conversation", "Chat")
                         .WithMany("Messages")
                         .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Domain.Entities.User", "User")
                         .WithMany("Messages")
@@ -233,13 +233,13 @@ namespace MessengerAPI.Migrations
                     b.HasOne("Domain.Entities.Conversation", "Conversation")
                         .WithMany("UserConversations")
                         .HasForeignKey("ConversationId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.User", "User")
                         .WithMany("UserConversation")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

@@ -48,6 +48,7 @@ namespace Infrastructure.Repositories
         {
             return await db.Conversations
                          .Include(conv => conv.UserConversations)
+                         .Include(conv=>conv.ConversationInfo)
                          .FirstOrDefaultAsync(conv => conv.Id == id);
         }
 

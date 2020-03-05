@@ -93,7 +93,7 @@ namespace Infrastructure.Services
             }
         }
 
-        public async Task<List<GetConversationDto>> GetChatsAsync(GetChatsRequestDto request)
+        public async Task<List<GetConversationDto>> GetConversationsAsync(GetChatsRequestDto request)
         {
             var user = await this._unit.UserRepository.GetUserWithBlackList(request.UserName);
 
@@ -146,6 +146,13 @@ namespace Infrastructure.Services
 
             request.UsersId.Add(user.Id);
 
+            var grettingMessage = new Message()
+            {
+                Content = _config.GetValue<string>("greetmessage"),
+                TimeCreated = DateTime.Now,
+                UserId = user.Id
+            };
+
             var conversationInfo = new ConversationInfo
             {
                 AdminId=user.Id,
@@ -155,9 +162,11 @@ namespace Infrastructure.Services
 
             var conversation = new Conversation
             {
-                Type=request.IsChannel==true?ConversationType.Channel:ConversationType.Group,
-                
-                ConversationInfo=conversationInfo
+                Type = request.IsChannel == true ? ConversationType.Channel : ConversationType.Group,
+
+                ConversationInfo = conversationInfo,
+
+                LastMessage=grettingMessage
             };
 
             await _unit.ConversationRepository.CreateAsync(conversation);
@@ -217,9 +226,16 @@ namespace Infrastructure.Services
 
         public async Task<List<SearchConversationResponce>> SearchConversation(SearchRequest request)
         {
+            var user = await _auth.FindByIdUserAsync(request.UserId);
+
+            if (user == null)
+                throw new UserNotExistException("Given user not exist!!", 400);
+
             var responce = new List<SearchConversationResponce>();
 
             var users = await _unit.UserRepository.SearchUsersAsync(request.Filter);
+
+            users.Remove(user);
 
             var conversations = await _unit.ConversationRepository.SearchConversationsAsync(request.Filter,request.UserId);
 
@@ -228,6 +244,40 @@ namespace Infrastructure.Services
             responce.AddRange(this._map.Map<List<SearchConversationResponce>>(conversations));
 
             return responce.OrderBy(res => res.Name).Take(5).ToList();
+        }
+
+        public async Task DeleteConversationAsync(DeleteRequest request)
+        {
+            var conversation = await _unit.ConversationRepository.GetWithUsersConversationsAsync(request.ConversationId);
+
+            if (conversation == null)
+                throw new ConversationNotExistException("Given id is not set!!", 400);
+
+            if(conversation.Type==ConversationType.Chat)
+            {
+                if (conversation.UserConversations.Any(uconv => uconv.UserId == request.UserId))
+                {
+                    await _unit.ConversationRepository.DeleteAsync(conversation.Id);
+                }
+                else
+                {
+                    throw new UserNotHaveRigthsException("user is not a member!!", 400);
+                }
+            }
+            else
+            {
+                if (conversation.ConversationInfo.AdminId == request.UserId)
+                {
+                    await _unit.ConversationRepository.DeleteAsync(conversation.Id);
+
+                }
+                else
+                {
+                    throw new UserNotHaveRigthsException("user is not an admin!!", 400);
+                }
+            }
+
+            await _unit.Commit();
         }
     }
 }

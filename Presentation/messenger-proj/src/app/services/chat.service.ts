@@ -159,9 +159,15 @@ export class ChatService {
   }
 
   CurrentChatUserUpdate(user:User){
-    let chat=this.chats.value.find(chat=>chat.secondUserId==user.id);
-    user.isblocked=chat.isBlocked;
-    this.currentChatUser.next(user);
+    if(user==null)
+    {
+      this.currentChatUser.next(user);
+    }
+    else{
+      let chat=this.chats.value.find(chat=>chat.secondUserId==user.id);
+      user.isblocked=chat.isBlocked;
+      this.currentChatUser.next(user);
+    }
   }
 
   public async CreateChate(id:number){
@@ -189,6 +195,12 @@ export class ChatService {
 
     return await this.http.get<Chat[]>(url).toPromise()
       .then(res=>{
+        if(res.length==0)
+        {
+          this.ChatsUpdate([]);
+          this.CurrentChatUserUpdate(null);
+        }
+
         let mappedres= res.map(chat=>{
           chat.photo=`${imgpath}/${chat.photo}`;
           return chat;
@@ -281,5 +293,21 @@ export class ChatService {
         this.currentChatId=chat.id;
         this.getMessages(this.currentChatId);
       });
+  }
+
+  public async DeleteConversation(id:number){
+    let url=await this.config.getConfig("delete");
+
+    let headers = new HttpHeaders();
+    headers= headers.append('content-type', 'application/json');
+
+    this.http.post(url,JSON.stringify({ConversationId: id}),{headers:headers}).subscribe(
+      res=>{
+        this.GetChats();
+      },
+      err=>{
+        console.log("error");
+  });
+
   }
 }

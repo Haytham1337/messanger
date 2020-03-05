@@ -43,4 +43,11 @@ export class FriendinfoComponent implements OnInit {
   unblock(id:number){
     this.userservice.unblock(id);
   }
+
+  delete(id:number){
+    this.chatservice.DeleteConversation(id)
+    .then(()=>{
+      document.getElementById("friendclose").click();
+    });
+  }
 }

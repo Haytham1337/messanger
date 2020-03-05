@@ -17,7 +17,7 @@
             <h5 class="phone" id="friendinfophone">{{currentChatUser.phone}}</h5>
           </div>
         </div>      
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button id="friendclose" type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&#10006;</span>
         </button>
       </div>
@@ -54,6 +54,9 @@
         
       </div>
       <div class="modal-footer">
+        <a (click)="delete(chatservice.currentChatId)">
+          <img src="../../assets/dustbin.png" width="30" height="30">
+        </a>
       </div>
     </div>
   </div>

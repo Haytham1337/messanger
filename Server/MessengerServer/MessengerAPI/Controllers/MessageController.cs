@@ -2,7 +2,6 @@
 using Application.IServices;
 using Application.Models.ChatDto.Requests;
 using Application.Models.MessageDto;
-using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +13,7 @@ namespace MessengerAPI.Controllers
     {
         private readonly IMessageService _messageService;
 
-        public MessageController(IMapper mapper,IMessageService messageService)
+        public MessageController(IMessageService messageService)
         {
             _messageService = messageService;
 

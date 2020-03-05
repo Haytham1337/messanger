@@ -8,7 +8,7 @@ import {BehaviorSubject} from 'rxjs';
 export class User{
   id:number;
   photoName:string;
-  nickname:string;
+  nickName:string;
   phone:string;
   email:string;
   age:number;
@@ -20,7 +20,7 @@ export class User{
 })
 export class UserService  {
 
-  private currentUser=new BehaviorSubject<User>(new User());
+  public currentUser=new BehaviorSubject<User>(new User());
   data=this.currentUser.asObservable();
 
   private searchUsers=new BehaviorSubject<User[]>([]);
@@ -52,16 +52,17 @@ export class UserService  {
 
   public async SetCurrentUser(){
     let url=await this.config.getConfig("getuserinfo");
+    let imgpath=await this.config.getConfig("photopath");
     
     let headers = new HttpHeaders();
     headers= headers.append('content-type', 'application/json');
 
-    await this.photoservice.GetPhoto();
-
     return await this.http.get<User>(url,{headers:headers}).toPromise()
     .then( res=>
-      {res.photoName=this.photoservice.imageUrl; 
-      this.updateCurrentUser(res);});
+      {
+        res.photoName=`${imgpath}/${res.photoName}`;
+        this.updateCurrentUser(res);
+      });
   }
 
   updateCurrentUser(user:User){

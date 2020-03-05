@@ -11,16 +11,18 @@ export class ProfileComponent implements OnInit {
 
   currentUser:User=new User();
 
-  constructor(private photo:PhotoService,private userservice:UserService) { }
+  constructor(private userservice:UserService) { }
 
  ngOnInit() {
     this.userservice.data.subscribe(user=>this.currentUser=user);
+    this.userservice.valid=false;
   }
 
   UpdateUser(){
     this.userservice.updated=false;
-    if(this.currentUser.age>100 || this.currentUser.age<0 || this.currentUser.nickname){
+    if(this.currentUser.age>100 || this.currentUser.age<0 || this.currentUser.nickName==""){
       this.userservice.valid=true;
+      this.userservice.SetCurrentUser();
     }
     else{
       this.userservice.valid=false;

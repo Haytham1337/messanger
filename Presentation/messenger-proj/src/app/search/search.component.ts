@@ -1,6 +1,6 @@
 import { UserService, User } from './../services/user.service';
 import { Component, OnInit } from '@angular/core';
-import { ChatService } from '../services/chat.service';
+import { ChatService, SearchConversation } from '../services/chat.service';
 
 @Component({
   selector: 'app-search',
@@ -9,21 +9,32 @@ import { ChatService } from '../services/chat.service';
 })
 export class SearchComponent implements OnInit {
 
-  SearchUsers:User[];
+  SearchConv:SearchConversation[];
   filter:string=null;
   constructor(private userservice:UserService,private chatservice:ChatService) { }
 
   ngOnInit() {
-    this.userservice.searchdata.subscribe((res)=>this.SearchUsers=res);
+    this.chatservice.searchConvSource.subscribe((res)=>this.SearchConv=res);
   }
 
   search(){
-    this.userservice.SearchUsers(this.filter);
+    if(this.filter=="")
+    {
+      this.chatservice.SearchUpdate([]);
+    }
+    else{
+      this.chatservice.SearchConversation(this.filter);
+    }
   }
 
-  createChat(userid:number){
-    this.chatservice.CreateChate(userid);
-    this.userservice.updateSearchUsers([]);
+  createChat(id:number,type:number){
+    if(type==0){
+      this.chatservice.CreateChate(id);
+    }
+    else{
+      this.chatservice.AddToGroup(id);
+    }
+    this.chatservice.SearchUpdate([]);
   }
 
 }

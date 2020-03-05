@@ -1,5 +1,6 @@
 ﻿using Application.IServices;
 using Application.Models.MessageDto;
+using Application.Models.PhotoDto;
 using Application.Models.UserDto;
 using Application.Models.UserDto.Requests;
 using AutoMapper;
@@ -8,12 +9,10 @@ using Domain.Entities;
 using Domain.Exceptions.BlockedUserExceptions;
 using Domain.Exceptions.ChatExceptions;
 using Domain.Exceptions.UserExceptions;
-using Infrastructure.AppSecurity;
-using Microsoft.EntityFrameworkCore;
-using System;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Services
@@ -22,8 +21,10 @@ namespace Infrastructure.Services
     {
         private readonly IUnitOfWork _unit;
         private readonly IMapper _map;
+        private readonly IPhotoHelper _photoHelper;
         private readonly IAuthService _auth;
-        public UserService(IUnitOfWork unit,IMapper map,IAuthService auth)
+
+        public UserService(IUnitOfWork unit,IMapper map,IAuthService auth,IPhotoHelper photoHelper)
         {
             _unit = unit;
 
@@ -31,6 +32,7 @@ namespace Infrastructure.Services
 
             _map = map;
 
+            _photoHelper = photoHelper;
         }
 
         public async Task<GetUserDto> GetUserInfoAsync(GetUserInfoRequest request)
@@ -59,7 +61,7 @@ namespace Infrastructure.Services
             await _unit.Commit();         
         }
 
-        public  async Task<List<SearchUserDto>> SearchUserAsync(SearchUserDtoRequest request)
+        public  async Task<List<SearchUserDto>> SearchUserAsync(SearchRequest request)
         {
             var currentUser = await _auth.FindByIdUserAsync(request.UserId);
 
@@ -128,24 +130,39 @@ namespace Infrastructure.Services
 
         public async Task<bool> CheckStatusAsync(AddMessageDto request)
         {
-            var chat = await this._unit.ChatRepository.GetAsync(request.chatId);
+            var chat = await this._unit.ConversationRepository.GetWithUsersConversationsAsync(request.chatId);
 
             if (chat == null)
-                throw new ChatNotExistException("Given chat not exist!!",400);
+                throw new ConversationNotExistException("Given chat not exist!!", 400);
+
+            if (chat.Type != ConversationType.Chat)
+                return false;
 
             var currentUser = await this._auth.FindByIdUserAsync(request.userId);
 
             if (currentUser == null)
-                throw new UserNotExistException("Given user not exist!!",400);
-        
-            var requestedUserId = chat.FirstUserId == currentUser.Id ? chat.SecondUserId : chat.FirstUserId;
+                throw new UserNotExistException("Given user not exist!!", 400);
 
-            if ((await _unit.BlockedUserRepository.IsBlockedUserAsync(requestedUserId,currentUser.Id))==null)
+            var requestedUserId = chat.UserConversations[0].UserId == currentUser.Id ? chat.UserConversations[1].UserId : chat.UserConversations[0].UserId;
+
+            if ((await _unit.BlockedUserRepository.IsBlockedUserAsync(requestedUserId, currentUser.Id)) == null)
             {
                 return false;
             }
 
             return true;
+        }
+
+        public async Task ChangePhotoAsync(AddPhotoDto model)
+        {
+            var user = await _auth.FindByIdUserAsync(model.UserId);
+
+            if (user == null)
+                throw new UserNotExistException("Given user not exist!!", 400);
+
+            user.Photo = await this._photoHelper.SavePhotoAsync(model);
+
+            await _unit.Commit();
         }
     }
 }

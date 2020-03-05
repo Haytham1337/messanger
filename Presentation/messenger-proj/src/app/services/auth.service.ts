@@ -14,6 +14,12 @@ export class UserInfo{
   Age:number;
 }
 
+export class SignInResponce{
+  access_Token:string;
+  expiresIn:Date;
+  refresh_Token:string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -34,9 +40,7 @@ export class AuthService {
       return this.http.post(url,JSON.stringify(this.userInfo),{responseType:'text',headers:headers})
           .subscribe(
             async res=>{
-              localStorage.setItem('token',res);
-              await this.userservice.SetCurrentUser();
-              await this.router.navigate(['/chat']);
+              await this.router.navigate(['/signin']);
             },err=>this.errorOccured=true);
     }
 
@@ -46,12 +50,14 @@ export class AuthService {
       let headers = new HttpHeaders();
       headers= headers.append('content-type', 'application/json');
       
-      return await this.http.post(url,JSON.stringify(user),{responseType:'text',headers:headers})
+      return await this.http.post<SignInResponce>(url,JSON.stringify(user),{headers:headers})
       .subscribe(
         async res=>{
-          localStorage.setItem('token',res);
-          await this.userservice.SetCurrentUser();
-          await this.router.navigate(['/chat']);
+           localStorage.setItem('token',res.access_Token);
+           localStorage.setItem('expiresIn',res.expiresIn.toString());
+           localStorage.setItem('refreshToken',res.refresh_Token);
+           await this.userservice.SetCurrentUser();
+           await this.router.navigate(['/chat']);
         },err=>this.errorOccured=true);
     }
 
@@ -77,7 +83,7 @@ export class AuthService {
     
     signout(){
       this.router.navigate(['/signin']);
-      localStorage.removeItem('token');
+      localStorage.clear();
     }
 
     looggedIn(){

@@ -1,4 +1,6 @@
-﻿using Application.Models.MessageDto;
+﻿using Application.Models.ConversationDto.Requests;
+using Application.Models.MessageDto;
+using Application.Models.PhotoDto;
 using Application.Models.UserDto;
 using Application.Models.UserDto.Requests;
 using System;
@@ -14,12 +16,14 @@ namespace Application.IServices
 
         Task UpdateUserAsync(UpdateUserDto model);
 
-        Task<List<SearchUserDto>> SearchUserAsync(SearchUserDtoRequest request);
+        Task<List<SearchUserDto>> SearchUserAsync(SearchRequest request);
 
         Task BlockUserAsync(BlockUserRequest request);
 
         Task UnBlockUserAsync(BlockUserRequest request);
 
         Task<bool> CheckStatusAsync(AddMessageDto request);
+
+        Task ChangePhotoAsync(AddPhotoDto model);
     }
 }

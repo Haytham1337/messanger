@@ -1,9 +1,6 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Infrastructure.Configurations
 {
@@ -27,10 +24,8 @@ namespace Infrastructure.Configurations
             builder.Property(u => u.Sex)
                 .IsRequired();
 
-            builder.HasOne(u => u.Photo)
-                   .WithOne(p => p.User)
-                   .HasForeignKey<Photo>(p => p.UserId)
-                   .OnDelete(DeleteBehavior.Cascade);
+            builder.Property(u => u.Photo)
+                .IsRequired();
 
             builder.HasMany(u => u.Messages)
                    .WithOne(p => p.User)

@@ -3,6 +3,7 @@ import { ConfigService } from './config.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
+import { ChatContent, ChatService } from './chat.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,18 +23,12 @@ export class PhotoService {
     return this.http.post(url,uploadData);
   }
 
-  async GetPhoto(){
-    let url = await this.config.getConfig("getphoto");
-   
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    });
+  async UploadGroupPhoto(photo,chatId:number){
+    let url = await this.config.getConfig("updateGroupphoto");
 
-    return await this.http.get(url,{responseType:"json",headers:headers}).toPromise().then(
-      async res=>{
-        let imgpath=await this.config.getConfig("photopath");
-        this.imageUrl=`${imgpath}/${res}`;
-      }) 
+    const uploadData = new FormData();
+    uploadData.append(photo.name, photo, photo.name);
+
+    return this.http.post(`${url}?chatId=${chatId}`,uploadData);
   }
 }

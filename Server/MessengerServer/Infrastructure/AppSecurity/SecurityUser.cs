@@ -1,12 +1,9 @@
-﻿using Domain.Entities;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.AppSecurity
 {
     public class SecurityUser:IdentityUser<int>
     {
+        public string RefreshToken { get; set; }
     }
 }

@@ -120,7 +120,11 @@ export class UserService  {
 
     return this.http.post(url,JSON.stringify({UserToLeaveId:id,ConversationId:convId}),{headers:headers})
     .subscribe(res=>{
-      this.chatservice.GetChats();
+      if(this.currentUser.value.id==this.chatservice.currentChatContent.value.adminId){
+        this.chatservice.getMessages(convId);
+      }else{
+        this.chatservice.GetChats();
+      }
     },err=>{
 
     });

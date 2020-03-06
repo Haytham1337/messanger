@@ -27,5 +27,6 @@ namespace Application.IServices
 
         Task LeaveGroupAsync(LeaveGroupRequest request);
 
+        Task AddConversationMemberAsync(AddConversationMemberRequest request);
     }
 }

@@ -306,5 +306,38 @@ namespace Infrastructure.Services
 
             await _unit.Commit();
         }
+
+        public async Task AddConversationMemberAsync(AddConversationMemberRequest request)
+        {
+            var conversation = await _unit.ConversationRepository.GetWithUsersConversationsAsync(request.ConversationId);
+
+            if (conversation == null || conversation.Type != ConversationType.Group)
+                throw new ConversationNotExistException("Conversation not exist!!", 400);
+
+            var userConversation = conversation.UserConversations.FirstOrDefault(uconv => uconv.UserId == request.UserId);
+
+            if (userConversation == null)
+                throw new UserConversationNotExistException("user is not a member of the conversation!!", 400);
+
+            var userToAddConversation = conversation.UserConversations.FirstOrDefault(uconv => uconv.UserId == request.UserToAdd);
+
+            if (userToAddConversation == null)
+            {
+                userToAddConversation = new UserConversation
+                {
+                    UserId = request.UserToAdd,
+                    ConversationId = request.ConversationId
+                };
+
+                await _unit.UserConversationRepository.CreateAsync(userToAddConversation);
+
+                await _unit.Commit();
+            }
+            else
+            {
+                throw new UserAlreadyExistException("User is already conversation member!!",400);
+            }
+
+        }
     }
 }

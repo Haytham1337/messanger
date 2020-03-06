@@ -30,6 +30,11 @@ export class UserService  {
 
   updated:boolean=false;
 
+  erroradd:boolean=false;
+
+  goodadd:boolean=false;
+
+
   constructor(private http:HttpClient,private config:ConfigService,private photoservice:PhotoService,private chatservice:ChatService) { }
 
   public async UpdateUser(data) {
@@ -118,6 +123,21 @@ export class UserService  {
       this.chatservice.GetChats();
     },err=>{
 
+    });
+  }
+
+  async AddMember(id:number,convId:number){
+    let url=await this.config.getConfig("addgroupmember");
+    let headers = new HttpHeaders();
+    headers= headers.append('content-type', 'application/json');
+
+    return this.http.post(url,JSON.stringify({UserToAdd:id,ConversationId:convId}),{headers:headers})
+    .subscribe(res=>{
+      this.goodadd=true;
+      this.chatservice.getMessages(convId);
+    },err=>{
+      console.log(err);
+      this.erroradd=true;
     });
   }
 }

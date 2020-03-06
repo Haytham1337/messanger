@@ -1,8 +1,8 @@
-import { PhotoService } from './../services/photo.service';
+import { CurrentDate } from './../pipes/date.pipe';
 import { UserService, User } from './../services/user.service';
 import { ChatService, Message } from './../services/chat.service';
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-chat',
@@ -21,7 +21,7 @@ export class ChatComponent implements OnInit {
 
   currentChatUser:User=new User();
 
-  constructor(private chatservice:ChatService,private userservice:UserService) 
+  constructor(private chatservice:ChatService,private userservice:UserService, private datePipe:DatePipe,private curDate:CurrentDate) 
   { 
     chatservice.messagesUpdate.subscribe(res=>this.messages=res);
   }
@@ -54,4 +54,16 @@ export class ChatComponent implements OnInit {
     return this.users.find(u=>u.id===id);
   }
 
+  transformDate(date){
+    let messageTime=new Date(date);
+
+    let currentDate=new Date();
+
+    if(currentDate.getDay()==messageTime.getDay()){
+      return this.curDate.transform(date);
+    }
+    else{
+      return this.datePipe.transform(date);
+    }
+  }
 }

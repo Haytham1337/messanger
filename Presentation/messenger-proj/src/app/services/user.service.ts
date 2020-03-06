@@ -125,6 +125,7 @@ export class UserService  {
           this.chatservice.GetChats();
         }
         else if(this.currentUser.value.id!==this.chatservice.currentChatContent.value.adminId && this.currentUser.value.id==id){
+          document.getElementById("groupclose").click();
           this.chatservice.GetChats();
         }
         else{

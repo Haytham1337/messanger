@@ -117,7 +117,7 @@ namespace Infrastructure.Services
                     {
                         Id = conversation.Id,
                         Photo = secondUser.Photo,
-                        Content = conversation.LastMessage == null ? null : conversation.LastMessage.Content,
+                        Content = conversation.LastMessage?.Content,
                         SecondUserId = secondUserId,
                         IsBlocked = user.BlockedUsers.Any(
                         bl => bl.UserToBlockId == secondUserId) ? true : false
@@ -129,7 +129,7 @@ namespace Infrastructure.Services
                     {
                         Id=conversation.Id,
                         Photo=conversation.ConversationInfo.PhotoName,
-                        Content= conversation.LastMessage == null ? null : conversation.LastMessage.Content,
+                        Content= conversation.LastMessage?.Content,
                     });
                 }
             }

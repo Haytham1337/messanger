@@ -120,8 +120,16 @@ export class UserService  {
 
     return this.http.post(url,JSON.stringify({UserToLeaveId:id,ConversationId:convId}),{headers:headers})
     .subscribe(res=>{
-        this.chatservice.GetChats();
-        document.getElementById("groupclose").click();
+        if(id==this.chatservice.currentChatContent.value.adminId){
+          document.getElementById("groupclose").click();
+          this.chatservice.GetChats();
+        }
+        else if(this.currentUser.value.id!==this.chatservice.currentChatContent.value.adminId && this.currentUser.value.id==id){
+          this.chatservice.GetChats();
+        }
+        else{
+          this.chatservice.getMessages(convId);
+        }
       });
   }
 

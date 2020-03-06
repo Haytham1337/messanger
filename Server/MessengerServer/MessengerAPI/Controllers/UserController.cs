@@ -47,7 +47,7 @@ namespace MessengerAPI.Controllers
         [HttpGet]
         public async Task<List<SearchUserDto>> Search([FromQuery]SearchRequest request )
         {
-           request.UserId = HttpContext.GetUserId();
+            request.UserId = HttpContext.GetUserId();
 
             return await this._userService.SearchUserAsync(request);
         }

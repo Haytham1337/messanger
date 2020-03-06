@@ -1,6 +1,6 @@
 import { PhotoService } from './services/photo.service';
 import { UserService } from './services/user.service';
-import { DatePipe } from './pipes/date.pipe';
+import { CurrentDate } from './pipes/date.pipe';
 import { RegisterGuard } from './register.guard';
 import { TokeninterceptorService } from './services/tokeninterceptor.service';
 import { RefreshTokeninterceptorService } from './services/RefreshTokenInrceptor.service';
@@ -30,6 +30,7 @@ import { ChannelCreateComponent } from './channel-create/channel-create.componen
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { GroupinfoComponent } from './groupinfo/groupinfo.component';
 import { DeleteCheckComponent } from './delete-check/delete-check.component';
+import { DatePipe } from '@angular/common';
 
 
 const appRoutes: Routes = [
@@ -56,7 +57,7 @@ const appRoutes: Routes = [
       ChatComponent,
       ProfileComponent,
       FilluserinfoComponent,
-      DatePipe,
+      CurrentDate,
       ChatlistComponent,
       SearchComponent,
       FriendinfoComponent,
@@ -76,6 +77,8 @@ const appRoutes: Routes = [
       CookieService,
       AuthGuard,
       UserService,
+      DatePipe,
+      CurrentDate,
       PhotoService,
       RegisterGuard,
       AuthService,

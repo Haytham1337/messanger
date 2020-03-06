@@ -13,7 +13,6 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Infrastructure.Services
 {
@@ -41,7 +40,7 @@ namespace Infrastructure.Services
         private readonly JWToptions options;
 
         public AuthService(UserManager<SecurityUser> userManager, IOptions<JWToptions> options,
-            IUnitOfWork unit,IConfiguration config)
+         IUnitOfWork unit,IConfiguration config)
         {
             _userManager = userManager;
 
@@ -167,9 +166,9 @@ namespace Infrastructure.Services
         {
             var user = await this._userManager.FindByNameAsync(model.Email);
 
-            var isSasswordValid = await _userManager.CheckPasswordAsync(user, model.Password);
+            var isPasswordValid = await _userManager.CheckPasswordAsync(user, model.Password);
 
-            if (isSasswordValid)
+            if (isPasswordValid)
             {
                 var claims = new List<Claim>
                 {

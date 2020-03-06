@@ -6,7 +6,7 @@
         <span class="input-group-text cyan lighten-2" id="search"><i class="fas fa-search text-white"
             aria-hidden="true" id="searchicon"></i></span>
       </div>
-      <input class="form-control my-0 py-1" [(ngModel)]="filter" type="text" placeholder="Search" name="search" aria-label="Search" (input)="search()" autocomplete="off">
+      <input id="searchinput" class="form-control my-0 py-1" [(ngModel)]="filter" type="text" placeholder="Search" name="search" aria-label="Search" (input)="search()" autocomplete="off">
     </div>
 
     <div class="dropdown-content w-100" id="searchdiv">

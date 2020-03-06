@@ -1,0 +1,29 @@
+<a data-toggle="modal" data-target="#addmember" id="friendinfolink">
+    <img src="../../assets/addmember.png" width="35" height="35">
+  </a>
+   
+
+  <div class="modal fade mt-5 pt-1" id="addmember" tabindex="-1" role="dialog" aria-labelledby="checkInfoLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header" id="checkheader">
+         <h5 class="m-0 p-0" id="error" *ngIf="userservice.erroradd">Error happend!!</h5>
+        </div>
+        <div class="modal-body">
+            <ng-multiselect-dropdown
+            [placeholder]="'User'"
+            [data]="SearchUsers"
+            [(ngModel)]="selectedItems"
+            [settings]="dropdownSettings"
+            (onSelect)="add($event)"
+            (onFilterChange)="onFilterChange($event)"
+            name="searchusers"
+            >
+            </ng-multiselect-dropdown>
+        </div>
+        <div class="modal-footer"  id="checkfooter">
+          <button type="button" class="btn btn-success" (click)="AddMember()">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>

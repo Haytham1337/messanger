@@ -45,7 +45,13 @@ export class ChannelCreateComponent implements OnInit {
   }
 
   onFilterChange(filter:string) {
-    this.userservice.SearchUsers(filter);
+    if(filter=="")
+    {
+      this.userservice.updateSearchUsers([]);
+    }
+    else{
+      this.userservice.SearchUsers(filter);
+    }
   }
 
   createGroup(){

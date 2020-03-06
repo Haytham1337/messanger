@@ -197,8 +197,15 @@ export class ChatService {
       .then(res=>{
         if(res.length==0)
         {
+          this.CurrentContentUpdate(null);
           this.ChatsUpdate([]);
           this.CurrentChatUserUpdate(null);
+          let closeelem=document.getElementById("groupclose");
+          if(closeelem!=null)
+          {
+            closeelem.click();
+          }
+          this.MessagesUpdate([]);
         }
 
         let mappedres= res.map(chat=>{

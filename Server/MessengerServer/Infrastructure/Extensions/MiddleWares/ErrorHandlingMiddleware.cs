@@ -1,5 +1,6 @@
 ﻿using Domain.Exceptions;
 using Microsoft.AspNetCore.Http;
+using System;
 using System.Threading.Tasks;
 
 namespace Infrastructure
@@ -19,11 +20,16 @@ namespace Infrastructure
             {
                   await _next(context);
             }
-            catch(BaseException ex)
+            catch(Exception ex)
             {
+                context.Response.Clear();
+
                 context.Response.ContentType = "application/json";
 
-                context.Response.StatusCode = ex.StatusCode;
+                if (ex is BaseException)
+                    context.Response.StatusCode = ((BaseException)ex).StatusCode;
+                else
+                    context.Response.StatusCode = 400;
 
                 await context.Response.WriteAsync(ex.Message);
             }

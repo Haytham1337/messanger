@@ -1,0 +1,25 @@
+#checkheader{
+    background-color: lightblue;
+    height: 50px;
+}
+
+#error{
+    color: lightcoral;
+    animation: update 3s;
+    visibility: hidden;
+}
+
+@keyframes update{
+
+    15%{
+        visibility: visible;
+    }
+
+    100% {
+        visibility: hidden;
+    }
+}
+
+#checkfooter{
+    background-color: lightblue;
+}

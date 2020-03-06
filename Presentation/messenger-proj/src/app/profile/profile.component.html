@@ -2,7 +2,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header"> 
+                <div class="card-header" id="cardheader"> 
                     <div class="row">
                         <div class="col-1 m-0 p-0">
                             <img [src]="currentUser.photoName">
@@ -41,7 +41,7 @@
                                 <input type="text" class="form-control elem" name="Phone"  [(ngModel)]="currentUser.phone"  (keyup)="validate($event)"  autofocus="" />
                             </div>
                         </div>  
-                        <div class="col-md-6 offset-md-4">
+                        <div class="col-md-7 offset-4">
                             <button type="submit" class="btn btn-cyan btn-sm" (click)="UpdateUser()">Update</button>
                         </div>
                     </form>

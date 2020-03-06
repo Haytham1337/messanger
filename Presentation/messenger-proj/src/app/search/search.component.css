@@ -50,3 +50,7 @@
     background-color: rgb(4, 181, 172);
     color:white;
   }
+
+  #searchinput{
+    border-bottom-color: #6F89C8;
+  }

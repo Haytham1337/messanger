@@ -26,7 +26,7 @@
                 <p class="cardcontent">{{item.content}}</p>
             </div>
             <div class="col-2 p-0 m-0" *ngIf="item.userId!=currentUser.id">
-              <p class="messagetime">{{item.timeCreated | date}}</p>
+              <p class="messagetime">{{ transformDate(item.timeCreated)}}</p>
             </div>
           </div>
     
@@ -34,7 +34,7 @@
             <div class="col-6">
             </div>
             <div class="col-1 p-0 m-0 p-0 timerigth" *ngIf="item.userId==currentUser.id">
-              <p class="messagetime rigthtime">{{item.timeCreated| date}}</p>
+              <p class="messagetime rigthtime">{{transformDate(item.timeCreated)}}</p>
             </div>
             <div class="col-4 m-0 pt-1 contentrigth" *ngIf="item.userId==currentUser.id">
                 <p class="textrigth">{{item.content}}</p>

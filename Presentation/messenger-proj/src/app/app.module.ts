@@ -1,6 +1,6 @@
 import { PhotoService } from './services/photo.service';
 import { UserService } from './services/user.service';
-import { DatePipe } from './pipes/date.pipe';
+import { CurrentDate } from './pipes/date.pipe';
 import { RegisterGuard } from './register.guard';
 import { TokeninterceptorService } from './services/tokeninterceptor.service';
 import { RefreshTokeninterceptorService } from './services/RefreshTokenInrceptor.service';
@@ -30,6 +30,8 @@ import { ChannelCreateComponent } from './channel-create/channel-create.componen
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { GroupinfoComponent } from './groupinfo/groupinfo.component';
 import { DeleteCheckComponent } from './delete-check/delete-check.component';
+import { DatePipe } from '@angular/common';
+import { AddmemberComponent } from './addmember/addmember.component';
 
 
 const appRoutes: Routes = [
@@ -38,6 +40,7 @@ const appRoutes: Routes = [
    { path: 'profile', component:ProfileComponent,canActivate:[AuthGuard]},
    { path: 'signin', component:LoginComponent },
    { path: 'check', component:DeleteCheckComponent },
+   {path:'app-addmember',component:AddmemberComponent},
    { path: 'friendinfo', component:FriendinfoComponent },
    { path: 'groupinfo', component:GroupinfoComponent },
    { path: 'register', component:RegisterComponent },
@@ -56,13 +59,14 @@ const appRoutes: Routes = [
       ChatComponent,
       ProfileComponent,
       FilluserinfoComponent,
-      DatePipe,
+      CurrentDate,
       ChatlistComponent,
       SearchComponent,
       FriendinfoComponent,
       ChannelCreateComponent,
       GroupinfoComponent,
-      DeleteCheckComponent
+      DeleteCheckComponent,
+      AddmemberComponent
    ],
    imports: [
       RouterModule.forRoot(appRoutes),
@@ -76,6 +80,8 @@ const appRoutes: Routes = [
       CookieService,
       AuthGuard,
       UserService,
+      DatePipe,
+      CurrentDate,
       PhotoService,
       RegisterGuard,
       AuthService,

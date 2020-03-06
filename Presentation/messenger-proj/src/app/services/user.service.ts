@@ -107,4 +107,17 @@ export class UserService  {
     return this.http.post(url,JSON.stringify({UserIdToBlock:id}),{headers:headers}).toPromise()
     .then(()=>this.chatservice.UpdateChats());
   }
+
+  async leaveGroup(id:number,convId:number){
+    let url=await this.config.getConfig("leavegroup");
+    let headers = new HttpHeaders();
+    headers= headers.append('content-type', 'application/json');
+
+    return this.http.post(url,JSON.stringify({UserToLeaveId:id,ConversationId:convId}),{headers:headers})
+    .subscribe(res=>{
+      this.chatservice.GetChats();
+    },err=>{
+
+    });
+  }
 }

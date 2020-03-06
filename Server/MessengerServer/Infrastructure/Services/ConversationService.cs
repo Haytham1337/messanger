@@ -9,6 +9,7 @@ using AutoMapper;
 using Domain;
 using Domain.Entities;
 using Domain.Exceptions.ChatExceptions;
+using Domain.Exceptions.ConversationExceptions;
 using Domain.Exceptions.UserExceptions;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -274,6 +275,33 @@ namespace Infrastructure.Services
                 {
                     throw new UserNotHaveRigthsException("user is not an admin!!", 400);
                 }
+            }
+
+            await _unit.Commit();
+        }
+
+        public async Task LeaveGroupAsync(LeaveGroupRequest request)
+        {
+            var conversation = await _unit.ConversationRepository.GetWithUsersConversationsAsync(request.ConversationId);
+
+            if (conversation == null || conversation.Type==ConversationType.Chat)
+                throw new ConversationNotExistException("Conversation not exist!!", 400);
+
+            var userConversation = conversation.UserConversations.FirstOrDefault(uconv => uconv.UserId == request.UserToLeaveId);
+
+            if (userConversation == null)
+                throw new UserConversationNotExistException("user is not a member og the conversation!!",400);
+
+            if (request.UserId==request.UserToLeaveId)
+            {
+                await _unit.UserConversationRepository.DeleteAsync(userConversation.Id);
+            }
+            else
+            {
+                if (conversation.ConversationInfo.AdminId == request.UserId)
+                    await _unit.UserConversationRepository.DeleteAsync(userConversation.Id);
+                else
+                    throw new UserNotHaveRigthsException("User is not an admin of the conversation!!", 400);
             }
 
             await _unit.Commit();

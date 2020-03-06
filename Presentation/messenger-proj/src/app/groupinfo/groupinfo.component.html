@@ -49,7 +49,10 @@
               </div>  
               <div class="col-sm" *ngIf="user.id==chatContent.adminId">
                 <img src="../../assets/admin.png" width="30" height="30">
-              </div>       
+              </div>
+              <a (click)="leaveGroup(user.id)" class="delIcon" *ngIf="userservice.currentUser.value.id==chatContent.adminId || user.id==userservice.currentUser.value.id">
+                <span aria-hidden="true">&#10006;</span>
+              </a>    
             </div>  
           </div>
           

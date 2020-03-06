@@ -33,3 +33,7 @@
     background: linear-gradient(90deg, rgba(9,184,219,1) 21%, rgba(47,212,245,1) 47%, rgba(10,192,196,1) 91%);
     border-radius: 8px;
   }
+
+  .remhand{
+      cursor: default;
+  }

@@ -31,6 +31,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { GroupinfoComponent } from './groupinfo/groupinfo.component';
 import { DeleteCheckComponent } from './delete-check/delete-check.component';
 import { DatePipe } from '@angular/common';
+import { AddmemberComponent } from './addmember/addmember.component';
 
 
 const appRoutes: Routes = [
@@ -39,6 +40,7 @@ const appRoutes: Routes = [
    { path: 'profile', component:ProfileComponent,canActivate:[AuthGuard]},
    { path: 'signin', component:LoginComponent },
    { path: 'check', component:DeleteCheckComponent },
+   {path:'app-addmember',component:AddmemberComponent},
    { path: 'friendinfo', component:FriendinfoComponent },
    { path: 'groupinfo', component:GroupinfoComponent },
    { path: 'register', component:RegisterComponent },
@@ -63,7 +65,8 @@ const appRoutes: Routes = [
       FriendinfoComponent,
       ChannelCreateComponent,
       GroupinfoComponent,
-      DeleteCheckComponent
+      DeleteCheckComponent,
+      AddmemberComponent
    ],
    imports: [
       RouterModule.forRoot(appRoutes),

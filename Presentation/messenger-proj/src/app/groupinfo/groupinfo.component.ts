@@ -56,4 +56,12 @@ export class GroupinfoComponent implements OnInit {
     });
   }
 
+  leaveGroup(id:number){
+    if(id==this.chatContent.adminId){
+      document.getElementById("friendinfolink").click();
+    }
+    else{
+      this.userservice.leaveGroup(id,this.chatservice.currentChatId);
+    }
+  }
 }

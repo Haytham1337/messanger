@@ -33,9 +33,12 @@
           <hr>
           <div class="row m-0 p-0 pl-1 pt-1" id="matestitle">
 
-            <div class="col-sm m-0 p-0">
+            <div class="col-10 m-0 p-0">
               <h4 *ngIf="chatContent.type==1">Group Mates :</h4>
               <h4 *ngIf="chatContent.type==2">Channel Mates :</h4>       
+            </div>
+            <div class="col-sm text-right" *ngIf="chatContent.type==1">
+              <app-addmember></app-addmember>
             </div>
          </div>
          
@@ -49,7 +52,10 @@
               </div>  
               <div class="col-sm" *ngIf="user.id==chatContent.adminId">
                 <img src="../../assets/admin.png" width="30" height="30">
-              </div>       
+              </div>
+              <a (click)="leaveGroup(user.id)" class="delIcon" *ngIf="userservice.currentUser.value.id==chatContent.adminId || user.id==userservice.currentUser.value.id">
+                <span aria-hidden="true">&#10006;</span>
+              </a>    
             </div>  
           </div>
           

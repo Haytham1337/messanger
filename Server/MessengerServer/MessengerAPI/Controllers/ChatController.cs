@@ -99,5 +99,25 @@ namespace MessengerAPI.Controllers
 
             return Ok();
         }
+        
+        [HttpPost]
+        public async Task<IActionResult> LeaveGroup([FromBody]LeaveGroupRequest request)
+        {
+            request.UserId = HttpContext.GetUserId();
+
+            await this._chatService.LeaveGroupAsync(request);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddNewGroupMember([FromBody]AddConversationMemberRequest request)
+        {
+            request.UserId = HttpContext.GetUserId();
+
+            await this._chatService.AddConversationMemberAsync(request);
+
+            return Ok();
+        }
     }
 }

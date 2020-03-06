@@ -9,6 +9,7 @@ using AutoMapper;
 using Domain;
 using Domain.Entities;
 using Domain.Exceptions.ChatExceptions;
+using Domain.Exceptions.ConversationExceptions;
 using Domain.Exceptions.UserExceptions;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -117,7 +118,7 @@ namespace Infrastructure.Services
                     {
                         Id = conversation.Id,
                         Photo = secondUser.Photo,
-                        Content = conversation.LastMessage == null ? null : conversation.LastMessage.Content,
+                        Content = conversation.LastMessage?.Content,
                         SecondUserId = secondUserId,
                         IsBlocked = user.BlockedUsers.Any(
                         bl => bl.UserToBlockId == secondUserId) ? true : false
@@ -129,7 +130,7 @@ namespace Infrastructure.Services
                     {
                         Id=conversation.Id,
                         Photo=conversation.ConversationInfo.PhotoName,
-                        Content= conversation.LastMessage == null ? null : conversation.LastMessage.Content,
+                        Content= conversation.LastMessage?.Content,
                     });
                 }
             }
@@ -166,7 +167,7 @@ namespace Infrastructure.Services
 
                 ConversationInfo = conversationInfo,
 
-                LastMessage=grettingMessage
+                LastMessage = grettingMessage
             };
 
             await _unit.ConversationRepository.CreateAsync(conversation);
@@ -269,7 +270,6 @@ namespace Infrastructure.Services
                 if (conversation.ConversationInfo.AdminId == request.UserId)
                 {
                     await _unit.ConversationRepository.DeleteAsync(conversation.Id);
-
                 }
                 else
                 {
@@ -278,6 +278,66 @@ namespace Infrastructure.Services
             }
 
             await _unit.Commit();
+        }
+
+        public async Task LeaveGroupAsync(LeaveGroupRequest request)
+        {
+            var conversation = await _unit.ConversationRepository.GetWithUsersConversationsAsync(request.ConversationId);
+
+            if (conversation == null || conversation.Type==ConversationType.Chat)
+                throw new ConversationNotExistException("Conversation not exist!!", 400);
+
+            var userConversation = conversation.UserConversations.FirstOrDefault(uconv => uconv.UserId == request.UserToLeaveId);
+
+            if (userConversation == null)
+                throw new UserConversationNotExistException("user is not a member og the conversation!!",400);
+
+            if (request.UserId==request.UserToLeaveId)
+            {
+                await _unit.UserConversationRepository.DeleteAsync(userConversation.Id);
+            }
+            else
+            {
+                if (conversation.ConversationInfo.AdminId == request.UserId)
+                    await _unit.UserConversationRepository.DeleteAsync(userConversation.Id);
+                else
+                    throw new UserNotHaveRigthsException("User is not an admin of the conversation!!", 400);
+            }
+
+            await _unit.Commit();
+        }
+
+        public async Task AddConversationMemberAsync(AddConversationMemberRequest request)
+        {
+            var conversation = await _unit.ConversationRepository.GetWithUsersConversationsAsync(request.ConversationId);
+
+            if (conversation == null || conversation.Type != ConversationType.Group)
+                throw new ConversationNotExistException("Conversation not exist!!", 400);
+
+            var userConversation = conversation.UserConversations.FirstOrDefault(uconv => uconv.UserId == request.UserId);
+
+            if (userConversation == null)
+                throw new UserConversationNotExistException("user is not a member of the conversation!!", 400);
+
+            var userToAddConversation = conversation.UserConversations.FirstOrDefault(uconv => uconv.UserId == request.UserToAdd);
+
+            if (userToAddConversation == null)
+            {
+                userToAddConversation = new UserConversation
+                {
+                    UserId = request.UserToAdd,
+                    ConversationId = request.ConversationId
+                };
+
+                await _unit.UserConversationRepository.CreateAsync(userToAddConversation);
+
+                await _unit.Commit();
+            }
+            else
+            {
+                throw new UserAlreadyExistException("User is already conversation member!!",400);
+            }
+
         }
     }
 }

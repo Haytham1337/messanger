@@ -24,5 +24,9 @@ namespace Application.IServices
         Task<List<SearchConversationResponce>> SearchConversation(SearchRequest request);
 
         Task DeleteConversationAsync(DeleteRequest request);
+
+        Task LeaveGroupAsync(LeaveGroupRequest request);
+
+        Task AddConversationMemberAsync(AddConversationMemberRequest request);
     }
 }

@@ -29,7 +29,7 @@
             </div>
 
             <div class="md-form">
-              <input type="text" id="formphone" [(ngModel)]="userdata.PhoneNumber" name="phone" class="form-control forminput" (keyup)="validate($event)">
+              <input type="text" id="formphone" [(ngModel)]="userdata.PhoneNumber" name="phone" class="form-control forminput" (keyup)="validate($event)" autocomplete="off">
               <label for="formphone">Phone</label>
             </div>
             <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit" (click)="register()">Fill</button>

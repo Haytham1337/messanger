@@ -294,6 +294,18 @@ namespace Infrastructure.Services
 
             if (request.UserId==request.UserToLeaveId)
             {
+                if(conversation.ConversationInfo.AdminId==request.UserId)
+                {
+                    var newAdmin = conversation.UserConversations.Where(uconv => uconv.UserId != request.UserId).FirstOrDefault();
+
+                    if (newAdmin == null)
+                        throw new UserNotExistException("There is no user to be an admin!!", 400);
+
+                    conversation.ConversationInfo.AdminId = newAdmin.UserId;
+
+                    this._unit.ConversationInfoRepository.Update(conversation.ConversationInfo);
+                }
+
                 await _unit.UserConversationRepository.DeleteAsync(userConversation.Id);
             }
             else

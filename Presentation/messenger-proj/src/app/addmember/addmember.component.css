@@ -3,15 +3,9 @@
     height: 50px;
 }
 
-#good{
-    color: greenyellow;
-    animation: update 5s;
-    visibility: hidden;
-}
-
 #error{
     color: lightcoral;
-    animation: update 5s;
+    animation: update 3s;
     visibility: hidden;
 }
 

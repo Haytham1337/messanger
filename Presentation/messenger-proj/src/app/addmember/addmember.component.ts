@@ -57,6 +57,9 @@ export class AddmemberComponent implements OnInit {
    .then(()=>{
      this.userservice.updateSearchUsers([]);
      this.selectedItems=[];
+     setTimeout(()=>{
+      this.userservice.erroradd=false;
+     },3000)
    });
  }
 }

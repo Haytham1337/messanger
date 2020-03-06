@@ -13,7 +13,6 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Infrastructure.Services
 {
@@ -41,7 +40,7 @@ namespace Infrastructure.Services
         private readonly JWToptions options;
 
         public AuthService(UserManager<SecurityUser> userManager, IOptions<JWToptions> options,
-            IUnitOfWork unit,IConfiguration config)
+         IUnitOfWork unit,IConfiguration config)
         {
             _userManager = userManager;
 

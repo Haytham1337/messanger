@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Application.Models
 {
-   public class CheckRegisterModel
+    public class CheckRegisterModel
     {
         [Required]
         [DataType(DataType.EmailAddress)]

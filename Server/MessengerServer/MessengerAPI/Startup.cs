@@ -75,7 +75,6 @@ namespace MessengerAPI
                         ValidateLifetime = true,
                         IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
                         ValidateIssuerSigningKey = true,
-                        ClockSkew = TimeSpan.FromMinutes(authOptions.LifeTime)
                     };
 
                     options.Events= new JwtBearerEvents

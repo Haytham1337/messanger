@@ -204,12 +204,12 @@ namespace Infrastructure.Services
             await _unit.Commit();
         }
 
-        public async Task AddToGroup(AddConversationRequest request)
+        public async Task SubscribeForChannelAsync(AddConversationRequest request)
         {
             var conversation = await _unit.ConversationRepository.GetWithUsersConversationsAsync(request.id);
 
-            if (conversation.Type == ConversationType.Chat)
-                throw new ConversationNotExistException("Cannot be added to chat!!", 400);
+            if (conversation.Type != ConversationType.Channel)
+                throw new ConversationNotExistException("Conversation is not a channel!!", 400);
 
             if (conversation.UserConversations.Any(uconv => uconv.UserId == request.userId))
                 throw new UserAlreadyExistException("User is in the group",400);
@@ -294,6 +294,18 @@ namespace Infrastructure.Services
 
             if (request.UserId==request.UserToLeaveId)
             {
+                if(conversation.ConversationInfo.AdminId==request.UserId)
+                {
+                    var newAdmin = conversation.UserConversations.Where(uconv => uconv.UserId != request.UserId).FirstOrDefault();
+
+                    if (newAdmin == null)
+                        throw new UserNotExistException("There is no user to be an admin!!", 400);
+
+                    conversation.ConversationInfo.AdminId = newAdmin.UserId;
+
+                    this._unit.ConversationInfoRepository.Update(conversation.ConversationInfo);
+                }
+
                 await _unit.UserConversationRepository.DeleteAsync(userConversation.Id);
             }
             else

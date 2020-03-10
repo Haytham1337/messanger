@@ -1,25 +1,36 @@
 {
     "photopath":"https://localhost:44334/avatars",
+
     "signin":"https://localhost:44334/api/Auth/SignIn",
     "signup":"https://localhost:44334/api/Auth/Register",
+    "checkemail":"https://localhost:44334/api/Auth/EmailExist",  
+    "exchangetokens":"https://localhost:44334/api/Auth/ExchangeTokens",
+    
     "getmessages":"https://localhost:44334/api/Message",
+    "getchatmessages":"https://localhost:44334/api/Message/GetConversationMessages",
+
     "updatephoto":"https://localhost:44334/api/User/ChangePhoto",
-    "getphotobyid":"https://localhost:44334/api/Photo/GetPhotoById",
-    "getuserinfo":"https://localhost:44334/api/User/UserInfo",
-    "checkemail":"https://localhost:44334/api/Auth/EmailExist",
+    "getuserinfo":"https://localhost:44334/api/User/UserInfo",  
     "updateuser":"https://localhost:44334/api/User/UpdateUser",
-    "search":"https://localhost:44334/api/User/Search",
-    "searchconversation":"https://localhost:44334/api/Chat/Search",
-    "addToGroup":"https://localhost:44334/api/Chat/AddToGroup",
-    "createchat":"https://localhost:44334/api/Chat/Create",
-    "getchats":"https://localhost:44334/api/Chat/GetChats",
-    "getchatmessages":"https://localhost:44334/api/Message/GetChatMessages",
+    "search":"https://localhost:44334/api/User/Search",      
     "blockuser":"https://localhost:44334/api/User/BlockUser",
     "unblockuser":"https://localhost:44334/api/User/UnBlockUser",
-    "exchangetokens":"https://localhost:44334/api/Auth/ExchangeTokens",
-    "creategroup":"https://localhost:44334/api/Chat/CreateGroup",
-    "updateGroupphoto":"https://localhost:44334/api/Chat/ChangeGroupPhoto",
-    "delete":"https://localhost:44334/api/Chat/Delete",
-    "leavegroup":"https://localhost:44334/api/Chat/LeaveGroup",
-    "addgroupmember":"https://localhost:44334/api/Chat/AddNewGroupMember"
+
+
+    "subscribeForChannel":"https://localhost:44334/api/Channel/SubscribeForChannel",
+    "createChannel":"https://localhost:44334/api/Channel/CreateChannel",
+    "leaveChannel":"https://localhost:44334/api/Channel/LeaveChannel",
+
+
+    "createchat":"https://localhost:44334/api/Conversation/CreateChat",
+    "getchats":"https://localhost:44334/api/Conversation/GetConversations",
+    "searchconversation":"https://localhost:44334/api/Conversation/Search",
+    "delete":"https://localhost:44334/api/Conversation/Delete",
+    "updateGroupphoto":"https://localhost:44334/api/Conversation/ChangeConversationPhoto",
+
+
+
+    "addNewGroupMember":"https://localhost:44334/api/Group/AddNewGroupMember",
+    "leaveGroup":"https://localhost:44334/api/Group/LeaveGroup",
+    "createGroup":"https://localhost:44334/api/Group/CreateGroup"
 }

@@ -21,7 +21,7 @@ namespace MessengerAPI.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<AllMessagesDto> GetChatMessages([FromQuery]GetChatMessagesRequest request)
+        public async Task<AllMessagesDto> GetConversationMessages([FromQuery]GetChatMessagesRequest request)
         {
             var responce=await this._messageService.GetMessageByChatAsync(request);
 

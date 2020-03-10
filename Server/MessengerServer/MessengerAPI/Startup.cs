@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -14,9 +16,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 namespace MessengerAPI
 {
@@ -32,7 +34,6 @@ namespace MessengerAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<JWToptions>(Configuration);
 
             services.AddControllers();
 
@@ -48,10 +49,11 @@ namespace MessengerAPI
                     .AddEntityFrameworkStores<SecurityContext>();
 
 
-            var serviceProvider = services.BuildServiceProvider();
+            services.Configure<TokenOption>(Configuration.GetSection("OptionsForToken"));
 
-            var authOptions = serviceProvider.GetService<IOptions<JWToptions>>().Value;
-
+            var optionsForToken = Configuration.GetSection("OptionsForToken")
+                                .Get<TokenOption>();
+                
             services.AddAuthentication(options=> 
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -66,12 +68,13 @@ namespace MessengerAPI
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
-                        ValidIssuer = authOptions.Issuer,
-                        ValidAudience = authOptions.Audience,
+                        ValidIssuer = optionsForToken.Issuer,
+                        ValidAudience = optionsForToken.Audience,
                         ValidateAudience = true,
                         ValidateLifetime = true,
-                        IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
-                        ValidateIssuerSigningKey = true
+                        IssuerSigningKey = optionsForToken.GetSymmetricSecurityKey(),
+                        ValidateIssuerSigningKey = true,
+                        ClockSkew = TimeSpan.Zero
                     };
 
                     options.Events= new JwtBearerEvents
@@ -126,6 +129,41 @@ namespace MessengerAPI
                 options.Configuration = "localhost";
                 options.InstanceName = "RedisCache";
             });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Chatter Messenger", Version = "v1" });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
+                      Enter 'Bearer' [space] and then your token in the text input below.
+                      \r\n\r\nExample: 'Bearer 12345abcdef'",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                  {
+                    {
+                      new OpenApiSecurityScheme
+                      {
+                        Reference = new OpenApiReference
+                          {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                          },
+                          Scheme = "oauth2",
+                          Name = "Bearer",
+                          In = ParameterLocation.Header,
+
+                        },
+                        new List<string>()
+                      }
+                    });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -135,6 +173,14 @@ namespace MessengerAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.RoutePrefix = "";
+            });
 
             app.UseHttpsRedirection();
 

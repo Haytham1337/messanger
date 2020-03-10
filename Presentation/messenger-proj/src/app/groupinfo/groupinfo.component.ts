@@ -57,7 +57,7 @@ export class GroupinfoComponent implements OnInit {
   }
 
   leaveGroup(id:number){
-    if(id==this.chatContent.adminId){
+    if(this.chatservice.users.value.length==1){
       document.getElementById("friendinfolink").click();
     }
     else{

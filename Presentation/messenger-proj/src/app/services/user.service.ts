@@ -114,24 +114,28 @@ export class UserService  {
   }
 
   async leaveGroup(id:number,convId:number){
-    let url=await this.config.getConfig("leavegroup");
+    let url=await this.config.getConfig("leaveChannel");
     let headers = new HttpHeaders();
     headers= headers.append('content-type', 'application/json');
 
     return this.http.post(url,JSON.stringify({UserToLeaveId:id,ConversationId:convId}),{headers:headers})
     .subscribe(res=>{
-      if(this.currentUser.value.id==this.chatservice.currentChatContent.value.adminId){
-        this.chatservice.getMessages(convId);
-      }else{
-        this.chatservice.GetChats();
-      }
-    },err=>{
-
-    });
+        if(id==this.chatservice.currentChatContent.value.adminId){
+          document.getElementById("groupclose").click();
+          this.chatservice.GetChats();
+        }
+        else if(this.currentUser.value.id!==this.chatservice.currentChatContent.value.adminId && this.currentUser.value.id==id){
+          document.getElementById("groupclose").click();
+          this.chatservice.GetChats();
+        }
+        else{
+          this.chatservice.getMessages(convId);
+        }
+      });
   }
 
   async AddMember(id:number,convId:number){
-    let url=await this.config.getConfig("addgroupmember");
+    let url=await this.config.getConfig("addNewGroupMember");
     let headers = new HttpHeaders();
     headers= headers.append('content-type', 'application/json');
 

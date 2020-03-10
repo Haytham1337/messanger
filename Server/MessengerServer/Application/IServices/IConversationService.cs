@@ -19,7 +19,7 @@ namespace Application.IServices
 
         Task ChangePhotoAsync(AddPhotoDto model);
 
-        Task AddToGroup(AddConversationRequest request);
+        Task SubscribeForChannelAsync(AddConversationRequest request);
 
         Task<List<SearchConversationResponce>> SearchConversation(SearchRequest request);
 

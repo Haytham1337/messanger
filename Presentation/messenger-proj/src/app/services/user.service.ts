@@ -114,7 +114,7 @@ export class UserService  {
   }
 
   async leaveGroup(id:number,convId:number){
-    let url=await this.config.getConfig("leavegroup");
+    let url=await this.config.getConfig("leaveChannel");
     let headers = new HttpHeaders();
     headers= headers.append('content-type', 'application/json');
 
@@ -135,7 +135,7 @@ export class UserService  {
   }
 
   async AddMember(id:number,convId:number){
-    let url=await this.config.getConfig("addgroupmember");
+    let url=await this.config.getConfig("addNewGroupMember");
     let headers = new HttpHeaders();
     headers= headers.append('content-type', 'application/json');
 

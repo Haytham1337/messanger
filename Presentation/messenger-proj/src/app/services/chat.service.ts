@@ -248,7 +248,13 @@ export class ChatService {
   }
 
   public async CreateGroup(data:Group){
-    let url=await this.config.getConfig("creategroup");
+    let url:string=null;
+    if(data.IsChannel){
+       url=await this.config.getConfig("createChannel");
+    }
+    else{
+       url=await this.config.getConfig("createGroup");
+    }
 
     let headers = new HttpHeaders();
     headers= headers.append('content-type', 'application/json');
@@ -284,7 +290,7 @@ export class ChatService {
   }
 
   public async AddToGroup(id:number){
-    let url =await this.config.getConfig("addToGroup");
+    let url =await this.config.getConfig("subscribeForChannel");
 
     let headers = new HttpHeaders();
     headers= headers.append('content-type', 'application/json');

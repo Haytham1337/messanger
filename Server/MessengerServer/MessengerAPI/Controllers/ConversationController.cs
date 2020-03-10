@@ -19,57 +19,37 @@ namespace MessengerAPI.Controllers
     [Authorize]
     public class ConversationController : ControllerBase
     {
-        private readonly IConversationService _chatService;
+        private readonly IConversationService _conversationService;
 
-        public ConversationController(IConversationService chatService)
+        public ConversationController(IConversationService conversationService)
         {
-            _chatService = chatService;
+            _conversationService = conversationService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]AddConversationRequest request)
+        public async Task<IActionResult> CreateChat([FromBody]AddConversationRequest request)
         {
             request.userId= HttpContext.GetUserId();
 
-            await _chatService.CreateChatAsync(request);
+            await _conversationService.CreateChatAsync(request);
 
             return Ok();
         }
 
         [HttpGet]
-        public async Task<List<GetConversationDto>> GetChats([FromQuery]GetChatsRequestDto request)
+        public async Task<List<GetConversationDto>> GetConversations([FromQuery]GetChatsRequestDto request)
         {
             request.UserName = User.Identity.Name;
 
-            return await _chatService.GetConversationsAsync(request);
+            return await _conversationService.GetConversationsAsync(request);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateGroup([FromBody]AddGroupRequest request)
-        {
-            request.UserId = HttpContext.GetUserId();
-
-            await _chatService.CreateGroupAsync(request);
-
-            return Ok();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> SubscribeForChannel([FromBody]AddConversationRequest request)
-        {
-            request.userId =HttpContext.GetUserId();
-
-            await _chatService.SubscribeForChannelAsync(request);
-
-            return Ok();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> ChangeGroupPhoto(IFormCollection collection,[FromQuery(Name ="chatId")] int chatId)
+        public async Task<IActionResult> ChangeConversationPhoto(IFormCollection collection,[FromQuery(Name ="chatId")] int chatId)
         {
             if (ModelState.IsValid && collection.Files[0] != null)
             {
-                await _chatService.ChangePhotoAsync(new AddPhotoDto()
+                await _conversationService.ChangePhotoAsync(new AddPhotoDto()
                 {
                     ConversationId=chatId,
                     UserId = HttpContext.GetUserId(),
@@ -87,7 +67,7 @@ namespace MessengerAPI.Controllers
         {
             request.UserId = HttpContext.GetUserId();
 
-            return await this._chatService.SearchConversation(request);
+            return await this._conversationService.SearchConversation(request);
         }
 
         [HttpPost]
@@ -95,27 +75,7 @@ namespace MessengerAPI.Controllers
         {
             request.UserId = HttpContext.GetUserId();
 
-            await this._chatService.DeleteConversationAsync(request);
-
-            return Ok();
-        }
-        
-        [HttpPost]
-        public async Task<IActionResult> LeaveGroup([FromBody]LeaveGroupRequest request)
-        {
-            request.UserId = HttpContext.GetUserId();
-
-            await this._chatService.LeaveGroupAsync(request);
-
-            return Ok();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddNewGroupMember([FromBody]AddConversationMemberRequest request)
-        {
-            request.UserId = HttpContext.GetUserId();
-
-            await this._chatService.AddConversationMemberAsync(request);
+            await this._conversationService.DeleteConversationAsync(request);
 
             return Ok();
         }

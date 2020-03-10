@@ -7,7 +7,7 @@
     "exchangetokens":"https://localhost:44334/api/Auth/ExchangeTokens",
     
     "getmessages":"https://localhost:44334/api/Message",
-    "getchatmessages":"https://localhost:44334/api/Message/GetChatMessages",
+    "getchatmessages":"https://localhost:44334/api/Message/GetConversationMessages",
 
     "updatephoto":"https://localhost:44334/api/User/ChangePhoto",
     "getuserinfo":"https://localhost:44334/api/User/UserInfo",  

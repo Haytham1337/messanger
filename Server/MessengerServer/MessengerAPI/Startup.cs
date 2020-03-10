@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -73,6 +74,7 @@ namespace MessengerAPI
                         ValidateLifetime = true,
                         IssuerSigningKey = optionsForToken.GetSymmetricSecurityKey(),
                         ValidateIssuerSigningKey = true,
+                        ClockSkew = TimeSpan.Zero
                     };
 
                     options.Events= new JwtBearerEvents

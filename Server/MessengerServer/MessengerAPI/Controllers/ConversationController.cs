@@ -17,11 +17,11 @@ namespace MessengerAPI.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize]
-    public class ChatController : ControllerBase
+    public class ConversationController : ControllerBase
     {
         private readonly IConversationService _chatService;
 
-        public ChatController(IConversationService chatService)
+        public ConversationController(IConversationService chatService)
         {
             _chatService = chatService;
         }

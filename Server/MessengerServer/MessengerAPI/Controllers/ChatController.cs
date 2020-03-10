@@ -55,11 +55,11 @@ namespace MessengerAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddToGroup([FromBody]AddConversationRequest request)
+        public async Task<IActionResult> SubscribeForChannel([FromBody]AddConversationRequest request)
         {
             request.userId =HttpContext.GetUserId();
 
-            await _chatService.AddToGroup(request);
+            await _chatService.SubscribeForChannelAsync(request);
 
             return Ok();
         }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -16,7 +15,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -35,7 +33,6 @@ namespace MessengerAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<JWToptions>(Configuration);
 
             services.AddControllers();
 
@@ -51,10 +48,11 @@ namespace MessengerAPI
                     .AddEntityFrameworkStores<SecurityContext>();
 
 
-            var serviceProvider = services.BuildServiceProvider();
+            services.Configure<TokenOption>(Configuration.GetSection("OptionsForToken"));
 
-            var authOptions = serviceProvider.GetService<IOptions<JWToptions>>().Value;
-
+            var optionsForToken = Configuration.GetSection("OptionsForToken")
+                                .Get<TokenOption>();
+                
             services.AddAuthentication(options=> 
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -69,11 +67,11 @@ namespace MessengerAPI
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
-                        ValidIssuer = authOptions.Issuer,
-                        ValidAudience = authOptions.Audience,
+                        ValidIssuer = optionsForToken.Issuer,
+                        ValidAudience = optionsForToken.Audience,
                         ValidateAudience = true,
                         ValidateLifetime = true,
-                        IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
+                        IssuerSigningKey = optionsForToken.GetSymmetricSecurityKey(),
                         ValidateIssuerSigningKey = true,
                     };
 

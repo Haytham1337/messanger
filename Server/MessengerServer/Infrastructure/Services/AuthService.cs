@@ -37,9 +37,9 @@ namespace Infrastructure.Services
 
         private readonly IConfiguration _config;
 
-        private readonly JWToptions options;
+        private readonly TokenOption options;
 
-        public AuthService(UserManager<SecurityUser> userManager, IOptions<JWToptions> options,
+        public AuthService(UserManager<SecurityUser> userManager, IOptions<TokenOption> options,
          IUnitOfWork unit,IConfiguration config)
         {
             _userManager = userManager;

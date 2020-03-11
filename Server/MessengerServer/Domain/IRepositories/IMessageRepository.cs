@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Domain.IRepositories
 {
-    public interface IMessageRepository:IRepository<Message>
+    public interface IMessageRepository : IRepository<Message>
     {
-        Task<IEnumerable<Message>> GetAllWithUsersAsync();
+        Task<IEnumerable<Message>> GetMessagesByChat(int chatId);
     }
 }

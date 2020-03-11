@@ -20,7 +20,7 @@
   
           <div class="row customcard" *ngIf="item.userId!=currentUser.id">
             <div class="col-1" *ngIf="item.userId!=currentUser.id">
-              <img [src]="GetUrl(item.userId)" class="cardimg">
+              <img [src]="GetUrl(item.photo)" class="cardimg">
             </div>      
             <div class="col-sm contentleft" *ngIf="item.userId!=currentUser.id">
                 <p class="cardcontent">{{item.content}}</p>

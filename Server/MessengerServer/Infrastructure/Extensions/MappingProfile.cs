@@ -11,7 +11,8 @@ namespace Infrastructure
     {
         public MappingProfile()
         {
-            CreateMap<Message, GetMessageDto>();
+            CreateMap<Message, GetMessageDto>()
+                .ForMember(dest => dest.Photo, src => src.MapFrom(u => u.User.Photo));
 
             CreateMap<User, GetPhotoDto>();
 

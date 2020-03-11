@@ -73,6 +73,8 @@ namespace Infrastructure.Services
 
             var users = await this._unit.UserConversationRepository.GetUsersByConversationAsync(request.Id);
 
+            var messages = await this._unit.MessageRepository.GetMessagesByChat(request.Id);
+
 
             if (chatContent == null)
                 throw new ConversationNotExistException("Given chat not exist!!", 400);
@@ -80,7 +82,7 @@ namespace Infrastructure.Services
             var result = new AllMessagesDto()
             {
                 Users = _map.Map<List<GetUserDto>>(users.Select(u => u.User)),
-                Messages = _map.Map<List<GetMessageDto>>(chatContent.Messages.OrderBy(m => m.TimeCreated)),
+                Messages = _map.Map<List<GetMessageDto>>(messages),
                 Type=chatContent.Type,
                 AdminId=chatContent.ConversationInfo==null?null:(int?)chatContent.ConversationInfo.AdminId,
                 Name= chatContent.ConversationInfo==null?null:chatContent.ConversationInfo.GroupName

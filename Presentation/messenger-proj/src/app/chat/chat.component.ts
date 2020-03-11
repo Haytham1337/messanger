@@ -32,7 +32,7 @@ export class ChatComponent implements OnInit {
     
     this.chatservice.updateChat();
 
-    this.chatservice.messagessource.subscribe(mess=>this.messages=mess);
+    this.chatservice.messagessource.subscribe(mess=>{this.messages=mess;console.log(this.messages)});
     
     this.userservice.data.subscribe(user=>this.currentUser=user);
 
@@ -46,8 +46,8 @@ export class ChatComponent implements OnInit {
     this.newMessage=null;
   }
 
-  public GetUrl(id:number){
-    return `${this.chatservice.photourl}/${this.users.find(u=>u.id===id).photoName}`; 
+  public GetUrl(photo:string){
+    return `${this.chatservice.photourl}/${photo}`; 
   }
 
   public GetUser(id:number){

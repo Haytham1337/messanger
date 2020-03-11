@@ -6,13 +6,13 @@ import * as signalR from "@aspnet/signalr"
 import {DomSanitizer} from '@angular/platform-browser';
 import { User, UserService } from './user.service';
 import { BehaviorSubject } from 'rxjs';
-import { $ } from 'protractor';
 
 export interface Message{
   content:string,
   userId:number,
   timeCreated:Date,
-  chatId:number
+  chatId:number,
+  photo:string
 }
 
 export class ChatContent{

@@ -39,7 +39,6 @@ namespace Infrastructure.Repositories
             return await this.db.Conversations
                   .Where(c => c.Id == id)
                   .Include(conv=>conv.ConversationInfo)
-                  .Include(c => c.Messages)
                   .FirstOrDefaultAsync();
         }
 

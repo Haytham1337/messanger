@@ -1,10 +1,8 @@
 ﻿using Domain.Entities;
 using Domain.IRepositories;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
@@ -16,10 +14,11 @@ namespace Infrastructure.Repositories
 
         }
 
-        public async Task<IEnumerable<Message>> GetAllWithUsersAsync()
+        public async Task<IEnumerable<Message>> GetMessagesByChat(int chatId)
         {
-           return await this.db.Messages.Include(m => m.User)
-                .ThenInclude(u=>u.Photo)
+           return await this.db.Messages
+                .Where(mes=>mes.ChatId==chatId)
+                .Include(m => m.User)
                 .OrderBy(m => m.TimeCreated)
                 .ToListAsync();
         }

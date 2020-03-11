@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.IServices
 {
-    public interface IGroupService
+    public interface IConversationService
     {
         Task CreateChatAsync(AddConversationRequest request);
 

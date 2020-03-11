@@ -19,9 +19,9 @@ namespace MessengerAPI.Controllers
     [Route("api/[controller]/[action]")]
     public class ConversationController : ControllerBase
     {
-        private readonly IGroupService _conversationService;
+        private readonly IConversationService _conversationService;
 
-        public ConversationController(IGroupService conversationService)
+        public ConversationController(IConversationService conversationService)
         {
             _conversationService = conversationService;
         }

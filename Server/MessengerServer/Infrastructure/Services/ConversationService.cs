@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
-    public class ConversationService : IGroupService
+    public class ConversationService : IConversationService
     {
         private readonly IUnitOfWork _unit;
 

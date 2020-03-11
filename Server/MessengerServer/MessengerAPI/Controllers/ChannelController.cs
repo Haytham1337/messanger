@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MessengerAPI.Controllers
 {
     [ApiController]
-    [Route("api/[controller]/[action]")
+    [Route("api/[controller]/[action]")]
     public class ChannelController : ControllerBase
     {
         private readonly IGroupService _groupService;

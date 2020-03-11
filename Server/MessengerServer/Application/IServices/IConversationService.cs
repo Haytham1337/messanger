@@ -15,11 +15,7 @@ namespace Application.IServices
 
         Task<List<GetConversationDto>> GetConversationsAsync(GetChatsRequestDto request);
 
-        Task CreateGroupAsync(AddGroupRequest request);
-
         Task ChangePhotoAsync(AddPhotoDto model);
-
-        Task AddToGroup(AddConversationRequest request);
 
         Task<List<SearchConversationResponce>> SearchConversation(SearchRequest request);
 

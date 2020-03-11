@@ -31,8 +31,7 @@ export class RegisterComponent implements OnInit {
         }
       }
 
-      this.isnotvalid=true;
-
+      this.auth.errorOccured=true;
 }
 
    isPossiblyValidEmail(txt) {

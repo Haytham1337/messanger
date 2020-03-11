@@ -164,11 +164,11 @@
     border-right-color: #6F89C8;
     border-right-style: solid;
     margin-right: 2px;
-    background-color: #B0BFE5;
+    background-color: lightblue;
   }
 
 #sendform{
-  background-color: #4D7DF6;
+  background-color: rgb(127, 206, 233);
 }
 
 #chatempty{
@@ -183,11 +183,11 @@
 }
 
 #curuser{
-  background-color: lavender;
+  background-color: rgb(127, 206, 233);
   height: 33px;
   border-bottom-width: 1px;
   border-bottom-style: solid;
-  border-bottom-color: lightgray;
+  border-bottom-color: #6F89C8;
 }
 
 #contentdiv::-webkit-scrollbar{

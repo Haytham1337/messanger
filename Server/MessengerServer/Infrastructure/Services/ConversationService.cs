@@ -117,7 +117,7 @@ namespace Infrastructure.Services
                     {
                         Id = conversation.Id,
                         Photo = secondUser.Photo,
-                        Content = conversation.LastMessage == null ? null : conversation.LastMessage.Content,
+                        Content = conversation.LastMessage?.Content,
                         SecondUserId = secondUserId,
                         IsBlocked = user.BlockedUsers.Any(
                         bl => bl.UserToBlockId == secondUserId) ? true : false
@@ -129,63 +129,12 @@ namespace Infrastructure.Services
                     {
                         Id=conversation.Id,
                         Photo=conversation.ConversationInfo.PhotoName,
-                        Content= conversation.LastMessage == null ? null : conversation.LastMessage.Content,
+                        Content= conversation.LastMessage?.Content,
                     });
                 }
             }
 
             return res;
-        }
-
-        public async Task CreateGroupAsync(AddGroupRequest request)
-        {
-            var user = await _auth.FindByIdUserAsync(request.UserId);
-
-            if (user == null)
-                throw new UserNotExistException("Given user not exist!!", 400);
-
-            request.UsersId.Add(user.Id);
-
-            var grettingMessage = new Message()
-            {
-                Content = _config.GetValue<string>("greetmessage"),
-                TimeCreated = DateTime.Now,
-                UserId = user.Id
-            };
-
-            var conversationInfo = new ConversationInfo
-            {
-                AdminId=user.Id,
-                PhotoName= _config.GetValue<string>("defaultgroup"),
-                GroupName=request.GroupName
-            };
-
-            var conversation = new Conversation
-            {
-                Type = request.IsChannel == true ? ConversationType.Channel : ConversationType.Group,
-
-                ConversationInfo = conversationInfo,
-
-                LastMessage = grettingMessage
-            };
-
-            await _unit.ConversationRepository.CreateAsync(conversation);
-
-            await _unit.ConversationInfoRepository.CreateAsync(conversationInfo);
-
-            foreach(var id in request.UsersId)
-            {
-                if((await _auth.FindByIdUserAsync(id)) != null)
-                {
-                    await _unit.UserConversationRepository.CreateAsync(new UserConversation
-                            {
-                                UserId = id,
-                                Conversation = conversation
-                            });
-                }
-            }
-
-            await _unit.Commit();
         }
 
         public async Task ChangePhotoAsync(AddPhotoDto model)
@@ -199,27 +148,6 @@ namespace Infrastructure.Services
                 throw new ConversationNotExistException("Conversation photo cannot be changed!!", 400);
 
             conversation.ConversationInfo.PhotoName = await this._photoHelper.SavePhotoAsync(model);
-
-            await _unit.Commit();
-        }
-
-        public async Task AddToGroup(AddConversationRequest request)
-        {
-            var conversation = await _unit.ConversationRepository.GetWithUsersConversationsAsync(request.id);
-
-            if (conversation.Type == ConversationType.Chat)
-                throw new ConversationNotExistException("Cannot be added to chat!!", 400);
-
-            if (conversation.UserConversations.Any(uconv => uconv.UserId == request.userId))
-                throw new UserAlreadyExistException("User is in the group",400);
-
-            var userConversation = new UserConversation
-            {
-                ConversationId = conversation.Id,
-                UserId = request.userId
-            };
-
-            await _unit.UserConversationRepository.CreateAsync(userConversation);
 
             await _unit.Commit();
         }
@@ -255,6 +183,7 @@ namespace Infrastructure.Services
 
             if(conversation.Type==ConversationType.Chat)
             {
+
                 if (conversation.UserConversations.Any(uconv => uconv.UserId == request.UserId))
                 {
                     await _unit.ConversationRepository.DeleteAsync(conversation.Id);

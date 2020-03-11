@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MessengerAPI.Controllers
 {
-    [Route("api/[controller]/[action]")]
     [ApiController]
+    [Route("api/[controller]/[action]")]
     public class MessageController : ControllerBase
     {
         private readonly IMessageService _messageService;
@@ -21,7 +21,7 @@ namespace MessengerAPI.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<AllMessagesDto> GetChatMessages([FromQuery]GetChatMessagesRequest request)
+        public async Task<AllMessagesDto> GetConversationMessages([FromQuery]GetChatMessagesRequest request)
         {
             var responce=await this._messageService.GetMessageByChatAsync(request);
 

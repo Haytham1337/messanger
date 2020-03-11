@@ -11,9 +11,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MessengerAPI.Controllers
 {
-    [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize]
+    [Route("api/[controller]/[action]")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -47,7 +47,7 @@ namespace MessengerAPI.Controllers
         [HttpGet]
         public async Task<List<SearchUserDto>> Search([FromQuery]SearchRequest request )
         {
-           request.UserId = HttpContext.GetUserId();
+            request.UserId = HttpContext.GetUserId();
 
             return await this._userService.SearchUserAsync(request);
         }

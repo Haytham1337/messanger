@@ -34,6 +34,8 @@ namespace Infrastructure.Extensions
 
             services.AddScoped<IConversationService, ConversationService>();
 
+            services.AddScoped<IGroupService, GroupService>();
+
             services.AddSingleton<ICache, MemoryCache>();
 
             services.AddScoped<IPhotoHelper, PhotoHelper>();

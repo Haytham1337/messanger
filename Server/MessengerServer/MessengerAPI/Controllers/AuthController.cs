@@ -8,8 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MessengerAPI.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    
     [ApiController]
+    [Route("api/[controller]/[action]")]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _auth;

@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Infrastructure.AppSecurity
 {
-    public class JWToptions
+    public class TokenOption
     {
         public string  Issuer { get; set; }
 

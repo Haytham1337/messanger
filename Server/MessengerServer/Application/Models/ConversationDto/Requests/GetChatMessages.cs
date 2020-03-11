@@ -6,5 +6,7 @@ namespace Application.Models.ChatDto.Requests
     {
         [Required]
         public int Id { get; set; }
+
+        public int portion { get; set; } = 1;
     }
 }

@@ -32,6 +32,7 @@ import { GroupinfoComponent } from './groupinfo/groupinfo.component';
 import { DeleteCheckComponent } from './delete-check/delete-check.component';
 import { DatePipe } from '@angular/common';
 import { AddmemberComponent } from './addmember/addmember.component';
+import { ScrollEventModule } from 'ngx-scroll-event';
 
 
 const appRoutes: Routes = [
@@ -74,6 +75,7 @@ const appRoutes: Routes = [
       HttpClientModule,
       AppRoutingModule,
       FormsModule,
+      ScrollEventModule,
       NgMultiSelectDropDownModule.forRoot()
    ],
    providers: [

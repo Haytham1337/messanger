@@ -73,7 +73,7 @@ namespace Infrastructure.Services
 
             var users = await this._unit.UserConversationRepository.GetUsersByConversationAsync(request.Id);
 
-            var messages = await this._unit.MessageRepository.GetMessagesByChat(request.Id);
+            var messages = await this._unit.MessageRepository.GetMessagesByChat(request.Id,request.portion);
 
 
             if (chatContent == null)

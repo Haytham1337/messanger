@@ -10,7 +10,7 @@
           <app-groupinfo *ngIf="chatservice.currentChatType!==0"></app-groupinfo>
         </div>
       </div>
-      <div class="col-sm p-0 m-0 overflow-auto" id="contentdiv">
+      <div class="col-sm p-0 m-0 overflow-auto" id="contentdiv"  detect-scroll (onScroll)="scroll()">
         <div *ngIf="messages.length==0" id="chatempty">
           <img src="../../assets/running.png" width="30" height="30" class="d-inline-block align-top mr-1" alt="">
           Type smth to your Friend...

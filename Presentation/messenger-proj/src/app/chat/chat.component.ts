@@ -3,6 +3,8 @@ import { UserService, User } from './../services/user.service';
 import { ChatService, Message } from './../services/chat.service';
 import { Component, OnInit} from '@angular/core';
 import {DatePipe} from '@angular/common';
+import { ScrollEvent } from 'ngx-scroll-event';
+
 
 @Component({
   selector: 'app-chat',
@@ -21,6 +23,8 @@ export class ChatComponent implements OnInit {
 
   currentChatUser:User=new User();
 
+  movedToTop:boolean=false;
+
   constructor(private chatservice:ChatService,private userservice:UserService, private datePipe:DatePipe,private curDate:CurrentDate) 
   { 
     chatservice.messagesUpdate.subscribe(res=>this.messages=res);
@@ -37,10 +41,14 @@ export class ChatComponent implements OnInit {
       {
         this.messages=mess;
 
-        setTimeout(()=>{
-          let elem=document.getElementById("contentdiv");
-          elem.scrollTop=elem.scrollHeight;
-        },5)
+        if(!this.movedToTop){
+          setTimeout(()=>{
+            let elem=document.getElementById("contentdiv");
+            elem.scrollTop=elem.scrollHeight;
+          },5)
+        }
+
+        this.movedToTop=false;
       });
     
     this.userservice.data.subscribe(user=>this.currentUser=user);
@@ -73,6 +81,14 @@ export class ChatComponent implements OnInit {
     }
     else{
       return this.datePipe.transform(date);
+    }
+  }
+
+  scroll(){
+    let elem=document.getElementById("contentdiv");
+    if(elem.scrollTop==0){
+      this.chatservice.loadMessages();
+      this.movedToTop=true;
     }
   }
 }

@@ -14,12 +14,14 @@ namespace Infrastructure.Repositories
 
         }
 
-        public async Task<IEnumerable<Message>> GetMessagesByChat(int chatId)
+        public async Task<IEnumerable<Message>> GetMessagesByChat(int chatId,int portionCount)
         {
            return await this.db.Messages
                 .Where(mes=>mes.ChatId==chatId)
                 .Include(m => m.User)
-                .OrderBy(m => m.TimeCreated)
+                .OrderByDescending(m => m.TimeCreated)
+                .Skip((portionCount-1)*15)
+                .Take(15)
                 .ToListAsync();
         }
     }

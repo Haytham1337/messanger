@@ -14,14 +14,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MessengerAPI.Controllers
 {
-    [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize]
+    [Route("api/[controller]/[action]")]
     public class ConversationController : ControllerBase
     {
-        private readonly IConversationService _conversationService;
+        private readonly IGroupService _conversationService;
 
-        public ConversationController(IConversationService conversationService)
+        public ConversationController(IGroupService conversationService)
         {
             _conversationService = conversationService;
         }

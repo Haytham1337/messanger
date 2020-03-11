@@ -8,16 +8,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MessengerAPI.Controllers
 {
-    [Route("api/[controller]/[action]")]
     [ApiController]
+    [Route("api/[controller]/[action]")
     public class ChannelController : ControllerBase
     {
-        private readonly IConversationService _conversationService;
-        private object _chatService;
-
-        public ChannelController(IConversationService conversationService)
+        private readonly IGroupService _groupService;
+        public ChannelController(IGroupService groupService)
         {
-            _conversationService = conversationService;
+            _groupService = groupService;
         }
 
         [HttpPost]
@@ -25,7 +23,7 @@ namespace MessengerAPI.Controllers
         {
             request.userId = HttpContext.GetUserId();
 
-            await _conversationService.SubscribeForChannelAsync(request);
+            await _groupService.SubscribeForChannelAsync(request);
 
             return Ok();
         }
@@ -35,7 +33,7 @@ namespace MessengerAPI.Controllers
         {
             request.UserId = HttpContext.GetUserId();
 
-            await _conversationService.CreateGroupAsync(request);
+            await _groupService.CreateGroupAsync(request);
 
             return Ok();
         }
@@ -45,7 +43,7 @@ namespace MessengerAPI.Controllers
         {
             request.UserId = HttpContext.GetUserId();
 
-            await this._conversationService.LeaveGroupAsync(request);
+            await this._groupService.LeaveGroupAsync(request);
 
             return Ok();
         }

@@ -29,7 +29,6 @@
     "updateGroupphoto":"https://localhost:44334/api/Conversation/ChangeConversationPhoto",
 
 
-
     "addNewGroupMember":"https://localhost:44334/api/Group/AddNewGroupMember",
     "leaveGroup":"https://localhost:44334/api/Group/LeaveGroup",
     "createGroup":"https://localhost:44334/api/Group/CreateGroup"

@@ -36,5 +36,12 @@ namespace Infrastructure.Repositories
                     .Include(user => user.BlockedUsers)
                     .FirstOrDefaultAsync();
         }
+
+        public async Task<List<User>> GetUsersIn(IEnumerable<int> values)
+        {
+            return await this.db.Users
+                .Where(user => values.Contains(user.Id))
+                .ToListAsync();
+        }
     }
 }

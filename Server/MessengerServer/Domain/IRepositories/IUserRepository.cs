@@ -13,5 +13,7 @@ namespace Domain.IRepositories
         Task<List<User>> SearchUsersAsync(string filter);
 
         Task<User> GetUserWithBlackList(string userName);
+
+        Task<List<User>> GetUsersIn(IEnumerable<int> values);
     }
 }

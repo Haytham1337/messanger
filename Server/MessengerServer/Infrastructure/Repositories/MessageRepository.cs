@@ -14,7 +14,7 @@ namespace Infrastructure.Repositories
 
         }
 
-        public async Task<IEnumerable<Message>> GetMessagesByChat(int chatId,int portionCount=1)
+        public async Task<IEnumerable<Message>> GetMessagesByChat(int chatId,int portionCount)
         {
            return await this.db.Messages
                 .Where(mes=>mes.ChatId==chatId)

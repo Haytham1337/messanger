@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DataAnnotationsExtensions;
+using System.ComponentModel.DataAnnotations;
 
 namespace Application.Models.ChatDto.Requests
 {
@@ -7,6 +8,7 @@ namespace Application.Models.ChatDto.Requests
         [Required]
         public int Id { get; set; }
 
-        public int portion { get; set; } = 1;
+        [Min(1)]
+        public int portion { get; set; }=1;
     }
 }

@@ -9,24 +9,16 @@ using System.Threading.Tasks;
 
 namespace Application.IServices
 {
-    public interface IConversationService
+    public interface IGroupService
     {
         Task CreateChatAsync(AddConversationRequest request);
 
         Task<List<GetConversationDto>> GetConversationsAsync(GetChatsRequestDto request);
 
-        Task CreateGroupAsync(AddGroupRequest request);
-
         Task ChangePhotoAsync(AddPhotoDto model);
-
-        Task SubscribeForChannelAsync(AddConversationRequest request);
 
         Task<List<SearchConversationResponce>> SearchConversation(SearchRequest request);
 
         Task DeleteConversationAsync(DeleteRequest request);
-
-        Task LeaveGroupAsync(LeaveGroupRequest request);
-
-        Task AddConversationMemberAsync(AddConversationMemberRequest request);
     }
 }

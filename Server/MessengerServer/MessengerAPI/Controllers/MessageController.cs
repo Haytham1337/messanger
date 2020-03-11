@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MessengerAPI.Controllers
 {
-    [Route("api/[controller]/[action]")]
     [ApiController]
+    [Route("api/[controller]/[action]")]
     public class MessageController : ControllerBase
     {
         private readonly IMessageService _messageService;

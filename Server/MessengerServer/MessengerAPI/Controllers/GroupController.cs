@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Application.IServices;
 using Application.Models.ConversationDto.Requests;
 using Infrastructure.Extensions;
@@ -10,13 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MessengerAPI.Controllers
 {
-    [Route("api/[controller]/[action]")]
     [ApiController]
+    [Route("api/[controller]/[action]")]
     public class GroupController : ControllerBase
     {
-        private IConversationService _conversationService;
+        private IGroupService _conversationService;
 
-        public GroupController(IConversationService conversationService)
+        public GroupController(IGroupService conversationService)
         {
             _conversationService = conversationService;
         }

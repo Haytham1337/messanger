@@ -32,7 +32,9 @@ namespace Infrastructure.Extensions
 
             services.AddScoped<IUserService, UserService>();
 
-            services.AddScoped<IConversationService, ConversationService>();
+            services.AddScoped<IGroupService, ConversationService>();
+
+            services.AddScoped<IGroupService, GroupService>();
 
             services.AddSingleton<ICache, MemoryCache>();
 

@@ -190,6 +190,8 @@
   border-bottom-color: #6F89C8;
 }
 
+
+
 #contentdiv::-webkit-scrollbar{
   width:3px;
 }
@@ -200,4 +202,9 @@
 
 #contentdiv::-webkit-scrollbar-thumb{
   background: cadetblue;
+}
+
+#contentdiv{
+  flex-direction:column-reverse; 
+  display: flex;
 }

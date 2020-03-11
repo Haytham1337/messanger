@@ -26,13 +26,22 @@ export class ChatComponent implements OnInit {
     chatservice.messagesUpdate.subscribe(res=>this.messages=res);
   }
 
+
    ngOnInit() {  
     
     this.chatservice.startConnection();  
     
     this.chatservice.updateChat();
 
-    this.chatservice.messagessource.subscribe(mess=>{this.messages=mess;console.log(this.messages)});
+    this.chatservice.messagessource.subscribe(mess=>
+      {
+        this.messages=mess;
+
+        setTimeout(()=>{
+          let elem=document.getElementById("contentdiv");
+          elem.scrollTop=elem.scrollHeight;
+        },5)
+      });
     
     this.userservice.data.subscribe(user=>this.currentUser=user);
 

@@ -19,7 +19,7 @@ namespace Infrastructure.Repositories
            return await this.db.Messages
                 .Where(mes=>mes.ChatId==chatId)
                 .Include(m => m.User)
-                .OrderBy(m => m.TimeCreated)
+                .OrderByDescending(m => m.TimeCreated)
                 .ToListAsync();
         }
     }

@@ -128,7 +128,7 @@ export class ChatService {
         this.chats.getValue().splice(0,0,curchat);
 
         curchat.content=data.content;
-        this.messages.value.push(data);
+        this.messages.value.splice(0,0,data);
         this.MessagesUpdate(this.messages.getValue());
         this.ChatsUpdate(this.chats.getValue());
       }

@@ -1,4 +1,5 @@
-﻿using Application.IServices;
+﻿using Application;
+using Application.IServices;
 using Application.Models.ChatDto.Requests;
 using Application.Models.ChatDto.Responces;
 using Application.Models.ConversationDto.Requests;
@@ -29,9 +30,10 @@ namespace Infrastructure.Services
         private readonly IPhotoHelper _photoHelper;
 
         private readonly IMapper _map;
+        private readonly ICache _cache;
 
         public ConversationService(IUnitOfWork unit, IAuthService auth, IConfiguration config,
-            IPhotoHelper photoHelper,IMapper map)
+            IPhotoHelper photoHelper,IMapper map,ICache cache)
         {
             _unit = unit;
 
@@ -42,6 +44,8 @@ namespace Infrastructure.Services
             _photoHelper = photoHelper;
 
             _map = map;
+
+            _cache = cache;
         }
 
         public async Task CreateChatAsync(AddConversationRequest request)
@@ -108,7 +112,7 @@ namespace Infrastructure.Services
             {
                 if (conversation.Type == ConversationType.Chat)
                 {
-                    var secondUserId = conversation.UserConversations[0].UserId == user.Id ? conversation.UserConversations[1].UserId :
+                    var secondUserId = conversation.UserConversations[0].UserId == user.Id ? conversation.UserConversations[1].UserId:
                         conversation.UserConversations[0].UserId;
 
                     var secondUser = await _auth.FindByIdUserAsync(secondUserId);
@@ -119,6 +123,7 @@ namespace Infrastructure.Services
                         Photo = secondUser.Photo,
                         Content = conversation.LastMessage?.Content,
                         SecondUserId = secondUserId,
+                        isOnline=_cache.Get($"{secondUserId}")==null?false:true,
                         IsBlocked = user.BlockedUsers.Any(
                         bl => bl.UserToBlockId == secondUserId) ? true : false
                     });

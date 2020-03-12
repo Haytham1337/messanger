@@ -34,7 +34,8 @@ export interface Chat{
   content:string,
   secondUserId:number,
   isBlocked,
-  Type:number
+  Type:number,
+  isOnline:boolean
 }
 
 export  class SearchConversation{
@@ -214,6 +215,7 @@ export class ChatService {
 
     return await this.http.get<Chat[]>(url).toPromise()
       .then(res=>{
+        console.log(res);
         if(res.length==0)
         {
           this.CurrentContentUpdate(null);

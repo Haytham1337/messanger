@@ -13,5 +13,7 @@ namespace Application.Models.ChatDto.Responces
         public int? SecondUserId { get; set; }
 
         public bool? IsBlocked { get; set; }
+
+        public bool isOnline { get; set; }
     }
 }

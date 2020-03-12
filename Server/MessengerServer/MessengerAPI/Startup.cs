@@ -195,6 +195,8 @@ namespace MessengerAPI
 
             app.UseIdHandler();
 
+            app.UseUserStatusMiddleware();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

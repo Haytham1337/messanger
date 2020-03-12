@@ -75,7 +75,7 @@ namespace MessengerAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangePhoto(IFormCollection collection)
         {
-            if (ModelState.IsValid && collection.Files[0] != null)
+            if (collection.Files[0] != null)
             {
                 await _userService.ChangePhotoAsync(new AddPhotoDto()
                 {

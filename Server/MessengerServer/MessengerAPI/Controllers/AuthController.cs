@@ -26,28 +26,20 @@ namespace MessengerAPI.Controllers
         [HttpPost]
         public async Task<ActionResult> SignIn(LoginModel model)
         {
-            if (ModelState.IsValid)
-            {
-                return Ok(await _auth.AuthenticateAsync(model));
-            }
+            var signInResponce = await _auth.AuthenticateAsync(model);
 
-            return BadRequest("Model is not valid!!");
+            return Ok(signInResponce);
         }
 
         [HttpPost]
         public async Task<ActionResult> Register(RegisterModel model)
         {
-            if (ModelState.IsValid)
-            {
-                var result = await _auth.RegisterAsync(model);
+            var result = await _auth.RegisterAsync(model);
 
-                if (result.Succeeded)
-                    return Ok("Success!!");
-                else
-                    return BadRequest("Register denied!");
-            }
-
-            return BadRequest("Model is not valid!");
+            if (result.Succeeded)
+                return Ok("Success!!");
+            else
+                return BadRequest("Register denied!");
         }
 
         [HttpPost]

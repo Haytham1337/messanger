@@ -1,10 +1,10 @@
 import { PhotoService } from './photo.service';
 import { ConfigService } from './config.service';
 import { HttpClient ,HttpHeaders} from '@angular/common/http';
-import { Injectable, OnInit, ɵConsole, ComponentFactoryResolver } from '@angular/core';
+import { Injectable} from '@angular/core';
 import * as signalR from "@aspnet/signalr"
 import {DomSanitizer} from '@angular/platform-browser';
-import { User, UserService } from './user.service';
+import { User } from './user.service';
 import { BehaviorSubject } from 'rxjs';
 
 export interface Message{

@@ -47,7 +47,7 @@ namespace MessengerAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangeConversationPhoto(IFormCollection collection, [FromQuery(Name = "chatId")] int chatId)
         {
-            if (ModelState.IsValid && collection.Files[0] != null)
+            if (collection.Files[0] != null)
             {
                 await _conversationService.ChangePhotoAsync(new AddPhotoDto()
                 {

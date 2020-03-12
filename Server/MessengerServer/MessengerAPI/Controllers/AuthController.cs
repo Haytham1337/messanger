@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MessengerAPI.Controllers
 {
-    
+
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class AuthController : ControllerBase
@@ -16,7 +16,7 @@ namespace MessengerAPI.Controllers
         private readonly IAuthService _auth;
 
         private readonly UserManager<SecurityUser> _userManager;
-        public AuthController(IAuthService auth,UserManager<SecurityUser> userManager)
+        public AuthController(IAuthService auth, UserManager<SecurityUser> userManager)
         {
             _auth = auth;
 
@@ -51,7 +51,7 @@ namespace MessengerAPI.Controllers
         }
 
         [HttpPost]
-        public async  Task<bool> EmailExist([FromBody]CheckRegisterModel model)
+        public async Task<bool> EmailExist([FromBody]CheckRegisterModel model)
         {
             return await this._auth.EmailExistAsync(model);
         }

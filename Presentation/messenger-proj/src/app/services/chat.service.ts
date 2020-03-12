@@ -1,10 +1,10 @@
 import { PhotoService } from './photo.service';
 import { ConfigService } from './config.service';
 import { HttpClient ,HttpHeaders} from '@angular/common/http';
-import { Injectable, OnInit, ɵConsole, ComponentFactoryResolver } from '@angular/core';
+import { Injectable} from '@angular/core';
 import * as signalR from "@aspnet/signalr"
 import {DomSanitizer} from '@angular/platform-browser';
-import { User, UserService } from './user.service';
+import { User } from './user.service';
 import { BehaviorSubject } from 'rxjs';
 
 export interface Message{
@@ -34,7 +34,8 @@ export interface Chat{
   content:string,
   secondUserId:number,
   isBlocked,
-  Type:number
+  Type:number,
+  isOnline:boolean
 }
 
 export  class SearchConversation{
@@ -108,11 +109,21 @@ export class ChatService {
             
     return await this.http.get<ChatContent>(url,{headers:headers}).toPromise()
         .then((data)=>{
+         data.users=data.users.sort((fu,su)=>{
+             if(fu.isOnline>su.isOnline){
+               return -1;
+             }
+             else{
+               return 1;
+             }
+          })
+          console.log(data.users);
           this. CurrentContentUpdate(data);
           this.currentChatType=data.type;
           this.currentChatAdmin=data.adminId;
           this.MessagesUpdate(data.messages);
-          this.UsersUpdate(data.users);})
+          this.UsersUpdate(data.users);
+        })
     }
 
     public async loadMessages(){
@@ -214,6 +225,7 @@ export class ChatService {
 
     return await this.http.get<Chat[]>(url).toPromise()
       .then(res=>{
+        console.log(res);
         if(res.length==0)
         {
           this.CurrentContentUpdate(null);

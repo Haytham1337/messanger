@@ -1,6 +1,7 @@
 ﻿using Application;
 using Application.IServices;
 using Infrastructure.Cache;
+using Infrastructure.Extensions.MiddleWares;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -20,6 +21,13 @@ namespace Infrastructure.Extensions
         public static IApplicationBuilder UseIdHandler(this IApplicationBuilder app)
         {
             app.UseMiddleware(typeof(NameIdentifierMiddleware));
+
+            return app;
+        }
+
+        public static IApplicationBuilder UseUserStatusMiddleware(this IApplicationBuilder app)
+        {
+            app.UseMiddleware(typeof(UserStatusMiddleware));
 
             return app;
         }

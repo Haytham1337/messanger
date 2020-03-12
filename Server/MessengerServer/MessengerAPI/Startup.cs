@@ -6,6 +6,7 @@ using AutoMapper;
 using Domain;
 using Infrastructure;
 using Infrastructure.AppSecurity;
+using Infrastructure.Cache;
 using Infrastructure.Extensions;
 using MessengerAPI.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -51,10 +52,13 @@ namespace MessengerAPI
 
             services.Configure<TokenOption>(Configuration.GetSection("OptionsForToken"));
 
+            services.Configure<CacheOptions>(Configuration.GetSection("CacheOptions"));
+
+
             var optionsForToken = Configuration.GetSection("OptionsForToken")
                                 .Get<TokenOption>();
-                
-            services.AddAuthentication(options=> 
+
+            services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -77,7 +81,7 @@ namespace MessengerAPI
                         ClockSkew = TimeSpan.Zero
                     };
 
-                    options.Events= new JwtBearerEvents
+                    options.Events = new JwtBearerEvents
                     {
                         OnMessageReceived = context =>
                         {
@@ -93,7 +97,7 @@ namespace MessengerAPI
                             var te = context.Exception;
                             return Task.CompletedTask;
                         }
-                   };
+                    };
                 });
 
             services.Configure<IdentityOptions>(options =>
@@ -194,6 +198,8 @@ namespace MessengerAPI
             app.UseAuthorization();
 
             app.UseIdHandler();
+
+            app.UseUserStatusMiddleware();
 
             app.UseEndpoints(endpoints =>
             {

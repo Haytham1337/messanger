@@ -26,9 +26,9 @@ namespace MessengerAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> UserInfo()
         {
-            var userInfo=await this._userService.GetUserInfoAsync(new GetUserInfoRequest() 
-            { 
-                UserName = User.Identity.Name 
+            var userInfo = await this._userService.GetUserInfoAsync(new GetUserInfoRequest()
+            {
+                UserName = User.Identity.Name
             });
 
             return Ok(userInfo);
@@ -45,7 +45,7 @@ namespace MessengerAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<List<SearchUserDto>> Search([FromQuery]SearchRequest request )
+        public async Task<List<SearchUserDto>> Search([FromQuery]SearchRequest request)
         {
             request.UserId = HttpContext.GetUserId();
 

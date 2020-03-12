@@ -1,5 +1,7 @@
 ﻿using Application;
+using Infrastructure.Cache;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -18,14 +20,13 @@ namespace Infrastructure.Extensions.MiddleWares
             _cache = cache;
         }
 
-        public async Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context,IOptions<CacheOptions> cacheOptions)
         {
-
             if (context.User.Identity.IsAuthenticated)
             {
                 var id= int.Parse(context.User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-                _cache.Set($"{id}", true ,TimeSpan.FromSeconds(60));
+                _cache.Set($"{id}", true ,TimeSpan.FromSeconds(cacheOptions.Value.isOnlineTime));
             }
 
             await _next(context);

@@ -6,6 +6,7 @@ using AutoMapper;
 using Domain;
 using Infrastructure;
 using Infrastructure.AppSecurity;
+using Infrastructure.Cache;
 using Infrastructure.Extensions;
 using MessengerAPI.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -50,6 +51,9 @@ namespace MessengerAPI
 
 
             services.Configure<TokenOption>(Configuration.GetSection("OptionsForToken"));
+
+            services.Configure<CacheOptions>(Configuration.GetSection("CacheOptions"));
+
 
             var optionsForToken = Configuration.GetSection("OptionsForToken")
                                 .Get<TokenOption>();

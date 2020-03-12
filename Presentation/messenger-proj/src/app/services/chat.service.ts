@@ -109,11 +109,21 @@ export class ChatService {
             
     return await this.http.get<ChatContent>(url,{headers:headers}).toPromise()
         .then((data)=>{
+         data.users=data.users.sort((fu,su)=>{
+             if(fu.isOnline>su.isOnline){
+               return -1;
+             }
+             else{
+               return 1;
+             }
+          })
+          console.log(data.users);
           this. CurrentContentUpdate(data);
           this.currentChatType=data.type;
           this.currentChatAdmin=data.adminId;
           this.MessagesUpdate(data.messages);
-          this.UsersUpdate(data.users);})
+          this.UsersUpdate(data.users);
+        })
     }
 
     public async loadMessages(){

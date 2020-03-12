@@ -30,10 +30,11 @@ namespace Infrastructure.Services
         private readonly IPhotoHelper _photoHelper;
 
         private readonly IMapper _map;
+
         private readonly ICache _cache;
 
         public ConversationService(IUnitOfWork unit, IAuthService auth, IConfiguration config,
-            IPhotoHelper photoHelper,IMapper map,ICache cache)
+            IPhotoHelper photoHelper, IMapper map, ICache cache)
         {
             _unit = unit;
 
@@ -112,7 +113,7 @@ namespace Infrastructure.Services
             {
                 if (conversation.Type == ConversationType.Chat)
                 {
-                    var secondUserId = conversation.UserConversations[0].UserId == user.Id ? conversation.UserConversations[1].UserId:
+                    var secondUserId = conversation.UserConversations[0].UserId == user.Id ? conversation.UserConversations[1].UserId :
                         conversation.UserConversations[0].UserId;
 
                     var secondUser = await _auth.FindByIdUserAsync(secondUserId);
@@ -123,7 +124,7 @@ namespace Infrastructure.Services
                         Photo = secondUser.Photo,
                         Content = conversation.LastMessage?.Content,
                         SecondUserId = secondUserId,
-                        isOnline=_cache.Get($"{secondUserId}")==null?false:true,
+                        isOnline = _cache.Get($"{secondUserId}") == null ? false : true,
                         IsBlocked = user.BlockedUsers.Any(
                         bl => bl.UserToBlockId == secondUserId) ? true : false
                     });
@@ -132,9 +133,9 @@ namespace Infrastructure.Services
                 {
                     res.Add(new GetConversationDto()
                     {
-                        Id=conversation.Id,
-                        Photo=conversation.ConversationInfo.PhotoName,
-                        Content= conversation.LastMessage?.Content,
+                        Id = conversation.Id,
+                        Photo = conversation.ConversationInfo.PhotoName,
+                        Content = conversation.LastMessage?.Content
                     });
                 }
             }
@@ -149,7 +150,7 @@ namespace Infrastructure.Services
 
             var conversation = await _unit.ConversationRepository.GetChatContentAsync((int)model.ConversationId);
 
-            if(conversation==null||conversation.ConversationInfo.AdminId!=model.UserId)
+            if (conversation == null || conversation.ConversationInfo.AdminId != model.UserId)
                 throw new ConversationNotExistException("Conversation photo cannot be changed!!", 400);
 
             conversation.ConversationInfo.PhotoName = await this._photoHelper.SavePhotoAsync(model);
@@ -170,7 +171,7 @@ namespace Infrastructure.Services
 
             users.Remove(user);
 
-            var conversations = await _unit.ConversationRepository.SearchConversationsAsync(request.Filter,request.UserId);
+            var conversations = await _unit.ConversationRepository.SearchConversationsAsync(request.Filter, request.UserId);
 
             responce.AddRange(this._map.Map<List<SearchConversationResponce>>(users));
 
@@ -186,7 +187,7 @@ namespace Infrastructure.Services
             if (conversation == null)
                 throw new ConversationNotExistException("Given id is not set!!", 400);
 
-            if(conversation.Type==ConversationType.Chat)
+            if (conversation.Type == ConversationType.Chat)
             {
 
                 if (conversation.UserConversations.Any(uconv => uconv.UserId == request.UserId))

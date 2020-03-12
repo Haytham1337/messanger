@@ -1,4 +1,5 @@
-﻿using Application.IServices;
+﻿using Application;
+using Application.IServices;
 using Application.Models.ChatDto.Requests;
 using Application.Models.MessageDto;
 using Application.Models.UserDto;
@@ -23,13 +24,17 @@ namespace Infrastructure.Services
 
         private readonly IMapper _map;
 
-        public MessageService(IUnitOfWork unit,IAuthService auth,IMapper map)
+        private readonly ICache _cache;
+
+        public MessageService(IUnitOfWork unit,IAuthService auth,IMapper map,ICache cache)
         {
             _unit = unit;
 
             _auth = auth;
 
             _map = map;
+
+            _cache = cache;
         }
 
         public async Task<GetMessageDto> AddMessageAsync(AddMessageDto message)
@@ -87,6 +92,11 @@ namespace Infrastructure.Services
                 AdminId=chatContent.ConversationInfo==null?null:(int?)chatContent.ConversationInfo.AdminId,
                 Name= chatContent.ConversationInfo==null?null:chatContent.ConversationInfo.GroupName
             };
+
+            result.Users.ForEach(user =>
+            {
+                user.isOnline = _cache.Get($"{user.Id}") == null ? false : true;
+            });
 
             return result;
         }

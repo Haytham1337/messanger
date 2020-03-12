@@ -29,10 +29,10 @@ namespace Infrastructure.Services
         Task<SignInResponce> ExchangeTokensAsync(ExchangeTokenRequest request);
     }
 
-    public class AuthService:IAuthService
+    public class AuthService : IAuthService
     {
         private readonly UserManager<SecurityUser> _userManager;
-                       
+
         private readonly IUnitOfWork _unit;
 
         private readonly IConfiguration _config;
@@ -40,7 +40,7 @@ namespace Infrastructure.Services
         private readonly TokenOption options;
 
         public AuthService(UserManager<SecurityUser> userManager, IOptions<TokenOption> options,
-         IUnitOfWork unit,IConfiguration config)
+         IUnitOfWork unit, IConfiguration config)
         {
             _userManager = userManager;
 
@@ -48,7 +48,7 @@ namespace Infrastructure.Services
 
             _config = config;
 
-            this.options = options.Value;       
+            this.options = options.Value;
         }
 
         public async Task<IdentityResult> RegisterAsync(RegisterModel model)
@@ -69,7 +69,7 @@ namespace Infrastructure.Services
                     PhoneNumber = model.PhoneNumber,
                     Sex = model.Sex,
                     Email = model.Email,
-                    Photo= model.Sex == Sex.Male ? _config.GetValue<string>("defaultmale") : _config.GetValue<string>("defaultfemale"),
+                    Photo = model.Sex == Sex.Male ? _config.GetValue<string>("defaultmale") : _config.GetValue<string>("defaultfemale"),
                     Id = user.Id
                 };
 
@@ -98,7 +98,7 @@ namespace Infrastructure.Services
             if (user == null)
                 throw new UserNotExistException("User with the given email not exist!!", 400);
 
-            var identity =await this.GetIdentityAsync(model);
+            var identity = await this.GetIdentityAsync(model);
 
             var refreshToken = this.GenerateRefreshToken();
 
@@ -118,8 +118,12 @@ namespace Infrastructure.Services
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
-            return new SignInResponce { Access_Token=encodedJwt,ExpiresIn= now.Add(TimeSpan.FromSeconds(options.LifeTime)),
-                Refresh_Token=refreshToken};
+            return new SignInResponce
+            {
+                Access_Token = encodedJwt,
+                ExpiresIn = now.Add(TimeSpan.FromSeconds(options.LifeTime)),
+                Refresh_Token = refreshToken
+            };
         }
 
         public async Task<SignInResponce> ExchangeTokensAsync(ExchangeTokenRequest request)
@@ -206,20 +210,20 @@ namespace Infrastructure.Services
             {
                 ValidateAudience = true,
                 ValidateIssuer = true,
-                ValidIssuer= options.Issuer,
-                ValidAudience= options.Audience,
+                ValidIssuer = options.Issuer,
+                ValidAudience = options.Audience,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = options.GetSymmetricSecurityKey(),
-                ValidateLifetime = false 
+                ValidateLifetime = false
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
-           
+
             SecurityToken securityToken;
-            
+
             var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
             var jwtSecurityToken = securityToken as JwtSecurityToken;
-            
+
             if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256))
                 throw new SecurityTokenException("Invalid token");
 

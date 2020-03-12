@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
-    public class GroupService:IGroupService
+    public class GroupService : IGroupService
     {
         private readonly IUnitOfWork _unit;
 
@@ -21,7 +21,7 @@ namespace Infrastructure.Services
 
         private readonly IAuthService _auth;
 
-        public GroupService(IUnitOfWork unit,IConfiguration conf,IAuthService auth)
+        public GroupService(IUnitOfWork unit, IConfiguration conf, IAuthService auth)
         {
             _unit = unit;
 

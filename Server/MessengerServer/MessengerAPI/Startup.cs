@@ -57,8 +57,8 @@ namespace MessengerAPI
 
             var optionsForToken = Configuration.GetSection("OptionsForToken")
                                 .Get<TokenOption>();
-                
-            services.AddAuthentication(options=> 
+
+            services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -81,7 +81,7 @@ namespace MessengerAPI
                         ClockSkew = TimeSpan.Zero
                     };
 
-                    options.Events= new JwtBearerEvents
+                    options.Events = new JwtBearerEvents
                     {
                         OnMessageReceived = context =>
                         {
@@ -97,7 +97,7 @@ namespace MessengerAPI
                             var te = context.Exception;
                             return Task.CompletedTask;
                         }
-                   };
+                    };
                 });
 
             services.Configure<IdentityOptions>(options =>

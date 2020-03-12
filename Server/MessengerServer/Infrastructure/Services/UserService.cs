@@ -9,22 +9,19 @@ using Domain.Entities;
 using Domain.Exceptions.BlockedUserExceptions;
 using Domain.Exceptions.ChatExceptions;
 using Domain.Exceptions.UserExceptions;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
-    public class UserService:IUserService
+    public class UserService : IUserService
     {
         private readonly IUnitOfWork _unit;
         private readonly IMapper _map;
         private readonly IPhotoHelper _photoHelper;
         private readonly IAuthService _auth;
 
-        public UserService(IUnitOfWork unit,IMapper map,IAuthService auth,IPhotoHelper photoHelper)
+        public UserService(IUnitOfWork unit, IMapper map, IAuthService auth, IPhotoHelper photoHelper)
         {
             _unit = unit;
 
@@ -37,11 +34,11 @@ namespace Infrastructure.Services
 
         public async Task<GetUserDto> GetUserInfoAsync(GetUserInfoRequest request)
         {
-            var user= await _unit.UserRepository.GetWithPhotoAsync(request.UserName);
+            var user = await _unit.UserRepository.GetWithPhotoAsync(request.UserName);
 
             if (user == null)
-                throw new UserNotExistException("Given user not exist!!",400);
-            
+                throw new UserNotExistException("Given user not exist!!", 400);
+
             return _map.Map<GetUserDto>(user);
         }
 
@@ -51,17 +48,17 @@ namespace Infrastructure.Services
 
             if (user == null)
                 throw new UserNotExistException("Given user not exist!!", 400);
-      
+
             user.Age = model.Age;
 
             user.PhoneNumber = model.Phone;
 
             user.NickName = model.NickName;
 
-            await _unit.Commit();         
+            await _unit.Commit();
         }
 
-        public  async Task<List<SearchUserDto>> SearchUserAsync(SearchRequest request)
+        public async Task<List<SearchUserDto>> SearchUserAsync(SearchRequest request)
         {
             var currentUser = await _auth.FindByIdUserAsync(request.UserId);
 
@@ -77,13 +74,13 @@ namespace Infrastructure.Services
             return res;
         }
 
-        public async Task BlockUserAsync(BlockUserRequest request) 
+        public async Task BlockUserAsync(BlockUserRequest request)
         {
             var currentUser = await this._auth.FindByIdUserAsync(request.UserId);
 
             if (currentUser == null)
-                throw new UserNotExistException("Given user not exist!!",400);
-            
+                throw new UserNotExistException("Given user not exist!!", 400);
+
             var userToBlock = await this._unit.UserRepository.GetAsync(request.UserIdToBlock);
 
             if (userToBlock == null)
@@ -94,9 +91,9 @@ namespace Infrastructure.Services
                               .IsBlockedUserAsync(currentUser.Id, request.UserIdToBlock);
 
             if (blockedUser != null)
-                throw new BlockedUserAlreadyExistException("Given user to block is already blocked!!",400);
+                throw new BlockedUserAlreadyExistException("Given user to block is already blocked!!", 400);
 
-            
+
             var newBlockedUser = new BlockedUser()
             {
                 UserId = currentUser.Id,
@@ -122,7 +119,7 @@ namespace Infrastructure.Services
             if (blockedUser == null)
                 throw new BlockedUserNotExistException("User to unblock not exist!!", 400);
 
-            
+
             await this._unit.BlockedUserRepository.DeleteAsync(blockedUser.Id);
 
             await this._unit.Commit();

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace MessengerAPI.Hubs
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class Chat:Hub
+    public class Chat : Hub
     {
         private readonly IMessageService _messageService;
 
@@ -26,8 +26,8 @@ namespace MessengerAPI.Hubs
 
         private readonly IOptions<CacheOptions> _cacheOptions;
 
-        public Chat(ICache cache,IMessageService messageService,IUnitOfWork unit,
-            IUserService userService,IOptions<CacheOptions> cacheOptions)
+        public Chat(ICache cache, IMessageService messageService, IUnitOfWork unit,
+            IUserService userService, IOptions<CacheOptions> cacheOptions)
         {
             _messageService = messageService;
 
@@ -42,7 +42,7 @@ namespace MessengerAPI.Hubs
 
         public override async Task OnConnectedAsync()
         {
-            var userId =Context.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userId = Context.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             var userChats = await this._unit.ConversationRepository.GetUserChatsAsync(int.Parse(userId));
 
@@ -67,7 +67,7 @@ namespace MessengerAPI.Hubs
                 _cache.Set($"{message.userId}:{message.chatId}", isBlocked, TimeSpan.FromSeconds(_cacheOptions.Value.isBlockeTime));
             }
 
-            if(!(bool)isBlocked)
+            if (!(bool)isBlocked)
             {
                 var newMessage = await _messageService.AddMessageAsync(message);
 

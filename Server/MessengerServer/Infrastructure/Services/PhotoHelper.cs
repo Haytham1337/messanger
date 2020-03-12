@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
-    public class PhotoHelper:IPhotoHelper
+    public class PhotoHelper : IPhotoHelper
     {
         private readonly IConfiguration _config;
         [Obsolete]
         private readonly IHostingEnvironment _env;
 
         [Obsolete]
-        public PhotoHelper(IConfiguration config,IHostingEnvironment env)
+        public PhotoHelper(IConfiguration config, IHostingEnvironment env)
         {
             _config = config;
 

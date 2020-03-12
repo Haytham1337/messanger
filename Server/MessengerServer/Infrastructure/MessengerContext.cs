@@ -1,12 +1,10 @@
 ﻿using Domain.Entities;
 using Infrastructure.Configurations;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace Infrastructure
 {
-    public class MessengerContext:DbContext
+    public class MessengerContext : DbContext
     {
         public DbSet<User> Users { get; set; }
 
@@ -20,7 +18,7 @@ namespace Infrastructure
 
         public DbSet<ConversationInfo> ConversationsInfo { get; set; }
 
-        public MessengerContext(DbContextOptions<MessengerContext> options):base(options)
+        public MessengerContext(DbContextOptions<MessengerContext> options) : base(options)
         {
 
         }

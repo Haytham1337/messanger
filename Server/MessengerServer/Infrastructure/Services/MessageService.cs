@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
-    public class MessageService:IMessageService
+    public class MessageService : IMessageService
     {
         private readonly IUnitOfWork _unit;
 
@@ -26,7 +26,7 @@ namespace Infrastructure.Services
 
         private readonly ICache _cache;
 
-        public MessageService(IUnitOfWork unit,IAuthService auth,IMapper map,ICache cache)
+        public MessageService(IUnitOfWork unit, IAuthService auth, IMapper map, ICache cache)
         {
             _unit = unit;
 
@@ -47,16 +47,16 @@ namespace Infrastructure.Services
             var chat = await _unit.ConversationRepository.GetAsync(message.chatId);
 
             if (chat == null)
-                throw new ConversationNotExistException("Given chatid is incorrect!!",400);
+                throw new ConversationNotExistException("Given chatid is incorrect!!", 400);
 
             if (!string.IsNullOrEmpty(message.Content))
             {
-                var newmessage= new Message()
+                var newmessage = new Message()
                 {
                     Content = message.Content,
                     TimeCreated = DateTime.Now,
                     UserId = user.Id,
-                    ChatId=message.chatId
+                    ChatId = message.chatId
                 };
 
                 await this._unit.MessageRepository.CreateAsync(newmessage);
@@ -68,7 +68,7 @@ namespace Infrastructure.Services
                 return _map.Map<GetMessageDto>(newmessage);
             }
 
-            throw new MessageInCorrectException("Given message is incorrect!!",400);
+            throw new MessageInCorrectException("Given message is incorrect!!", 400);
 
         }
 
@@ -78,7 +78,7 @@ namespace Infrastructure.Services
 
             var users = await this._unit.UserConversationRepository.GetUsersByConversationAsync(request.Id);
 
-            var messages = await this._unit.MessageRepository.GetMessagesByChat(request.Id,request.portion);
+            var messages = await this._unit.MessageRepository.GetMessagesByChat(request.Id, request.portion);
 
 
             if (chatContent == null)
@@ -88,9 +88,9 @@ namespace Infrastructure.Services
             {
                 Users = _map.Map<List<GetUserDto>>(users.Select(u => u.User)),
                 Messages = _map.Map<List<GetMessageDto>>(messages),
-                Type=chatContent.Type,
-                AdminId=chatContent.ConversationInfo==null?null:(int?)chatContent.ConversationInfo.AdminId,
-                Name= chatContent.ConversationInfo==null?null:chatContent.ConversationInfo.GroupName
+                Type = chatContent.Type,
+                AdminId = chatContent.ConversationInfo == null ? null : (int?)chatContent.ConversationInfo.AdminId,
+                Name = chatContent.ConversationInfo == null ? null : chatContent.ConversationInfo.GroupName
             };
 
             result.Users.ForEach(user =>

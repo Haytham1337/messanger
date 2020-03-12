@@ -10,10 +10,12 @@ namespace Application.Models
     {
         [Required]
         [DataType(DataType.EmailAddress)]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
+        [MinLength(5)]
         public string Password { get; set; }
 
         [Required]
@@ -28,6 +30,7 @@ namespace Application.Models
 
         public string PhoneNumber { get; set; }
 
+        [Range(1,100)]
         public int Age { get; set; }
     }
 }

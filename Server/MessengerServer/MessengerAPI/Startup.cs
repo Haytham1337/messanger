@@ -98,6 +98,11 @@ namespace MessengerAPI
                             return Task.CompletedTask;
                         }
                     };
+                })
+                .AddFacebook(options=> 
+                {
+                    options.AppId = "2313754038918109";
+                    options.AppSecret = "55373e262a2df2d357123155cdc6a878";
                 });
 
             services.Configure<IdentityOptions>(options =>

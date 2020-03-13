@@ -31,12 +31,13 @@
               </p>
         
               <p>or sign in with:</p>
-              <a href="#" class="mx-2" role="button"><i class="fab fa-facebook-f light-blue-text"></i></a>
+              <a class="mx-2" role="button" (click)="submitLogin();"><i class="fab fa-facebook-f light-blue-text"></i></a>
               <a href="#" class="mx-2" role="button"><i class="fab fa-twitter light-blue-text"></i></a>
               <a href="#" class="mx-2" role="button"><i class="fab fa-linkedin-in light-blue-text"></i></a>
               <a href="#" class="mx-2" role="button"><i class="fab fa-github light-blue-text"></i></a>
-        
+  
             </form>  
+            <button type="button" class="btn" (click)="signout();">Log out</button>
           </div>
         </div>
     </section>

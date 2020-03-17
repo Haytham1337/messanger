@@ -25,7 +25,7 @@
               <input *ngIf="userservice.currentUser.value.id==chatContent.adminId" style="display: none;" type="file" id="group_photo_id" accept=".jpg,.jpeg,.png" (change)="photoselected($event)">
             </div>
             <div class="col-sm m-0 p-0 mt-3 ml-4 text-left" id="groupName">
-              <p>
+              <p id="pinfo" class="overflow-auto">
                {{chatContent.name}}
               </p>
             </div>
@@ -50,19 +50,19 @@
 
                   </div>
                   <div class="col-1 m-0 p-0" [class.mr-5]="!user.isOnline">
-                    <img [src]="GetUrl(user.photoName)" id="userinfophoto" width="40" height="40">
+                    <img [src]="GetUrl(user.photoName)" id="userinfophoto" class="gphoto" width="40" height="40">
                   </div>
                   <div class="col-2 m-0 p-0"  [class.mr-3]="user.isOnline" *ngIf="user.isOnline">
-                    <img src="../../assets/online.png" alt="" class="online text-left">
+                    <img src="../../assets/online.png" alt="" class="online text-left mb-1">
                   </div>
                 </div>
               </div>
-              <div class="col-2 mt-1" [class.isadmin]="user.id==chatContent.adminId">
-               <h5>{{user.nickName}}</h5>
-              </div>  
-              <div class="col-1" *ngIf="user.id==chatContent.adminId">
+              <div class="col-1 m-0 p-0" *ngIf="user.id==chatContent.adminId">
                 <img src="../../assets/admin.png" width="30" height="30">
               </div>
+              <div class="col-2 mt-1 m-0 p-0" [class.isadmin]="user.id==chatContent.adminId">
+               <h5>{{user.nickName}}</h5>
+              </div>  
               <div class="col-sm m-0 p-0 text-right">
                 <a (click)="leaveGroup(user.id)" class="delIcon" *ngIf="userservice.currentUser.value.id==chatContent.adminId || user.id==userservice.currentUser.value.id">
                   <span aria-hidden="true">&#10006;</span>

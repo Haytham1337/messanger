@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
+using Application.IServices;
 using AutoMapper;
 using Domain;
 using Infrastructure;
 using Infrastructure.AppSecurity;
 using Infrastructure.Cache;
 using Infrastructure.Extensions;
+using Infrastructure.Services.Helpers;
 using MessengerAPI.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -34,6 +36,7 @@ namespace MessengerAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient<IHttpHelper,HttpHelper>();
 
             services.AddControllers();
 
@@ -51,8 +54,10 @@ namespace MessengerAPI
 
             services.Configure<TokenOption>(Configuration.GetSection("OptionsForToken"));
 
-            services.Configure<CacheOptions>(Configuration.GetSection("CacheOptions"));
+            services.Configure<FbOptions>(Configuration.GetSection("FacebookOptions"));
 
+
+            services.Configure<CacheOptions>(Configuration.GetSection("CacheOptions"));
 
             var optionsForToken = Configuration.GetSection("OptionsForToken")
                                 .Get<TokenOption>();
@@ -97,11 +102,6 @@ namespace MessengerAPI
                             return Task.CompletedTask;
                         }
                     };
-                })
-                .AddFacebook(options=> 
-                {
-                    options.AppId = "2313754038918109";
-                    options.AppSecret = "55373e262a2df2d357123155cdc6a878";
                 });
 
             services.Configure<IdentityOptions>(options =>

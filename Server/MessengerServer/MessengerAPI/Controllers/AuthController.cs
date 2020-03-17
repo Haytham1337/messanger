@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
+using Application.IServices;
 using Application.Models;
-using Infrastructure.AppSecurity;
+using Application.Models.AuthModels;
 using Infrastructure.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MessengerAPI.Controllers
@@ -14,13 +13,13 @@ namespace MessengerAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _auth;
+        private readonly IProvidersAuthService _providerAuth;
 
-        private readonly UserManager<SecurityUser> _userManager;
-        public AuthController(IAuthService auth, UserManager<SecurityUser> userManager)
+        public AuthController(IAuthService auth,IProvidersAuthService providerAuth)
         {
             _auth = auth;
 
-            _userManager = userManager;
+            _providerAuth = providerAuth;
         }
 
         [HttpPost]
@@ -49,10 +48,17 @@ namespace MessengerAPI.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public async Task<SignInResponce> ExchangeTokens([FromBody]ExchangeTokenRequest request)
         {
             return await _auth.ExchangeTokensAsync(request);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FacebookAuthenticate([FromBody]FacebookAuthRequest model)
+        {
+            var responce = await this._providerAuth.FacebookAuthenticateAsync(model);
+
+            return Ok(responce);
         }
     }
 }

@@ -1,8 +1,9 @@
 ﻿using Application;
 using Application.IServices;
-using Infrastructure.Cache;
+using Application.IServices.IHelpers;
 using Infrastructure.Extensions.MiddleWares;
 using Infrastructure.Services;
+using Infrastructure.Services.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,6 +48,10 @@ namespace Infrastructure.Extensions
             services.AddSingleton<ICache, MemoryCache>();
 
             services.AddScoped<IPhotoHelper, PhotoHelper>();
+
+            services.AddScoped<IJwtHelper, JwtHelper>();
+
+            services.AddScoped<IProvidersAuthService, ProvidersAuthService>();
         }
 
         public static int GetUserId(this HttpContext context)

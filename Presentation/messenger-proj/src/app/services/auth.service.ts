@@ -22,6 +22,14 @@ export class SignInResponce{
   refresh_Token:string;
 }
 
+export class FbUser{
+email:string;
+lastName:string;
+photoUrl:string;
+gender:string;
+accessToken:string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -101,9 +109,32 @@ export class AuthenticationService {
       platform = FacebookLoginProvider.PROVIDER_ID;
 
       this.authService.signIn(platform).then(
-      (response) => {
-           console.log(platform + ' logged in user data is= ' , response);
-      });
+      async (response) => {
+
+           let fbuser=new FbUser();
+           fbuser.email=response.email;
+           fbuser.lastName=response.lastName;
+           fbuser.photoUrl=response.photoUrl;
+           fbuser.gender="Male";
+           fbuser.accessToken=response.authToken
+
+            let url=await this.config.getConfig("signinFB");
+
+            let headers = new HttpHeaders();
+            headers= headers.append('content-type', 'application/json');
+            
+            return this.http.post<SignInResponce>(url,JSON.stringify(fbuser),{headers:headers})
+                .subscribe(
+                  async res=>{
+                    localStorage.setItem('token',res.access_Token);
+                    localStorage.setItem('expiresIn',res.expiresIn.toString());
+                    localStorage.setItem('refreshToken',res.refresh_Token);
+                    await this.userservice.SetCurrentUser();
+                    await this.router.navigate(['/chat']);
+                  },err=>this.errorOccured=true);
+            });
+
+
     }
   
 }

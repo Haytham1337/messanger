@@ -5,7 +5,7 @@
     "signup":"https://localhost:44334/api/Auth/Register",
     "checkemail":"https://localhost:44334/api/Auth/EmailExist",  
     "exchangetokens":"https://localhost:44334/api/Auth/ExchangeTokens",
-    "signinFB":"https://localhost:44334/api/Auth/FacebookSignIn",
+    "signinFB":"https://localhost:44334/api/Auth/FacebookAuthenticate",
     
     "getmessages":"https://localhost:44334/api/Message",
     "getchatmessages":"https://localhost:44334/api/Message/GetConversationMessages",

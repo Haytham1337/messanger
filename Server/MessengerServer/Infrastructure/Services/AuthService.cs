@@ -13,6 +13,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Options;
+using Application.IServices.IHelpers;
 
 namespace Infrastructure.Services
 {
@@ -39,8 +40,10 @@ namespace Infrastructure.Services
 
         private readonly TokenOption options;
 
+        private readonly IJwtHelper _jwtHelper;
+
         public AuthService(UserManager<SecurityUser> userManager, IOptions<TokenOption> options,
-         IUnitOfWork unit, IConfiguration config)
+         IUnitOfWork unit, IConfiguration config,IJwtHelper jwtHelper)
         {
             _userManager = userManager;
 
@@ -49,6 +52,8 @@ namespace Infrastructure.Services
             _config = config;
 
             this.options = options.Value;
+
+            _jwtHelper = jwtHelper;
         }
 
         public async Task<IdentityResult> RegisterAsync(RegisterModel model)
@@ -58,6 +63,7 @@ namespace Infrastructure.Services
             user.UserName = model.Email;
 
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+           
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, "Chatter");
@@ -93,14 +99,16 @@ namespace Infrastructure.Services
 
         public async Task<SignInResponce> AuthenticateAsync(LoginModel model)
         {
-            var user = await this._userManager.FindByNameAsync(model.Email);
+            var user = await _userManager.FindByNameAsync(model.Email);
 
-            if (user == null)
-                throw new UserNotExistException("User with the given email not exist!!", 400);
+            var isPasswordValid = await _userManager.CheckPasswordAsync(user, model.Password);
 
-            var identity = await this.GetIdentityAsync(model);
+            if (user == null||!isPasswordValid)
+                throw new UserNotExistException("Given credentials not valid!!", 400);
 
-            var refreshToken = this.GenerateRefreshToken();
+            var identity = await _jwtHelper.GetIdentityAsync(model.Email);
+
+            var refreshToken = _jwtHelper.GenerateRefreshToken();
 
             user.RefreshToken = refreshToken;
 
@@ -128,7 +136,7 @@ namespace Infrastructure.Services
 
         public async Task<SignInResponce> ExchangeTokensAsync(ExchangeTokenRequest request)
         {
-            var principal = GetPrincipalFromExpiredToken(request.AccessToken);
+            var principal =_jwtHelper.GetPrincipalFromExpiredToken(request.AccessToken);
 
             var userName = principal.Identity.Name;
 
@@ -140,7 +148,7 @@ namespace Infrastructure.Services
             if (user.RefreshToken != request.RefreshToken)
                 throw new SecurityTokenException("Invalid refresh token");
 
-            var newRefreshToken = this.GenerateRefreshToken();
+            var newRefreshToken = _jwtHelper.GenerateRefreshToken();
 
             user.RefreshToken = newRefreshToken;
 
@@ -164,70 +172,6 @@ namespace Infrastructure.Services
                 ExpiresIn = now.Add(TimeSpan.FromSeconds(options.LifeTime)),
                 Refresh_Token = newRefreshToken
             };
-        }
-
-        private async Task<ClaimsIdentity> GetIdentityAsync(LoginModel model)
-        {
-            var user = await this._userManager.FindByNameAsync(model.Email);
-
-            var isPasswordValid = await _userManager.CheckPasswordAsync(user, model.Password);
-
-            if (isPasswordValid)
-            {
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimsIdentity.DefaultNameClaimType,user.Email),
-                    new Claim(ClaimTypes.NameIdentifier,user.Id.ToString())
-                };
-
-                foreach (var role in await _userManager.GetRolesAsync(user))
-                {
-                    claims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, role));
-                }
-
-                var claimsIdentity = new ClaimsIdentity(claims, "Token",
-                    ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-
-                return claimsIdentity;
-            }
-
-            throw new UserAlreadyExistException("Password is invalid", 400);
-        }
-
-        private string GenerateRefreshToken(int size = 32)
-        {
-            var randomNumber = new byte[size];
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(randomNumber);
-                return Convert.ToBase64String(randomNumber);
-            }
-        }
-
-        private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
-        {
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateAudience = true,
-                ValidateIssuer = true,
-                ValidIssuer = options.Issuer,
-                ValidAudience = options.Audience,
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = options.GetSymmetricSecurityKey(),
-                ValidateLifetime = false
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            SecurityToken securityToken;
-
-            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
-            var jwtSecurityToken = securityToken as JwtSecurityToken;
-
-            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256))
-                throw new SecurityTokenException("Invalid token");
-
-            return principal;
         }
     }
 }

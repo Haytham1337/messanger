@@ -1,5 +1,5 @@
 import { PhotoService } from './../services/photo.service';
-import { AuthService } from './../services/auth.service';
+import { AuthenticationService } from './../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {UserService, User} from './../services/user.service';
@@ -13,7 +13,7 @@ import {UserService, User} from './../services/user.service';
 export class NavbarComponent implements OnInit {
 
   public currentUser:User=new User();
-  constructor(private auth:AuthService,private userservice:UserService,private photoser:PhotoService) { }
+  constructor(private auth:AuthenticationService,private userservice:UserService,private photoser:PhotoService) { }
 
   ngOnInit() {
     this.userservice.data.subscribe(user=>this.currentUser=user);

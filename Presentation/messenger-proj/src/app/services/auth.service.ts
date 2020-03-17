@@ -3,6 +3,8 @@ import { ConfigService } from './config.service';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'angularx-social-login';
+import { FacebookLoginProvider, GoogleLoginProvider } from 'angularx-social-login';
 
 export class UserInfo{
   Email:string;
@@ -23,13 +25,14 @@ export class SignInResponce{
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthenticationService {
 
    userInfo:UserInfo=new UserInfo();
 
    errorOccured:boolean=false;
 
-    constructor(private http:HttpClient,private config:ConfigService,private router:Router,private userservice:UserService) {}
+    constructor(private http:HttpClient,private config:ConfigService,private router:Router,private userservice:UserService,
+      private authService:AuthService) {}
 
     async register(){
       let url=await this.config.getConfig("signup");
@@ -93,4 +96,14 @@ export class AuthService {
     gettoken(){
       return localStorage.getItem('token');
     }
+
+    logInWithFacebook(platform: string): void {
+      platform = FacebookLoginProvider.PROVIDER_ID;
+
+      this.authService.signIn(platform).then(
+      (response) => {
+           console.log(platform + ' logged in user data is= ' , response);
+      });
+    }
+  
 }

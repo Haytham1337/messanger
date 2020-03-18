@@ -50,7 +50,8 @@ namespace MessengerAPI
               builder => builder.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name)));
 
             services.AddIdentity<SecurityUser, IdentityRole<int>>()
-                    .AddEntityFrameworkStores<SecurityContext>();
+                    .AddEntityFrameworkStores<SecurityContext>()
+                    .AddDefaultTokenProviders();
 
 
             services.Configure<TokenOption>(Configuration.GetSection("OptionsForToken"));

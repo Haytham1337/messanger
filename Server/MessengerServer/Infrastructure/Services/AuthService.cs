@@ -14,6 +14,7 @@ using Application.IServices.IHelpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Application.Models.AuthModels;
+using System.Web;
 
 namespace Infrastructure.Services
 {
@@ -28,6 +29,8 @@ namespace Infrastructure.Services
         Task<User> FindByIdUserAsync(int id);
 
         Task<SignInResponce> ExchangeTokensAsync(ExchangeTokenRequest request);
+
+        Task<IdentityResult> ConfirmEmailAsync(string userId, string code);
     }
 
     public class AuthService : IAuthService
@@ -63,7 +66,7 @@ namespace Infrastructure.Services
         {
             SecurityUser user = new SecurityUser();
             user.Email = model.Email;
-            user.UserName = model.NickName;
+            user.UserName = model.Email;
 
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
            
@@ -86,12 +89,12 @@ namespace Infrastructure.Services
 
                 await _unit.Commit();
 
-                var code = "dsfjdsfnsdmnbfsmdfsd";
+                var code  = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-                var callbackUrl = $"{_emailOptions.confirmlink}userId={appUser.Id}&code={code}";
+                var callbackUrl = $"{_emailOptions.confirmlink}userName={user.UserName}&code={HttpUtility.UrlEncode(code)}";
 
                 await _emailSender.SendEmailAsync(model.Email,_emailOptions.subject,
-                    $"{_emailOptions.message} <a href='{callbackUrl}'>link</a>");
+                    $"{_emailOptions.message} <a href='{callbackUrl}'>Confirm</a>");
             }
 
             return result;
@@ -109,12 +112,17 @@ namespace Infrastructure.Services
 
         public async Task<SignInResponce> AuthenticateAsync(LoginModel model)
         {
-            var user = await _userManager.FindByNameAsync(model.Email);
+            var user = await _userManager.FindByEmailAsync(model.Email);
 
             var isPasswordValid = await _userManager.CheckPasswordAsync(user, model.Password);
 
             if (user == null||!isPasswordValid)
                 throw new UserNotExistException("Given credentials not valid!!", 400);
+
+            //var isemailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+
+            //if (!isemailConfirmed)
+            //    throw new UserNotExistException("Email is not confirmed!!", 400);
 
             var identity = await _jwtHelper.GetIdentityAsync(model.Email);
 
@@ -182,6 +190,18 @@ namespace Infrastructure.Services
                 ExpiresIn = now.Add(TimeSpan.FromSeconds(options.LifeTime)),
                 Refresh_Token = newRefreshToken
             };
+        }
+
+        public async Task<IdentityResult> ConfirmEmailAsync(string userName,string code)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+
+            if (user == null)
+                throw new UserNotExistException("Given user not exist!!",400);
+
+            var confirmResult = await _userManager.ConfirmEmailAsync(user, code);
+
+            return confirmResult;
         }
     }
 }

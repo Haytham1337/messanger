@@ -2,6 +2,7 @@
 using Application.Models;
 using Application.Models.AuthModels;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MessengerAPI.Controllers
@@ -13,12 +14,15 @@ namespace MessengerAPI.Controllers
     {
         private readonly IAuthService _auth;
         private readonly IProvidersAuthService _providerAuth;
+        private readonly IHostingEnvironment _env;
 
-        public AuthController(IAuthService auth,IProvidersAuthService providerAuth)
+        public AuthController(IAuthService auth, IProvidersAuthService providerAuth, IHostingEnvironment env)
         {
             _auth = auth;
 
             _providerAuth = providerAuth;
+
+            _env = env;
         }
 
         [HttpPost]
@@ -61,9 +65,14 @@ namespace MessengerAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult ConfirmEmail(string userId, string code)
+        public async Task<IActionResult> ConfirmEmail(string userName, string code)
         {
-            return Content("Email is confirmed succesfully!!");
+            var result = await _auth.ConfirmEmailAsync(userName, code);
+
+            if(result.Succeeded)
+                return Redirect("https://localhost:44334/htmlresponces/emailConfirmed.html");
+
+            return Redirect("https://localhost:44334/htmlresponces/emailNotConfirmed.html");
         }
     }
 }

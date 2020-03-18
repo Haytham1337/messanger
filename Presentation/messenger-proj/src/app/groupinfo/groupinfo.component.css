@@ -8,6 +8,10 @@
     color:burlywood;
 }
 
+#pinfo{
+    max-width: 200px;
+}
+
 .isadmin{
     color:burlywood;
 }
@@ -46,4 +50,12 @@
 .online{
     width: 20px;
     height: 20px;
+}
+
+#pinfo::-webkit-scrollbar{
+    width:1px;
+}
+
+.gphoto{
+    border-radius: 10px;
 }

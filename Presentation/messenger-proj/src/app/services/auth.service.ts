@@ -133,8 +133,5 @@ export class AuthenticationService {
                     await this.router.navigate(['/chat']);
                   },err=>this.errorOccured=true);
             });
-
-
     }
-  
 }

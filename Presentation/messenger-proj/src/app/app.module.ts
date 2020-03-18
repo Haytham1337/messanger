@@ -35,13 +35,13 @@ import { AddmemberComponent } from './addmember/addmember.component';
 import { ScrollEventModule } from 'ngx-scroll-event';
 
 import { SocialLoginModule, AuthServiceConfig } from 'angularx-social-login';
-import { GoogleLoginProvider, FacebookLoginProvider } from 'angularx-social-login';
+import {FacebookLoginProvider } from 'angularx-social-login';
 
 let config = new AuthServiceConfig([
 {
       id: FacebookLoginProvider.PROVIDER_ID,
       provider: new FacebookLoginProvider("2313754038918109")
-   },
+}
 ]);
 export function provideConfig()
   {

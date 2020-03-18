@@ -5,14 +5,14 @@
     border-radius: 5px;
     padding: 10px;
     margin: 10px 0;
-    min-height: 85vh;
+    min-height: 83vh;
     margin-top:3vh;
   }
 
   #contentdiv{
-    min-height: 75vh;
+    min-height: 70vh;
     margin-bottom: 10px;
-    max-height: 75vh;
+    max-height: 70vh;
   }
   
   img{
@@ -207,4 +207,10 @@
 #contentdiv{
   flex-direction:column-reverse; 
   display: flex;
+}
+
+#anchorbtn{
+  position: absolute;
+  margin-bottom: 50px;
+  top:0%;
 }

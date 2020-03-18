@@ -4,16 +4,16 @@ using Domain.Entities;
 using Infrastructure.AppSecurity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Security.Cryptography;
 using Domain.Exceptions.UserExceptions;
-using System.Collections.Generic;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Options;
 using Application.IServices.IHelpers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Application.Models.AuthModels;
 
 namespace Infrastructure.Services
 {
@@ -33,17 +33,16 @@ namespace Infrastructure.Services
     public class AuthService : IAuthService
     {
         private readonly UserManager<SecurityUser> _userManager;
-
         private readonly IUnitOfWork _unit;
-
         private readonly IConfiguration _config;
-
         private readonly TokenOption options;
-
         private readonly IJwtHelper _jwtHelper;
+        private readonly IEmailSenderHelper _emailSender;
+        private readonly EmailOptions _emailOptions;
 
         public AuthService(UserManager<SecurityUser> userManager, IOptions<TokenOption> options,
-         IUnitOfWork unit, IConfiguration config,IJwtHelper jwtHelper)
+         IUnitOfWork unit, IConfiguration config,IJwtHelper jwtHelper,
+         IEmailSenderHelper emailSender, IOptions<EmailOptions> emailOptions)
         {
             _userManager = userManager;
 
@@ -54,13 +53,17 @@ namespace Infrastructure.Services
             this.options = options.Value;
 
             _jwtHelper = jwtHelper;
+
+            _emailSender = emailSender;
+
+            _emailOptions = emailOptions.Value;
         }
 
         public async Task<IdentityResult> RegisterAsync(RegisterModel model)
         {
             SecurityUser user = new SecurityUser();
             user.Email = model.Email;
-            user.UserName = model.Email;
+            user.UserName = model.NickName;
 
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
            
@@ -82,6 +85,13 @@ namespace Infrastructure.Services
                 await _unit.UserRepository.CreateAsync(appUser);
 
                 await _unit.Commit();
+
+                var code = "dsfjdsfnsdmnbfsmdfsd";
+
+                var callbackUrl = $"{_emailOptions.confirmlink}userId={appUser.Id}&code={code}";
+
+                await _emailSender.SendEmailAsync(model.Email,_emailOptions.subject,
+                    $"{_emailOptions.message} <a href='{callbackUrl}'>link</a>");
             }
 
             return result;

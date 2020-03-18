@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using Application.IServices;
+using Application.Models.AuthModels;
 using AutoMapper;
 using Domain;
 using Infrastructure;
@@ -56,6 +57,7 @@ namespace MessengerAPI
 
             services.Configure<FbOptions>(Configuration.GetSection("FacebookOptions"));
 
+            services.Configure<EmailOptions>(Configuration.GetSection("EmailOptions"));
 
             services.Configure<CacheOptions>(Configuration.GetSection("CacheOptions"));
 

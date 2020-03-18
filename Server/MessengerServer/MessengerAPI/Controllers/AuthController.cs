@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Application.IServices;
 using Application.Models;
 using Application.Models.AuthModels;
 using Infrastructure.Services;
@@ -59,6 +58,12 @@ namespace MessengerAPI.Controllers
             var responce = await this._providerAuth.FacebookAuthenticateAsync(model);
 
             return Ok(responce);
+        }
+
+        [HttpGet]
+        public IActionResult ConfirmEmail(string userId, string code)
+        {
+            return Content("Email is confirmed succesfully!!");
         }
     }
 }

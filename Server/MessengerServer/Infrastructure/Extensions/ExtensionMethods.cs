@@ -51,6 +51,8 @@ namespace Infrastructure.Extensions
 
             services.AddScoped<IJwtHelper, JwtHelper>();
 
+            services.AddScoped<IEmailSenderHelper, EmailSenderHelper>();
+
             services.AddScoped<IProvidersAuthService, ProvidersAuthService>();
         }
 

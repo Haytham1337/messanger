@@ -69,7 +69,7 @@ export class AuthenticationService {
            localStorage.setItem('refreshToken',res.refresh_Token);
            await this.userservice.SetCurrentUser();
            await this.router.navigate(['/chat']);
-        },err=>this.errorOccured=true);
+        },err=>{this.errorOccured=true;console.log(err)});
     }
 
     async fillRegister(data){

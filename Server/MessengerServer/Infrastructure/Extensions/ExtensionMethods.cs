@@ -7,6 +7,8 @@ using Infrastructure.Services.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using System.Text;
+using System.Web;
 
 namespace Infrastructure.Extensions
 {
@@ -50,6 +52,8 @@ namespace Infrastructure.Extensions
             services.AddScoped<IPhotoHelper, PhotoHelper>();
 
             services.AddScoped<IJwtHelper, JwtHelper>();
+
+            services.AddScoped<IEmailSenderHelper, EmailSenderHelper>();
 
             services.AddScoped<IProvidersAuthService, ProvidersAuthService>();
         }

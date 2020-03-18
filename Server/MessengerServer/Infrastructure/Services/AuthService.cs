@@ -4,16 +4,17 @@ using Domain.Entities;
 using Infrastructure.AppSecurity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Security.Cryptography;
 using Domain.Exceptions.UserExceptions;
-using System.Collections.Generic;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Options;
 using Application.IServices.IHelpers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Application.Models.AuthModels;
+using System.Web;
 
 namespace Infrastructure.Services
 {
@@ -28,22 +29,23 @@ namespace Infrastructure.Services
         Task<User> FindByIdUserAsync(int id);
 
         Task<SignInResponce> ExchangeTokensAsync(ExchangeTokenRequest request);
+
+        Task<IdentityResult> ConfirmEmailAsync(string userId, string code);
     }
 
     public class AuthService : IAuthService
     {
         private readonly UserManager<SecurityUser> _userManager;
-
         private readonly IUnitOfWork _unit;
-
         private readonly IConfiguration _config;
-
         private readonly TokenOption options;
-
         private readonly IJwtHelper _jwtHelper;
+        private readonly IEmailSenderHelper _emailSender;
+        private readonly EmailOptions _emailOptions;
 
         public AuthService(UserManager<SecurityUser> userManager, IOptions<TokenOption> options,
-         IUnitOfWork unit, IConfiguration config,IJwtHelper jwtHelper)
+         IUnitOfWork unit, IConfiguration config,IJwtHelper jwtHelper,
+         IEmailSenderHelper emailSender, IOptions<EmailOptions> emailOptions)
         {
             _userManager = userManager;
 
@@ -54,6 +56,10 @@ namespace Infrastructure.Services
             this.options = options.Value;
 
             _jwtHelper = jwtHelper;
+
+            _emailSender = emailSender;
+
+            _emailOptions = emailOptions.Value;
         }
 
         public async Task<IdentityResult> RegisterAsync(RegisterModel model)
@@ -82,6 +88,13 @@ namespace Infrastructure.Services
                 await _unit.UserRepository.CreateAsync(appUser);
 
                 await _unit.Commit();
+
+                var code  = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                var callbackUrl = $"{_emailOptions.confirmlink}userName={user.UserName}&code={HttpUtility.UrlEncode(code)}";
+
+                await _emailSender.SendEmailAsync(model.Email,_emailOptions.subject,
+                    $"{_emailOptions.message} <a href='{callbackUrl}'>Confirm</a>");
             }
 
             return result;
@@ -99,12 +112,17 @@ namespace Infrastructure.Services
 
         public async Task<SignInResponce> AuthenticateAsync(LoginModel model)
         {
-            var user = await _userManager.FindByNameAsync(model.Email);
+            var user = await _userManager.FindByEmailAsync(model.Email);
 
             var isPasswordValid = await _userManager.CheckPasswordAsync(user, model.Password);
 
             if (user == null||!isPasswordValid)
                 throw new UserNotExistException("Given credentials not valid!!", 400);
+
+            //var isemailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+
+            //if (!isemailConfirmed)
+            //    throw new UserNotExistException("Email is not confirmed!!", 400);
 
             var identity = await _jwtHelper.GetIdentityAsync(model.Email);
 
@@ -172,6 +190,18 @@ namespace Infrastructure.Services
                 ExpiresIn = now.Add(TimeSpan.FromSeconds(options.LifeTime)),
                 Refresh_Token = newRefreshToken
             };
+        }
+
+        public async Task<IdentityResult> ConfirmEmailAsync(string userName,string code)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+
+            if (user == null)
+                throw new UserNotExistException("Given user not exist!!",400);
+
+            var confirmResult = await _userManager.ConfirmEmailAsync(user, code);
+
+            return confirmResult;
         }
     }
 }

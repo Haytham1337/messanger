@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using Application.IServices;
+using Application.Models.AuthModels;
 using AutoMapper;
 using Domain;
 using Infrastructure;
@@ -49,13 +50,15 @@ namespace MessengerAPI
               builder => builder.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name)));
 
             services.AddIdentity<SecurityUser, IdentityRole<int>>()
-                    .AddEntityFrameworkStores<SecurityContext>();
+                    .AddEntityFrameworkStores<SecurityContext>()
+                    .AddDefaultTokenProviders();
 
 
             services.Configure<TokenOption>(Configuration.GetSection("OptionsForToken"));
 
             services.Configure<FbOptions>(Configuration.GetSection("FacebookOptions"));
 
+            services.Configure<EmailOptions>(Configuration.GetSection("EmailOptions"));
 
             services.Configure<CacheOptions>(Configuration.GetSection("CacheOptions"));
 

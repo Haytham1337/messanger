@@ -23,7 +23,7 @@
               <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit" (click)="signin()">Sign in</button>
 
               <div class="col-sm validinfo" *ngIf="auth.errorOccured">
-                Your data is not valid
+                  {{auth.errorMessage}}
               </div>
               
               <p>Not a member?

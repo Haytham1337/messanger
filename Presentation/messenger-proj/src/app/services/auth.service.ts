@@ -39,6 +39,8 @@ export class AuthenticationService {
 
    errorOccured:boolean=false;
 
+   errorMessage:string;
+
     constructor(private http:HttpClient,private config:ConfigService,private router:Router,private userservice:UserService,
       private authService:AuthService) {}
 
@@ -69,7 +71,15 @@ export class AuthenticationService {
            localStorage.setItem('refreshToken',res.refresh_Token);
            await this.userservice.SetCurrentUser();
            await this.router.navigate(['/chat']);
-        },err=>{this.errorOccured=true;console.log(err)});
+        },err=>{
+          this.errorOccured=true;
+          if(typeof err.error==="string"){
+            this.errorMessage=err.error;
+          }
+          else{
+            this.errorMessage="Your data is not valid!!";
+          }
+        });
     }
 
     async fillRegister(data){

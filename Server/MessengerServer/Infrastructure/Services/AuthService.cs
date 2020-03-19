@@ -119,10 +119,10 @@ namespace Infrastructure.Services
             if (user == null||!isPasswordValid)
                 throw new UserNotExistException("Given credentials not valid!!", 400);
 
-            //var isemailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+            var isemailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
 
-            //if (!isemailConfirmed)
-            //    throw new UserNotExistException("Email is not confirmed!!", 400);
+            if (!isemailConfirmed)
+                throw new UserNotExistException("Email is not confirmed!!", 400);
 
             var identity = await _jwtHelper.GetIdentityAsync(model.Email);
 

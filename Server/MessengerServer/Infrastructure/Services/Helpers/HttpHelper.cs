@@ -13,9 +13,9 @@ namespace Infrastructure.Services.Helpers
             _client = client;
         }
 
-        public async Task<HttpResponseMessage> GetAsync(string requestUri)
+        public  Task<HttpResponseMessage> GetAsync(string requestUri)
         {
-            return await this._client.GetAsync(requestUri);
+            return  _client.GetAsync(requestUri);
         }
     }
 }

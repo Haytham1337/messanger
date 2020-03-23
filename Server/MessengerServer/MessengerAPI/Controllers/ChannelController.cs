@@ -23,7 +23,7 @@ namespace MessengerAPI.Controllers
         {
             request.userId = HttpContext.GetUserId();
 
-            await _groupService.SubscribeForChannelAsync(request);
+            await _groupService.SubscribeAsync(request);
 
             return Ok();
         }

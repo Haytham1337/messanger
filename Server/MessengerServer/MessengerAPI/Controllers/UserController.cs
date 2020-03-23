@@ -26,9 +26,9 @@ namespace MessengerAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> UserInfo()
         {
-            var userInfo=await this._userService.GetUserInfoAsync(new GetUserInfoRequest() 
-            { 
-                UserName = User.Identity.Name 
+            var userInfo = await this._userService.GetUserInfoAsync(new GetUserInfoRequest()
+            {
+                UserName = User.Identity.Name
             });
 
             return Ok(userInfo);
@@ -45,7 +45,7 @@ namespace MessengerAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<List<SearchUserDto>> Search([FromQuery]SearchRequest request )
+        public async Task<List<SearchUserDto>> Search([FromQuery]SearchRequest request)
         {
             request.UserId = HttpContext.GetUserId();
 
@@ -75,7 +75,7 @@ namespace MessengerAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangePhoto(IFormCollection collection)
         {
-            if (ModelState.IsValid && collection.Files[0] != null)
+            if (collection.Files[0] != null)
             {
                 await _userService.ChangePhotoAsync(new AddPhotoDto()
                 {

@@ -1,18 +1,18 @@
 import { PhotoService } from './photo.service';
 import { ConfigService } from './config.service';
 import { HttpClient ,HttpHeaders} from '@angular/common/http';
-import { Injectable, OnInit, ɵConsole, ComponentFactoryResolver } from '@angular/core';
+import { Injectable} from '@angular/core';
 import * as signalR from "@aspnet/signalr"
 import {DomSanitizer} from '@angular/platform-browser';
-import { User, UserService } from './user.service';
+import { User } from './user.service';
 import { BehaviorSubject } from 'rxjs';
-import { $ } from 'protractor';
 
 export interface Message{
   content:string,
   userId:number,
   timeCreated:Date,
-  chatId:number
+  chatId:number,
+  photo:string
 }
 
 export class ChatContent{
@@ -34,7 +34,8 @@ export interface Chat{
   content:string,
   secondUserId:number,
   isBlocked,
-  Type:number
+  Type:number,
+  isOnline:boolean
 }
 
 export  class SearchConversation{
@@ -78,6 +79,8 @@ export class ChatService {
 
   public  currentChatType:number;
 
+  public portion:number=1;
+
   messagesUpdate = this.messages.asObservable();
 
   constructor(private http:HttpClient,private config:ConfigService,private sanitizer:DomSanitizer, private photo: PhotoService) { }
@@ -95,7 +98,8 @@ export class ChatService {
 
   public async getMessages(chatid:number){
     this.currentChatId=chatid;
-    let url = `${await this.config.getConfig("getchatmessages")}?id=${chatid}`;
+    this.portion=1;
+    let url = `${await this.config.getConfig("getchatmessages")}?id=${chatid}&portion=${this.portion}`;
     
     let photopath = await this.config.getConfig("photopath");
     this.photourl=photopath;
@@ -105,12 +109,38 @@ export class ChatService {
             
     return await this.http.get<ChatContent>(url,{headers:headers}).toPromise()
         .then((data)=>{
+         data.users=data.users.sort((fu,su)=>{
+             if(fu.isOnline>su.isOnline){
+               return -1;
+             }
+             else{
+               return 1;
+             }
+          })
+          console.log(data.users);
           this. CurrentContentUpdate(data);
           this.currentChatType=data.type;
           this.currentChatAdmin=data.adminId;
           this.MessagesUpdate(data.messages);
-          this.UsersUpdate(data.users);})
+          this.UsersUpdate(data.users);
+        })
     }
+
+    public async loadMessages(){
+      let url = `${await this.config.getConfig("getchatmessages")}?id=${this.currentChatId}&portion=${this.portion}`;
+    
+    let photopath = await this.config.getConfig("photopath");
+    this.photourl=photopath;
+
+    let headers = new HttpHeaders();
+    headers= headers.append('content-type', 'application/json');
+            
+    return await this.http.get<ChatContent>(url,{headers:headers}).toPromise()
+        .then((data)=>{
+          this.portion+=1;
+          this.MessagesUpdate(this.messages.value.concat(data.messages));
+    });
+  }
 
   public sendMessage (data:Message) {
     data.chatId=this.currentChatId;
@@ -128,7 +158,7 @@ export class ChatService {
         this.chats.getValue().splice(0,0,curchat);
 
         curchat.content=data.content;
-        this.messages.value.push(data);
+        this.messages.value.splice(0,0,data);
         this.MessagesUpdate(this.messages.getValue());
         this.ChatsUpdate(this.chats.getValue());
       }
@@ -195,6 +225,7 @@ export class ChatService {
 
     return await this.http.get<Chat[]>(url).toPromise()
       .then(res=>{
+        console.log(res);
         if(res.length==0)
         {
           this.CurrentContentUpdate(null);

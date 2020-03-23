@@ -12,7 +12,8 @@ export class User{
   phone:string;
   email:string;
   age:number;
-  isblocked:boolean
+  isblocked:boolean;
+  isOnline:boolean;
 }
 
 @Injectable({

@@ -6,5 +6,8 @@ namespace Application.Models.ChatDto.Requests
     {
         [Required]
         public int Id { get; set; }
+
+        [Range(1,int.MaxValue)]
+        public int portion { get; set; }=1;
     }
 }

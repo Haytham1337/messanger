@@ -29,7 +29,7 @@ namespace MessengerAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateChat([FromBody]AddConversationRequest request)
         {
-            request.userId= HttpContext.GetUserId();
+            request.userId = HttpContext.GetUserId();
 
             await _conversationService.CreateChatAsync(request);
 
@@ -45,15 +45,15 @@ namespace MessengerAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangeConversationPhoto(IFormCollection collection,[FromQuery(Name ="chatId")] int chatId)
+        public async Task<IActionResult> ChangeConversationPhoto(IFormCollection collection, [FromQuery(Name = "chatId")] int chatId)
         {
-            if (ModelState.IsValid && collection.Files[0] != null)
+            if (collection.Files[0] != null)
             {
                 await _conversationService.ChangePhotoAsync(new AddPhotoDto()
                 {
-                    ConversationId=chatId,
+                    ConversationId = chatId,
                     UserId = HttpContext.GetUserId(),
-                UploadedFile = collection.Files[0]
+                    UploadedFile = collection.Files[0]
                 });
 
                 return Ok();

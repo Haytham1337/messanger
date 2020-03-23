@@ -10,7 +10,7 @@ namespace Application.IServices
 
         Task CreateGroupAsync(AddGroupRequest request);
 
-        Task SubscribeForChannelAsync(AddConversationRequest request);
+        Task SubscribeAsync(AddConversationRequest request);
 
         Task AddConversationMemberAsync(AddConversationMemberRequest request);
     }

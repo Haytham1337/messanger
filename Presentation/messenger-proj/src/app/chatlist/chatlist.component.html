@@ -5,7 +5,10 @@
       <div class="col-1 mr-2 imgdiv">
         <img [src]="chat.photo" class="cardimg">
       </div>      
-      <div class="col-sm chatname">
+      <div class="col-1 m-0 p-0 ml-2" *ngIf="chat.isOnline">
+        <img src="../../assets/online.png" alt="" class="online">
+      </div>
+      <div class="col-2 chatname text-left" [class.marginleft]="!chat.isOnline">
           <p class="cardcontent" *ngIf="chat.content==null">Chat</p>
           <p class="cardcontent contentparagraph" *ngIf="chat.content!==null">{{chat.content}}</p>
       </div>

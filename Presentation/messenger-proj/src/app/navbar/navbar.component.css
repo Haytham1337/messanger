@@ -1,6 +1,7 @@
 #appnav{
     background: rgb(91,84,191);
     background: linear-gradient(90deg, rgba(91,84,191,1) 0%, rgba(48,48,176,1) 50%, rgba(0,212,255,1) 100%);
+    min-height: 50px;
 }
 #title{
     color:white;
@@ -16,7 +17,7 @@
     display: none;
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 100px;
+    min-width: 120px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
     font-size: 15px;

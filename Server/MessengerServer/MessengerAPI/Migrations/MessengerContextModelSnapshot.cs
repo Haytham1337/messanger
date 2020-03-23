@@ -4,16 +4,14 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MessengerAPI.Migrations
 {
     [DbContext(typeof(MessengerContext))]
-    [Migration("20200305092111_initAppDb")]
-    partial class initAppDb
+    partial class MessengerContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -129,7 +127,9 @@ namespace MessengerAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Age")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(6);
 
                     b.Property<string>("Email")
                         .IsRequired()

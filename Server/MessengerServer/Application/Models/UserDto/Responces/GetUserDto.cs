@@ -17,5 +17,7 @@ namespace Application.Models.UserDto
         public string Email { get; set; }
 
         public string Phone { get; set; }
+
+        public bool isOnline { get; set; }
     }
 }

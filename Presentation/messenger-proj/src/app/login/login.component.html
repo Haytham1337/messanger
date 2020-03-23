@@ -23,7 +23,7 @@
               <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit" (click)="signin()">Sign in</button>
 
               <div class="col-sm validinfo" *ngIf="auth.errorOccured">
-                Your data is not valid
+                  {{auth.errorMessage}}
               </div>
               
               <p>Not a member?
@@ -31,11 +31,9 @@
               </p>
         
               <p>or sign in with:</p>
-              <a href="#" class="mx-2" role="button"><i class="fab fa-facebook-f light-blue-text"></i></a>
-              <a href="#" class="mx-2" role="button"><i class="fab fa-twitter light-blue-text"></i></a>
-              <a href="#" class="mx-2" role="button"><i class="fab fa-linkedin-in light-blue-text"></i></a>
-              <a href="#" class="mx-2" role="button"><i class="fab fa-github light-blue-text"></i></a>
-        
+                <button  class="loginBtn loginBtn--facebook" (click)="auth.logInWithFacebook('Facebook')">
+                  Login with Facebook
+                </button>
             </form>  
           </div>
         </div>

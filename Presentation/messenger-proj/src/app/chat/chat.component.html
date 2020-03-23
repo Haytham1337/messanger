@@ -10,19 +10,18 @@
           <app-groupinfo *ngIf="chatservice.currentChatType!==0"></app-groupinfo>
         </div>
       </div>
-      <div class="col-sm p-0 m-0 overflow-auto" id="contentdiv">
+      <div class="col-sm p-0 m-0 overflow-auto" id="contentdiv"  detect-scroll (onScroll)="scroll()">
         <div *ngIf="messages.length==0" id="chatempty">
           <img src="../../assets/running.png" width="30" height="30" class="d-inline-block align-top mr-1" alt="">
           Type smth to your Friend...
         </div>
-
+        
         <div *ngFor="let item of messages">
-  
           <div class="row customcard" *ngIf="item.userId!=currentUser.id">
-            <div class="col-1" *ngIf="item.userId!=currentUser.id">
-              <img [src]="GetUrl(item.userId)" class="cardimg">
+            <div class="col-1 mt-2" *ngIf="item.userId!=currentUser.id">
+              <img [src]="GetUrl(item.photo)" class="cardimg">
             </div>      
-            <div class="col-sm contentleft" *ngIf="item.userId!=currentUser.id">
+            <div class="col-sm contentleft mt-2" *ngIf="item.userId!=currentUser.id">
                 <p class="cardcontent">{{item.content}}</p>
             </div>
             <div class="col-2 p-0 m-0" *ngIf="item.userId!=currentUser.id">
@@ -36,13 +35,13 @@
             <div class="col-1 p-0 m-0 p-0 timerigth" *ngIf="item.userId==currentUser.id">
               <p class="messagetime rigthtime">{{transformDate(item.timeCreated)}}</p>
             </div>
-            <div class="col-4 m-0 pt-1 contentrigth" *ngIf="item.userId==currentUser.id">
-                <p class="textrigth">{{item.content}}</p>
+            <div class="col-4 m-0 pt-1 contentrigth pt-2" *ngIf="item.userId==currentUser.id">
+                <p style="text-align: justify;" class="textrigth">{{item.content}}</p>
             </div>
-            <div class="col-1 m-0 pl-1 imgrigth text-right" id="divwithrigth" *ngIf="item.userId==currentUser.id">
+            <div class="col-1 m-0 pl-1 imgrigth text-right pt-2" id="divwithrigth" *ngIf="item.userId==currentUser.id">
               <img [src]="currentUser.photoName" class="rigthimgcontent">
             </div>  
-            </div>
+          </div>
     
           </div>
         </div>

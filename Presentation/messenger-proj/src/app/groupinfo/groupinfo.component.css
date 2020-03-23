@@ -8,6 +8,10 @@
     color:burlywood;
 }
 
+#pinfo{
+    max-width: 200px;
+}
+
 .isadmin{
     color:burlywood;
 }
@@ -41,3 +45,17 @@
   .delIcon{
       margin-right: 10px;
   }
+
+  
+.online{
+    width: 20px;
+    height: 20px;
+}
+
+#pinfo::-webkit-scrollbar{
+    width:1px;
+}
+
+.gphoto{
+    border-radius: 10px;
+}

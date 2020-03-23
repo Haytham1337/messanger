@@ -2,12 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
+using Application.IServices;
+using Application.Models.AuthModels;
 using AutoMapper;
 using Domain;
 using Infrastructure;
 using Infrastructure.AppSecurity;
 using Infrastructure.Cache;
 using Infrastructure.Extensions;
+using Infrastructure.Services.Helpers;
 using MessengerAPI.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -32,9 +35,9 @@ namespace MessengerAPI
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient<IHttpHelper,HttpHelper>();
 
             services.AddControllers();
 
@@ -47,13 +50,17 @@ namespace MessengerAPI
               builder => builder.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name)));
 
             services.AddIdentity<SecurityUser, IdentityRole<int>>()
-                    .AddEntityFrameworkStores<SecurityContext>();
+                    .AddEntityFrameworkStores<SecurityContext>()
+                    .AddDefaultTokenProviders();
 
 
             services.Configure<TokenOption>(Configuration.GetSection("OptionsForToken"));
 
-            services.Configure<CacheOptions>(Configuration.GetSection("CacheOptions"));
+            services.Configure<FbOptions>(Configuration.GetSection("FacebookOptions"));
 
+            services.Configure<EmailOptions>(Configuration.GetSection("EmailOptions"));
+
+            services.Configure<CacheOptions>(Configuration.GetSection("CacheOptions"));
 
             var optionsForToken = Configuration.GetSection("OptionsForToken")
                                 .Get<TokenOption>();
@@ -168,7 +175,6 @@ namespace MessengerAPI
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

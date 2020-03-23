@@ -1,5 +1,5 @@
 import { RegisterGuard } from './../register.guard';
-import { AuthService } from './../services/auth.service';
+import { AuthenticationService } from './../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -12,7 +12,7 @@ export class RegisterComponent implements OnInit {
 
   isnotvalid:boolean;
   userdata={email:'',password:'',passwordconfirm:''};
-  constructor(private auth:AuthService,private router:Router,private guard: RegisterGuard) { }
+  constructor(private auth:AuthenticationService,private router:Router,private guard: RegisterGuard) { }
 
   ngOnInit() {
     this.auth.errorOccured=false;

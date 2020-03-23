@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Application.Models;
-using Infrastructure.AppSecurity;
+using Application.Models.AuthModels;
 using Infrastructure.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MessengerAPI.Controllers
@@ -14,13 +13,16 @@ namespace MessengerAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _auth;
+        private readonly IProvidersAuthService _providerAuth;
+        private readonly IHostingEnvironment _env;
 
-        private readonly UserManager<SecurityUser> _userManager;
-        public AuthController(IAuthService auth, UserManager<SecurityUser> userManager)
+        public AuthController(IAuthService auth, IProvidersAuthService providerAuth, IHostingEnvironment env)
         {
             _auth = auth;
 
-            _userManager = userManager;
+            _providerAuth = providerAuth;
+
+            _env = env;
         }
 
         [HttpPost]
@@ -49,10 +51,28 @@ namespace MessengerAPI.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public async Task<SignInResponce> ExchangeTokens([FromBody]ExchangeTokenRequest request)
         {
             return await _auth.ExchangeTokensAsync(request);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FacebookAuthenticate([FromBody]FacebookAuthRequest model)
+        {
+            var responce = await this._providerAuth.FacebookAuthenticateAsync(model);
+
+            return Ok(responce);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string userName, string code)
+        {
+            var result = await _auth.ConfirmEmailAsync(userName, code);
+
+            if(result.Succeeded)
+                return Redirect("https://localhost:44334/htmlresponces/emailConfirmed.html");
+
+            return Redirect("https://localhost:44334/htmlresponces/emailNotConfirmed.html");
         }
     }
 }

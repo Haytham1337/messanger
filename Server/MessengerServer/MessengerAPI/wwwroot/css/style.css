@@ -1,0 +1,15 @@
+﻿body {
+}
+
+#responcecard{
+    height:450px;
+}
+
+#responcephoto {
+    width: 290px;
+    height: 250px;
+}
+
+#responcetext{
+    font-size:20px;
+}

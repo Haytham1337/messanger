@@ -1,4 +1,4 @@
-import { AuthService } from './../services/auth.service';
+import { AuthenticationService } from './../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -12,7 +12,7 @@ export class FilluserinfoComponent implements OnInit {
 
   userdata={NickName:'',Sex:0,PhoneNumber:'',Age:null};
   isnotvalid:boolean;
-  constructor(private auth:AuthService) { }
+  constructor(private auth:AuthenticationService) { }
 
   ngOnInit() {
   }

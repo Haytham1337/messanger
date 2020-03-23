@@ -116,7 +116,7 @@ namespace Infrastructure.Services
             await _unit.Commit();
         }
 
-        public async Task SubscribeForChannelAsync(AddConversationRequest request)
+        public async Task SubscribeAsync(AddConversationRequest request)
         {
             var conversation = await _unit.ConversationRepository.GetWithUsersConversationsAsync(request.id);
 

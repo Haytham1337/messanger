@@ -32,6 +32,7 @@
               <input type="text" id="formphone" [(ngModel)]="userdata.PhoneNumber" name="phone" class="form-control forminput" (keyup)="validate($event)" autocomplete="off">
               <label for="formphone">Phone</label>
             </div>
+             Verify <b>{{auth.userInfo.Email}}</b> email address after registration!!
             <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit" (click)="register()">Fill</button>
             <div class="col-sm validinfo" *ngIf="isnotvalid">
               Your data is invalid

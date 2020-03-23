@@ -7,7 +7,7 @@ import { RefreshTokeninterceptorService } from './services/RefreshTokenInrceptor
 
 import { AuthGuard } from './auth.guard';
 import { ConfigService } from './services/config.service';
-import { AuthService } from './services/auth.service';
+import { AuthenticationService } from './services/auth.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -34,6 +34,19 @@ import { DatePipe } from '@angular/common';
 import { AddmemberComponent } from './addmember/addmember.component';
 import { ScrollEventModule } from 'ngx-scroll-event';
 
+import { SocialLoginModule, AuthServiceConfig } from 'angularx-social-login';
+import {FacebookLoginProvider } from 'angularx-social-login';
+
+let config = new AuthServiceConfig([
+{
+      id: FacebookLoginProvider.PROVIDER_ID,
+      provider: new FacebookLoginProvider("2313754038918109")
+}
+]);
+export function provideConfig()
+  {
+     return config;
+  }
 
 const appRoutes: Routes = [
    { path: '', redirectTo:'/chat',pathMatch:'full' },
@@ -76,7 +89,8 @@ const appRoutes: Routes = [
       AppRoutingModule,
       FormsModule,
       ScrollEventModule,
-      NgMultiSelectDropDownModule.forRoot()
+      NgMultiSelectDropDownModule.forRoot(),
+      SocialLoginModule.initialize(config)
    ],
    providers: [
       CookieService,
@@ -86,7 +100,7 @@ const appRoutes: Routes = [
       CurrentDate,
       PhotoService,
       RegisterGuard,
-      AuthService,
+      AuthenticationService,
       ConfigService,
       {
          provide: HTTP_INTERCEPTORS,
@@ -97,6 +111,10 @@ const appRoutes: Routes = [
          provide: HTTP_INTERCEPTORS,
          useClass: RefreshTokeninterceptorService,
          multi: true
+       },
+       {
+         provide: AuthServiceConfig,
+         useFactory: provideConfig
        }
    ],
    bootstrap: [

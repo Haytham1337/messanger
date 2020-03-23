@@ -14,15 +14,12 @@ namespace MessengerAPI.Controllers
     {
         private readonly IAuthService _auth;
         private readonly IProvidersAuthService _providerAuth;
-        private readonly IHostingEnvironment _env;
 
-        public AuthController(IAuthService auth, IProvidersAuthService providerAuth, IHostingEnvironment env)
+        public AuthController(IAuthService auth, IProvidersAuthService providerAuth)
         {
             _auth = auth;
 
             _providerAuth = providerAuth;
-
-            _env = env;
         }
 
         [HttpPost]
@@ -70,9 +67,9 @@ namespace MessengerAPI.Controllers
             var result = await _auth.ConfirmEmailAsync(userName, code);
 
             if(result.Succeeded)
-                return Redirect("https://localhost:44334/htmlresponces/emailConfirmed.html");
+                return Redirect("/htmlresponces/emailConfirmed.html");
 
-            return Redirect("https://localhost:44334/htmlresponces/emailNotConfirmed.html");
+            return Redirect("/htmlresponces/emailNotConfirmed.html");
         }
     }
 }

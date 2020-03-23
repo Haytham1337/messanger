@@ -7,7 +7,7 @@ namespace Application.Models.UserDto
     {
         public int UserId { get; set; }
  
-        [Range(1,100)]
+        [Range(6,100)]
         public int Age { get; set; }
 
         [Required]

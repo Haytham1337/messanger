@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MessengerAPI.Migrations
 {
-    public partial class initAppDb : Migration
+    public partial class initDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,7 @@ namespace MessengerAPI.Migrations
                     Id = table.Column<int>(nullable: false),
                     Email = table.Column<string>(nullable: false),
                     NickName = table.Column<string>(maxLength: 20, nullable: false),
-                    Age = table.Column<int>(nullable: false),
+                    Age = table.Column<int>(nullable: false, defaultValue: 6),
                     PhoneNumber = table.Column<string>(nullable: true),
                     Sex = table.Column<int>(nullable: false),
                     Photo = table.Column<string>(nullable: false)

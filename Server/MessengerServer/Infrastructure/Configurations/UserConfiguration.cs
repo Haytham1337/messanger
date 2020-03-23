@@ -24,6 +24,9 @@ namespace Infrastructure.Configurations
             builder.Property(u => u.Sex)
                 .IsRequired();
 
+            builder.Property(u => u.Age)
+                .HasDefaultValue(6);
+
             builder.Property(u => u.Photo)
                 .IsRequired();
 

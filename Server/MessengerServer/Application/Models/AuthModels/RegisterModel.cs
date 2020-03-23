@@ -30,7 +30,7 @@ namespace Application.Models
 
         public string PhoneNumber { get; set; }
 
-        [Range(1,100)]
+        [Range(6,100)]
         public int Age { get; set; }
     }
 }

@@ -25,9 +25,20 @@ export class ChatComponent implements OnInit {
 
   movedToTop:boolean=false;
 
+  toggled: boolean = false;
+
   constructor(private chatservice:ChatService,private userservice:UserService, private datePipe:DatePipe,private curDate:CurrentDate) 
   { 
     chatservice.messagesUpdate.subscribe(res=>this.messages=res);
+  }
+
+  handleSelection(event) {
+    if(this.newMessage==undefined){
+      this.newMessage=event.char;
+    }
+    else{
+      this.newMessage+=event.char;
+    }
   }
 
 

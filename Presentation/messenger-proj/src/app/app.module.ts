@@ -33,9 +33,10 @@ import { DeleteCheckComponent } from './delete-check/delete-check.component';
 import { DatePipe } from '@angular/common';
 import { AddmemberComponent } from './addmember/addmember.component';
 import { ScrollEventModule } from 'ngx-scroll-event';
-
+import  {  NgxEmojiPickerModule  }  from  'ngx-emoji-picker';
 import { SocialLoginModule, AuthServiceConfig } from 'angularx-social-login';
 import {FacebookLoginProvider } from 'angularx-social-login';
+
 
 let config = new AuthServiceConfig([
 {
@@ -84,6 +85,7 @@ const appRoutes: Routes = [
    ],
    imports: [
       RouterModule.forRoot(appRoutes),
+      NgxEmojiPickerModule.forRoot(),
       BrowserModule,
       HttpClientModule,
       AppRoutingModule,

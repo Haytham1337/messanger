@@ -50,6 +50,13 @@
             <input class="form-control col-sm" id="sendinput" type="text" placeholder="Type"  [(ngModel)]="newMessage" name="message" aria-label="Search" autocomplete="off">
             <button class="btn btn-outline-white btn-md my-2 my-sm-0 ml-3" type="submit">Send</button>
           </form>
+              <i id="smileselect"
+          (click)="toggled = !toggled"
+          [(emojiPickerIf)]="toggled"
+          [emojiPickerDirection]="'bottom' || 'top' || 'left' || 'right'"
+          (emojiPickerSelect)="handleSelection($event)">
+          <img src="../../assets/emoji.png">
+              </i>
         </nav>
       </div>
 

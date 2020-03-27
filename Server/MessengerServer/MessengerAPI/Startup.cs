@@ -175,16 +175,12 @@ namespace MessengerAPI
             });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
-            UserManager<SecurityUser> um,RoleManager<IdentityRole<int>> rm,MessengerContext mc,
-            SecurityContext sc,IConfiguration con)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            DataInitializer.SeedData(um,rm,sc,mc,con).Wait();
 
             app.UseSwagger();
 

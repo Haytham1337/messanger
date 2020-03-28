@@ -23,7 +23,7 @@ img{
 }
 
 .contentparagraph{
-    width:100px;
+    width:70px;
     overflow: hidden;
 }
 
@@ -50,4 +50,8 @@ img{
 
 .offline{
     margin-right: 10px;
+}
+
+.chattime{
+    font-size: 12px;
 }

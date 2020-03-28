@@ -2,7 +2,6 @@
 using Application.Models;
 using Application.Models.AuthModels;
 using Infrastructure.Services;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MessengerAPI.Controllers

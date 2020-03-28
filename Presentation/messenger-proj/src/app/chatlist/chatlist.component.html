@@ -8,9 +8,12 @@
       <div class="col-1 m-0 p-0 ml-2" *ngIf="chat.isOnline">
         <img src="../../assets/online.png" alt="" class="online">
       </div>
-      <div class="col-2 chatname text-left" [class.marginleft]="!chat.isOnline">
+      <div class="col-1 chatname text-left" [class.marginleft]="!chat.isOnline">
           <p class="cardcontent" *ngIf="chat.content==null">Chat</p>
           <p class="cardcontent contentparagraph" *ngIf="chat.content!==null">{{chat.content}}</p>
+      </div>
+      <div class="col-sm m-0 p-0 pl-5 chattime">
+        {{transformDate(chat.messageTime)}}
       </div>
     </div>
   </a>

@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using System;
 
 namespace Application.Models.ChatDto.Responces
 {
@@ -15,5 +16,7 @@ namespace Application.Models.ChatDto.Responces
         public bool? IsBlocked { get; set; }
 
         public bool isOnline { get; set; }
+
+        public DateTime? messageTime { get; set; }
     }
 }

@@ -36,6 +36,7 @@ export interface Chat{
   isBlocked,
   Type:number,
   isOnline:boolean
+  messageTime:Date;
 }
 
 export  class SearchConversation{
@@ -117,7 +118,6 @@ export class ChatService {
                return 1;
              }
           })
-          console.log(data.users);
           this. CurrentContentUpdate(data);
           this.currentChatType=data.type;
           this.currentChatAdmin=data.adminId;
@@ -158,6 +158,7 @@ export class ChatService {
         this.chats.getValue().splice(0,0,curchat);
 
         curchat.content=data.content;
+        curchat.messageTime=new Date();
         this.messages.value.splice(0,0,data);
         this.MessagesUpdate(this.messages.getValue());
         this.ChatsUpdate(this.chats.getValue());
@@ -166,6 +167,7 @@ export class ChatService {
         var curchat=this.chats.getValue()
             .find(c=>c.id==chatId);
         curchat.content=data.content;
+        curchat.messageTime=new Date();
         this.ChatsUpdate(this.chats.getValue());
       }
     });
@@ -231,7 +233,6 @@ export class ChatService {
 
     return await this.http.get<Chat[]>(url).toPromise()
       .then(res=>{
-        console.log(res);
         if(res.length==0)
         {
           this.CurrentContentUpdate(null);

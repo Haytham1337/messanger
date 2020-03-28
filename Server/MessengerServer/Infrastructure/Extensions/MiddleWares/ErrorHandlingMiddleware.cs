@@ -1,17 +1,22 @@
 ﻿using Domain.Exceptions;
+using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;
+
 
 namespace Infrastructure
 {
     public class ErrorHandlingMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly TelemetryClient _telemetryClient;
 
-        public ErrorHandlingMiddleware(RequestDelegate next)
+        public ErrorHandlingMiddleware(RequestDelegate next,TelemetryClient telemetryClient)
         {
             _next = next;
+
+            _telemetryClient = telemetryClient;
         }
 
         public async Task Invoke(HttpContext context)
@@ -30,6 +35,8 @@ namespace Infrastructure
                     context.Response.StatusCode = ((BaseException)ex).StatusCode;
                 else
                     context.Response.StatusCode = 400;
+
+                _telemetryClient.TrackException(ex);
 
                 await context.Response.WriteAsync(ex.Message);
             }

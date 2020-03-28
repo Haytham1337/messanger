@@ -53,6 +53,7 @@ namespace MessengerAPI
                     .AddEntityFrameworkStores<SecurityContext>()
                     .AddDefaultTokenProviders();
 
+            services.AddApplicationInsightsTelemetry();
 
             services.Configure<TokenOption>(Configuration.GetSection("OptionsForToken"));
 
@@ -173,6 +174,7 @@ namespace MessengerAPI
                   }
                 });
             });
+            services.AddApplicationInsightsTelemetry();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -17,11 +17,16 @@ namespace Infrastructure
         public static async Task SeedUsers(UserManager<SecurityUser> userManager, 
             SecurityContext context, MessengerContext mescontext, IConfiguration _config)
         {
-            string username = "admin@gmail.com";
-            string password = "mainadmin";
+            string username = "chatter736@gmail.com";
+            string password = "chatter1224";
             if (await userManager.FindByNameAsync(username) == null)
             {
-                SecurityUser secadmin = new SecurityUser() { UserName = username, Email = username };
+                SecurityUser secadmin = new SecurityUser() 
+                { 
+                    UserName = username, 
+                    Email = username,
+                    EmailConfirmed=true
+                };
                 IdentityResult result = await userManager.CreateAsync(secadmin, password);
 
                 if (result.Succeeded)
@@ -32,7 +37,7 @@ namespace Infrastructure
 
                 User admin = new User() 
                 { 
-                    NickName = "admin_captain", 
+                    NickName = "ghost", 
                     Sex = Sex.Male, 
                     Email = username,
                     Id=secadmin.Id,

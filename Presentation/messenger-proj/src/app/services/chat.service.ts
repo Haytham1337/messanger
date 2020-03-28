@@ -162,6 +162,12 @@ export class ChatService {
         this.MessagesUpdate(this.messages.getValue());
         this.ChatsUpdate(this.chats.getValue());
       }
+      else{
+        var curchat=this.chats.getValue()
+            .find(c=>c.id==chatId);
+        curchat.content=data.content;
+        this.ChatsUpdate(this.chats.getValue());
+      }
     });
 }
 

@@ -57,12 +57,12 @@
                   </div>
                 </div>
               </div>
-              <div class="col-1 m-0 p-0" *ngIf="user.id==chatContent.adminId">
-                <img src="../../assets/admin.png" width="30" height="30">
-              </div>
               <div class="col-2 mt-1 m-0 p-0" [class.isadmin]="user.id==chatContent.adminId">
                <h5>{{user.nickName}}</h5>
               </div>  
+              <div class="col-1 m-0 p-0" *ngIf="user.id==chatContent.adminId">
+                <img src="../../assets/admin.png" width="30" height="30">
+              </div>
               <div class="col-sm m-0 p-0 text-right">
                 <a (click)="leaveGroup(user.id)" class="delIcon" *ngIf="userservice.currentUser.value.id==chatContent.adminId || user.id==userservice.currentUser.value.id">
                   <span aria-hidden="true">&#10006;</span>

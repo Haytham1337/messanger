@@ -123,11 +123,12 @@ namespace Infrastructure.Services
                         Id = conversation.Id,
                         Photo = secondUser.Photo,
                         Content = conversation.LastMessage?.Content,
+                        messageTime = conversation.LastMessage?.TimeCreated,
                         SecondUserId = secondUserId,
                         isOnline = _cache.Get($"{secondUserId}") == null ? false : true,
                         IsBlocked = user.BlockedUsers.Any(
                         bl => bl.UserToBlockId == secondUserId) ? true : false
-                    });
+                    }); ;
                 }
                 else
                 {
@@ -135,7 +136,8 @@ namespace Infrastructure.Services
                     {
                         Id = conversation.Id,
                         Photo = conversation.ConversationInfo.PhotoName,
-                        Content = conversation.LastMessage?.Content
+                        Content = conversation.LastMessage?.Content,
+                        messageTime=conversation.LastMessage?.TimeCreated
                     });
                 }
             }

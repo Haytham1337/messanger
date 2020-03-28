@@ -163,6 +163,7 @@ export class ChatService {
         this.ChatsUpdate(this.chats.getValue());
       }
       else{
+        console.log("hey");
         var curchat=this.chats.getValue()
             .find(c=>c.id==chatId);
         curchat.content=data.content;

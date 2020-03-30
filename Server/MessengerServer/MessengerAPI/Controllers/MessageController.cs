@@ -3,6 +3,7 @@ using Application.IServices;
 using Application.Models.ChatDto.Requests;
 using Application.Models.MessageDto;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MessengerAPI.Controllers
@@ -26,6 +27,19 @@ namespace MessengerAPI.Controllers
             var responce = await this._messageService.GetMessageByChatAsync(request);
 
             return responce;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeConversationPhoto(IFormCollection collection)
+        {
+            if (collection.Files[0] != null)
+            {
+                var photoPath=await _messageService.SaveMessagePhotoAsync(collection.Files[0]);
+                 
+                return Ok(photoPath);
+            }
+
+            return BadRequest();
         }
     }
 }

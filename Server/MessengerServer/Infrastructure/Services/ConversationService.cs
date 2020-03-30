@@ -155,7 +155,7 @@ namespace Infrastructure.Services
             if (conversation == null || conversation.ConversationInfo.AdminId != model.UserId)
                 throw new ConversationNotExistException("Conversation photo cannot be changed!!", 400);
 
-            conversation.ConversationInfo.PhotoName = await this._photoHelper.SavePhotoAsync(model);
+            conversation.ConversationInfo.PhotoName = await this._photoHelper.SavePhotoAsync(model.UploadedFile);
 
             await _unit.Commit();
         }

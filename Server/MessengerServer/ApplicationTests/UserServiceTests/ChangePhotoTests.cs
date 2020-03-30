@@ -31,6 +31,7 @@ namespace ApplicationTests.UserServiceTests
         }
 
         [Fact]
+        [System.Obsolete]
         public async void ChangePhoto_ExtensionNotExist_ThrowsException()
         {
             //arrange
@@ -44,14 +45,10 @@ namespace ApplicationTests.UserServiceTests
             fileMock.SetupGet(file => file.FileName)
                 .Returns("photo.extension");
 
-            var request = fixture.Build<AddPhotoDto>()
-                .With(p => p.UploadedFile, fileMock.Object)
-                .Create();
-
             var photoHelper = fixture.Create<PhotoHelper>();
 
             //assert
-            await Assert.ThrowsAsync<PhotoInCorrectException>(async () => await photoHelper.SavePhotoAsync(request));
+            await Assert.ThrowsAsync<PhotoInCorrectException>(async () => await photoHelper.SavePhotoAsync(fileMock.Object));
         }
     }
 }

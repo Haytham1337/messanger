@@ -7,8 +7,9 @@ namespace Application.Models.MessageDto
 {
     public class AddMessageDto
     {
-        [Required]
         public string Content { get; set; }
+
+        public string photo { get; set; }
 
         public int userId { get; set; }
 

@@ -78,6 +78,7 @@ namespace MessengerAPI.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Content = table.Column<string>(maxLength: 300, nullable: true),
+                    photo = table.Column<string>(nullable: true),
                     TimeCreated = table.Column<DateTime>(nullable: true),
                     UserId = table.Column<int>(nullable: false),
                     ChatId = table.Column<int>(nullable: true)

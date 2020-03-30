@@ -10,6 +10,8 @@ namespace Domain.Entities
 
         public string Content { get; set; }
 
+        public string photo { get; set; }
+
         public DateTime? TimeCreated { get; set; }
 
         public int UserId { get; set; }

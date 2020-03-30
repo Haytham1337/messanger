@@ -1,10 +1,11 @@
 ﻿using Application.IServices;
-using Application.Models.PhotoDto;
 using Domain.Exceptions.UserExceptions;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Services
@@ -12,13 +13,12 @@ namespace Infrastructure.Services
     public class PhotoHelper : IPhotoHelper
     {
         private readonly IConfiguration _config;
-        [Obsolete]
-        private readonly IHostingEnvironment _env;
+
+        private readonly IWebHostEnvironment _env;
 
         private readonly IHttpHelper _client;
 
-        [Obsolete]
-        public PhotoHelper(IConfiguration config, IHostingEnvironment env,IHttpHelper client)
+        public PhotoHelper(IConfiguration config, IWebHostEnvironment env,IHttpHelper client)
         {
             _config = config;
 
@@ -28,19 +28,19 @@ namespace Infrastructure.Services
         }
 
         [Obsolete]
-        public async Task<string> SavePhotoAsync(AddPhotoDto model)
+        public async Task<string> SavePhotoAsync(IFormFile uploadedFile)
         {
-            var ext = model.UploadedFile.FileName.Substring(model.UploadedFile.FileName.LastIndexOf('.'));
+            var ext = uploadedFile.FileName.Substring(uploadedFile.FileName.LastIndexOf('.'));
 
             if (_config[$"PhotoExtensions:{ext}"] != null)
             {
-                var photo = $"{model.UserId}{model.UploadedFile.Name}";
+                var photo = $"{this.GeneratePhotoName()}{uploadedFile.Name}";
 
                 var path = $"{_env.WebRootPath}\\avatars\\{photo}";
 
                 using (var fileStream = new FileStream(path, FileMode.Create))
                 {
-                    await model.UploadedFile.CopyToAsync(fileStream);
+                    await uploadedFile.CopyToAsync(fileStream);
                 }
 
                 return photo;
@@ -70,6 +70,16 @@ namespace Infrastructure.Services
             }
 
             throw new PhotoInCorrectException("Given photo is incorrect!!", 400);
+        }
+
+        public string GeneratePhotoName(int size = 15)
+        {
+            var randomNumber = new byte[size];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomNumber);
+                return Convert.ToBase64String(randomNumber).Replace('+','p');
+            }
         }
     }
 }

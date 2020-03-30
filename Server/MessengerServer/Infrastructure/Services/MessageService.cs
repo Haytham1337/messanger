@@ -55,7 +55,7 @@ namespace Infrastructure.Services
             if (chat == null)
                 throw new ConversationNotExistException("Given chatid is incorrect!!", 400);
 
-            if (!string.IsNullOrEmpty(message.Content))
+            if (!string.IsNullOrEmpty(message.Content) || !string.IsNullOrEmpty(message.photo))
             {
                 var newmessage = new Message()
                 {

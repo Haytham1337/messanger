@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MessengerAPI.Migrations.Security
 {
     [DbContext(typeof(SecurityContext))]
-    [Migration("20200330145915_initSecDb")]
+    [Migration("20200330155452_initSecDb")]
     partial class initSecDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

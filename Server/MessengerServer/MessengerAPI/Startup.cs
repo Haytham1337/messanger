@@ -180,9 +180,7 @@ namespace MessengerAPI
             services.AddApplicationInsightsTelemetry();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
-            UserManager<SecurityUser> um, RoleManager<IdentityRole<int>>rm,MessengerContext mc,
-            SecurityContext sc, IConfiguration conf)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -197,8 +195,6 @@ namespace MessengerAPI
             });
 
             app.UseHttpsRedirection();
-
-            DataInitializer.SeedData(um,rm,sc,mc,conf).Wait();
 
             app.UseRouting();
 

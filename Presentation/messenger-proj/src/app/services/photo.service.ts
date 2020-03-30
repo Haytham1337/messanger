@@ -12,6 +12,10 @@ export class PhotoService {
 
   public imageUrl:string=null;
 
+  private mesPhotoSub=new BehaviorSubject<string>(null);
+
+  public mesPhoto= this.mesPhotoSub.asObservable();
+
   constructor(private http:HttpClient,private config:ConfigService,private sanitizer:DomSanitizer) { }
 
   async UploadPhoto(photo){
@@ -30,5 +34,19 @@ export class PhotoService {
     uploadData.append(photo.name, photo, photo.name);
 
     return this.http.post(`${url}?chatId=${chatId}`,uploadData);
+  }
+
+  async UploadMessagePhoto(photo){
+    let url = await this.config.getConfig("uploadmessagephoto");
+
+    const uploadData = new FormData();
+    uploadData.append(photo.name, photo, photo.name);
+
+
+    return this.http.post<string>(url,uploadData,{responseType:'text' as 'json'}).subscribe((res)=>this.UpdateMesPhoto(res));
+  }
+
+  public UpdateMesPhoto(photo:string){
+    this.mesPhotoSub.next(photo);
   }
 }

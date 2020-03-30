@@ -9,6 +9,7 @@ using Domain.Entities;
 using Domain.Exceptions.ChatExceptions;
 using Domain.Exceptions.MessageExceptions;
 using Domain.Exceptions.UserExceptions;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,10 @@ namespace Infrastructure.Services
 
         private readonly ICache _cache;
 
-        public MessageService(IUnitOfWork unit, IAuthService auth, IMapper map, ICache cache)
+        private readonly IPhotoHelper _photoHelper;
+
+        public MessageService(IUnitOfWork unit, IAuthService auth, IMapper map, 
+            ICache cache, IPhotoHelper photoHelper)
         {
             _unit = unit;
 
@@ -35,6 +39,8 @@ namespace Infrastructure.Services
             _map = map;
 
             _cache = cache;
+
+            _photoHelper = photoHelper;
         }
 
         public async Task<GetMessageDto> AddMessageAsync(AddMessageDto message)
@@ -54,6 +60,7 @@ namespace Infrastructure.Services
                 var newmessage = new Message()
                 {
                     Content = message.Content,
+                    photo=message.photo,
                     TimeCreated = DateTime.Now,
                     UserId = user.Id,
                     ChatId = message.chatId
@@ -99,6 +106,11 @@ namespace Infrastructure.Services
             });
 
             return result;
+        }
+
+        public async Task<string> SaveMessagePhotoAsync(IFormFile uploadedFile)
+        {
+            return await this._photoHelper.SavePhotoAsync(uploadedFile);
         }
     }
 }

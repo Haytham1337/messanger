@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MessengerAPI.Migrations
 {
     [DbContext(typeof(MessengerContext))]
-    [Migration("20200323135504_initDb")]
+    [Migration("20200330145826_initDb")]
     partial class initDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -113,6 +113,9 @@ namespace MessengerAPI.Migrations
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
+
+                    b.Property<string>("photo")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

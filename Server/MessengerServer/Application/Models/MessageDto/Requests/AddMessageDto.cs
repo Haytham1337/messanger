@@ -10,6 +10,8 @@ namespace Application.Models.MessageDto
         [Required]
         public string Content { get; set; }
 
+        public string photo { get; set; }
+
         public int userId { get; set; }
 
         [Required]

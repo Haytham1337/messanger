@@ -12,7 +12,8 @@ export interface Message{
   userId:number,
   timeCreated:Date,
   chatId:number,
-  photo:string
+  photo:string,
+  messagePhoto:string
 }
 
 export class ChatContent{
@@ -127,7 +128,7 @@ export class ChatService {
     }
 
     public async loadMessages(){
-      let url = `${await this.config.getConfig("getchatmessages")}?id=${this.currentChatId}&portion=${this.portion}`;
+      let url = `${await this.config.getConfig("getchatmessages")}?id=${this.currentChatId}&portion=${this.portion+1}`;
     
     let photopath = await this.config.getConfig("photopath");
     this.photourl=photopath;

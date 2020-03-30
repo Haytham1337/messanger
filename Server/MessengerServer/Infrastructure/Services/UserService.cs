@@ -157,7 +157,7 @@ namespace Infrastructure.Services
             if (user == null)
                 throw new UserNotExistException("Given user not exist!!", 400);
 
-            user.Photo = await this._photoHelper.SavePhotoAsync(model);
+            user.Photo = await this._photoHelper.SavePhotoAsync(model.UploadedFile);
 
             await _unit.Commit();
         }

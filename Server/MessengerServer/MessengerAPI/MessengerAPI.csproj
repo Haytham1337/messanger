@@ -2,12 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <ApplicationInsightsResourceId>/subscriptions/915a7d8e-37f4-42da-a11d-d1ba60efda48/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/MessengerAPI</ApplicationInsightsResourceId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="MailKit" Version="2.5.2" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.12.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
@@ -29,6 +31,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 

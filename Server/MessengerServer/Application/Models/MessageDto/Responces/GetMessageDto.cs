@@ -6,6 +6,8 @@ namespace Application.Models.MessageDto
     {
         public string Photo { get; set; }
 
+        public string messagePhoto { get; set; }
+
         public string Content { get; set; }
 
         public DateTime? TimeCreated { get; set; }

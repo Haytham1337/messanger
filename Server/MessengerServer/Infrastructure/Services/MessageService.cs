@@ -60,6 +60,7 @@ namespace Infrastructure.Services
                 var newmessage = new Message()
                 {
                     Content = message.Content,
+                    photo=message.photo,
                     TimeCreated = DateTime.Now,
                     UserId = user.Id,
                     ChatId = message.chatId

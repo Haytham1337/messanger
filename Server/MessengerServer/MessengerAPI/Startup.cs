@@ -130,7 +130,10 @@ namespace MessengerAPI
                     .AllowCredentials());
             });
 
-            services.AddSignalR();
+            services.AddSignalR(configure=> 
+            {
+                configure.ClientTimeoutInterval = TimeSpan.FromSeconds(200);
+            });
 
             services.AddAutoMapper(typeof(MappingProfile));
 

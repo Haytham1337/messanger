@@ -53,8 +53,8 @@ export class ChatComponent implements OnInit {
 
     this.chatservice.messagessource.subscribe(mess=>
       {
-        this.messages=mess;
 
+        this.messages=mess;
         if(!this.movedToTop){
           setTimeout(()=>{
             let elem=document.getElementById("contentdiv");
@@ -75,8 +75,9 @@ export class ChatComponent implements OnInit {
   }
 
   sendMessage(){
-    this.chatservice.sendMessage({content:this.newMessage} as Message);
+    this.chatservice.sendMessage({content:this.newMessage,photo:this.newPhoto} as Message);
     this.newMessage=null;
+    this.photoservice.UpdateMesPhoto(null);
   }
 
   public GetUrl(photo:string){

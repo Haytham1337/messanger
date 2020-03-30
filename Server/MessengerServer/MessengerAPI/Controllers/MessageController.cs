@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MessengerAPI.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]/[action]")]
     public class MessageController : ControllerBase
     {
@@ -21,7 +22,6 @@ namespace MessengerAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<AllMessagesDto> GetConversationMessages([FromQuery]GetChatMessagesRequest request)
         {
             var responce = await this._messageService.GetMessageByChatAsync(request);
@@ -30,16 +30,16 @@ namespace MessengerAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangeConversationPhoto(IFormCollection collection)
+        public async Task<string> LoadMessagePhoto(IFormCollection collection)
         {
+            string photoName = string.Empty;
+
             if (collection.Files[0] != null)
             {
-                var photoPath=await _messageService.SaveMessagePhotoAsync(collection.Files[0]);
-                 
-                return Ok(photoPath);
+                photoName=await _messageService.SaveMessagePhotoAsync(collection.Files[0]);
             }
 
-            return BadRequest();
+            return photoName;
         }
     }
 }

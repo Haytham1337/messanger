@@ -1,4 +1,4 @@
-<div class="container m-2 p-0">
+<div class="container m-2 p-0" id="mainchatcont">
   <div class="row p-0 m-0">
     <div class="container-fluid col-sm-2 m-0 p-0" id="chatbox">
       <app-chatlist></app-chatlist>
@@ -50,6 +50,18 @@
             <input class="form-control col-sm" id="sendinput" type="text" placeholder="Type"  [(ngModel)]="newMessage" name="message" aria-label="Search" autocomplete="off">
             <button class="btn btn-outline-white btn-md my-2 my-sm-0 ml-3" type="submit">Send</button>
           </form>
+          <div>
+            <div *ngIf="newPhoto!=null" id="mesPhotoDiv">
+              <img [src]="GetUrl(this.newPhoto)" width="70" height="70" alt="photo">
+              <a (click)="deletePhoto()">
+                <img src="../../assets/removephoto.png" id="removephoto">
+              </a>
+            </div>
+            <a class="pr-2">
+              <img (click)="photochosen()" src="../../assets/attach.png" id="attach_photo_link" width="50" height="50" for="attach_photo">
+            </a>
+          </div>
+          <input style="display: none;" id="attach_photo_input" type="file" accept=".jpg,.jpeg,.png" (change)="photoselected($event)">
               <i id="smileselect"
           (click)="toggled = !toggled"
           [(emojiPickerIf)]="toggled"

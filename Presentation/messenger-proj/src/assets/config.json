@@ -9,6 +9,7 @@
     
     "getmessages":"https://localhost:44334/api/Message",
     "getchatmessages":"https://localhost:44334/api/Message/GetConversationMessages",
+    "uploadmessagephoto":"https://localhost:44334/api/Message/LoadMessagePhoto",
 
     "updatephoto":"https://localhost:44334/api/User/ChangePhoto",
     "getuserinfo":"https://localhost:44334/api/User/UserInfo",  

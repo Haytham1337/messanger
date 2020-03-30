@@ -4,6 +4,7 @@ import { ChatService, Message } from './../services/chat.service';
 import { Component, OnInit} from '@angular/core';
 import {DatePipe} from '@angular/common';
 import { ScrollEvent } from 'ngx-scroll-event';
+import { PhotoService } from '../services/photo.service';
 
 
 @Component({
@@ -14,6 +15,8 @@ import { ScrollEvent } from 'ngx-scroll-event';
 export class ChatComponent implements OnInit {
 
   newMessage:string;
+
+  newPhoto:string=null;
 
   currentUser:User=new User();
 
@@ -27,7 +30,7 @@ export class ChatComponent implements OnInit {
 
   toggled: boolean = false;
 
-  constructor(private chatservice:ChatService,private userservice:UserService, private datePipe:DatePipe,private curDate:CurrentDate) 
+  constructor(private chatservice:ChatService,private photoservice:PhotoService,private userservice:UserService, private datePipe:DatePipe,private curDate:CurrentDate) 
   { 
     chatservice.messagesUpdate.subscribe(res=>this.messages=res);
   }
@@ -63,6 +66,8 @@ export class ChatComponent implements OnInit {
       });
     
     this.userservice.data.subscribe(user=>this.currentUser=user);
+
+    this.photoservice.mesPhoto.subscribe(data=>{this.newPhoto=data;});
 
     this.chatservice.userssource.subscribe(users=>this.users=users);
 
@@ -102,4 +107,16 @@ export class ChatComponent implements OnInit {
       this.movedToTop=true;
     }
   }
+
+   photochosen(){
+      document.getElementById("attach_photo_input").click();
+    }
+
+    photoselected(event){
+      this.photoservice.UploadMessagePhoto(event.target.files[0]);
+    }
+
+    deletePhoto(){
+      this.photoservice.UpdateMesPhoto(null);
+    }
 }

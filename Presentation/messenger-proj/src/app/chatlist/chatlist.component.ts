@@ -40,7 +40,6 @@ export class ChatlistComponent implements OnInit {
       return this.curDate.transform(date);
     }
     else{
-      console.log(messageTime);
       let day = messageTime.getDate()<10? `0${messageTime.getDate()}`:`${messageTime.getDate()}`;
       let month = messageTime.getMonth()<10? `0${messageTime.getMonth()+1}`:`${messageTime.getMonth()+1}`;
 

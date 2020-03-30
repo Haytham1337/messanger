@@ -7,6 +7,10 @@
     margin: 10px 0;
     min-height: 83vh;
     margin-top:3vh;
+    }
+
+  #mainchatcont{
+    z-index: -10;
   }
 
   #contentdiv{
@@ -217,4 +221,15 @@
 
 #smileselect{
   cursor: pointer;
+}
+
+#mesPhotoDiv{
+  position: absolute;
+  z-index: 20;
+}
+
+#removephoto{
+  width:14px;
+  height: 14px;
+  margin-bottom: 25px;
 }

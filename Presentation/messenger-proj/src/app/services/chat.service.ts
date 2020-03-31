@@ -92,7 +92,7 @@ export class ChatService {
       transport:signalR.HttpTransportType.WebSockets
     };
     this.hubConnection = new signalR.HubConnectionBuilder()
-                              .withUrl(`https://localhost:44334/chat/?token=${localStorage["token"]}`,options)
+                              .withUrl(`https://messengerapi20200328051158.azurewebsites.net/chat/?token=${localStorage["token"]}`,options)
                               .build();
 
     this.hubConnection.start().then(()=>console.log("Connection started!!"));

@@ -15,7 +15,7 @@ export class GroupinfoComponent implements OnInit {
 
   admin:User=new User();
 
-  constructor(private chatservice:ChatService,private photoser:PhotoService,private userservice:UserService) { }
+  constructor(public chatservice:ChatService,public photoser:PhotoService,public userservice:UserService) { }
 
   ngOnInit() {
     this.chatservice.currentChatContentSource.subscribe(data=>

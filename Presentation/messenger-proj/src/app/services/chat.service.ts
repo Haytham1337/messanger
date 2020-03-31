@@ -17,6 +17,7 @@ export interface Message{
 }
 
 export class ChatContent{
+  name:string;
   users:User[];
   messages:Message[];
   type:number;

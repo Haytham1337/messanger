@@ -23,7 +23,7 @@
             </div>      
             <div class="col-sm contentleft mt-2" *ngIf="item.userId!=currentUser.id">
                 <p class="cardcontent">{{item.content}}</p>
-                <img class="mesphoto" *ngIf="item.messagePhoto!=null" [src]="GetUrl(item.messagePhoto)">
+                <img class="mesphoto mesphotorigth" *ngIf="item.messagePhoto!=null" [src]="GetUrl(item.messagePhoto)">
             </div>
             <div class="col-2 p-0 m-0" *ngIf="item.userId!=currentUser.id">
               <p class="messagetime">{{ transformDate(item.timeCreated)}}</p>

@@ -1,5 +1,5 @@
 {
-    "photopath":"https://messengerapi20200328051158.azurewebsites.net/avatars",
+    "photopath":"https://imgstorage123.blob.core.windows.net/imgcontainer",
 
     "signin":"https://messengerapi20200328051158.azurewebsites.net/api/Auth/SignIn",
     "signup":"https://messengerapi20200328051158.azurewebsites.net/api/Auth/Register",

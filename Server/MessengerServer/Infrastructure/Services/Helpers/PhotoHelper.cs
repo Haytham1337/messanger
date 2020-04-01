@@ -3,6 +3,8 @@ using Domain.Exceptions.UserExceptions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 using System;
 using System.IO;
 using System.Security.Cryptography;
@@ -27,23 +29,27 @@ namespace Infrastructure.Services
             _client = client;
         }
 
-        [Obsolete]
+     
+
         public async Task<string> SavePhotoAsync(IFormFile uploadedFile)
         {
             var ext = uploadedFile.FileName.Substring(uploadedFile.FileName.LastIndexOf('.'));
 
             if (_config[$"PhotoExtensions:{ext}"] != null)
             {
+                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(_config.GetValue<string>("storageKey"));
+
+                CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+                CloudBlobContainer container = blobClient.GetContainerReference("imgcontainer");
+
                 var photo = $"{this.GeneratePhotoName()}{uploadedFile.Name}";
 
-                var path = $"{_env.WebRootPath}\\avatars\\{photo}";
+                CloudBlockBlob blockBlob = container.GetBlockBlobReference(photo);
 
-                using (var fileStream = new FileStream(path, FileMode.Create))
-                {
-                    await uploadedFile.CopyToAsync(fileStream);
-                }
+                await blockBlob.UploadFromStreamAsync(uploadedFile.OpenReadStream());
 
                 return photo;
+
             }
 
             throw new PhotoInCorrectException("Given extension is incorrect!!", 400);
@@ -55,18 +61,20 @@ namespace Infrastructure.Services
 
             if (httpResponce.IsSuccessStatusCode)
             {
-                var photoName = uri.Split('/')[3]+".jpg";
+                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(_config.GetValue<string>("storageKey"));
 
-                var path = $"{_env.WebRootPath}\\avatars\\{photoName}";
+                CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+                CloudBlobContainer container = blobClient.GetContainerReference("imgcontainer");
+
+                var photo = uri.Split('/')[3]+".jpg";
 
                 using var responseStream = await httpResponce.Content.ReadAsStreamAsync();
 
-                using (var fileStream = new FileStream(path, FileMode.Create))
-                {
-                    await responseStream.CopyToAsync(fileStream);
-                }
+                CloudBlockBlob blockBlob = container.GetBlockBlobReference(photo);
 
-                return photoName;
+                await blockBlob.UploadFromStreamAsync(responseStream);
+
+                return photo;
             }
 
             throw new PhotoInCorrectException("Given photo is incorrect!!", 400);

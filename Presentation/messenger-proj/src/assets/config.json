@@ -1,5 +1,5 @@
 {
-    "photopath":"https://localhost:44334/avatars",
+    "photopath":"https://imgstorage123.blob.core.windows.net/imgcontainer",
 
     "signin":"https://localhost:44334/api/Auth/SignIn",
     "signup":"https://localhost:44334/api/Auth/Register",

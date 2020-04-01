@@ -11,7 +11,7 @@ export class SearchComponent implements OnInit {
 
   SearchConv:SearchConversation[];
   filter:string=null;
-  constructor(private userservice:UserService,private chatservice:ChatService) { }
+  constructor(public userservice:UserService,public chatservice:ChatService) { }
 
   ngOnInit() {
     this.chatservice.searchConvSource.subscribe((res)=>this.SearchConv=res);

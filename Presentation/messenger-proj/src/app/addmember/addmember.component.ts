@@ -15,7 +15,7 @@ export class AddmemberComponent implements OnInit {
   dropdownSettings:IDropdownSettings = {};
   idToAdd:number;
 
-  constructor(private userservice:UserService,private chatservice:ChatService) { }
+  constructor(public userservice:UserService,public chatservice:ChatService) { }
 
   ngOnInit() {
 

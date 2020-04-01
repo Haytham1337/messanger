@@ -16,7 +16,7 @@ export class ChannelCreateComponent implements OnInit {
  
   group:Group=new Group();
 
-  constructor(private userservice:UserService,private chatservice:ChatService) { }
+  constructor(public userservice:UserService,public chatservice:ChatService) { }
 
   ngOnInit() {
 

@@ -12,7 +12,7 @@ export class RegisterComponent implements OnInit {
 
   isnotvalid:boolean;
   userdata={email:'',password:'',passwordconfirm:''};
-  constructor(private auth:AuthenticationService,private router:Router,private guard: RegisterGuard) { }
+  constructor(public auth:AuthenticationService,public router:Router,public guard: RegisterGuard) { }
 
   ngOnInit() {
     this.auth.errorOccured=false;

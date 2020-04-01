@@ -13,7 +13,7 @@ import {UserService, User} from './../services/user.service';
 export class NavbarComponent implements OnInit {
 
   public currentUser:User=new User();
-  constructor(private auth:AuthenticationService,private userservice:UserService,private photoser:PhotoService) { }
+  constructor(public auth:AuthenticationService,public userservice:UserService,public photoser:PhotoService) { }
 
   ngOnInit() {
     this.userservice.data.subscribe(user=>this.currentUser=user);

@@ -30,7 +30,7 @@ export class ChatComponent implements OnInit {
 
   toggled: boolean = false;
 
-  constructor(private chatservice:ChatService,private photoservice:PhotoService,private userservice:UserService, private datePipe:DatePipe,private curDate:CurrentDate) 
+  constructor(public chatservice:ChatService,public photoservice:PhotoService,public userservice:UserService, public datePipe:DatePipe,public curDate:CurrentDate) 
   { 
     chatservice.messagesUpdate.subscribe(res=>this.messages=res);
   }

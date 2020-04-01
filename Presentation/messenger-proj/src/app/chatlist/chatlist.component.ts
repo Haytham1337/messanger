@@ -14,7 +14,7 @@ export class ChatlistComponent implements OnInit {
 
   chats:Chat[];
 
-  constructor(private chatservice:ChatService,private datePipe:DatePipe,private curDate:CurrentDate) { }
+  constructor(public chatservice:ChatService,public datePipe:DatePipe,public curDate:CurrentDate) { }
 
   ngOnInit() {
     this.chatservice.GetChats();

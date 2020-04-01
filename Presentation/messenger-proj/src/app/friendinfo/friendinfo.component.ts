@@ -14,7 +14,7 @@ export class FriendinfoComponent implements OnInit {
 
   currentChatUser:User=null;
 
-  constructor(private chatservice:ChatService,private userservice:UserService) { }
+  constructor(public chatservice:ChatService,public userservice:UserService) { }
 
   ngOnInit() {
     this.chatservice.currentChatUserSource.subscribe(user=>this.currentChatUser=user);

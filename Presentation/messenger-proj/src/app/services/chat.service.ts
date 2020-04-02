@@ -8,7 +8,7 @@ import { User } from './user.service';
 import { BehaviorSubject } from 'rxjs';
 
 export interface Message{
-  Id:number,
+  messageId:number,
   content:string,
   userId:number,
   timeCreated:Date,
@@ -94,7 +94,7 @@ export class ChatService {
       transport:signalR.HttpTransportType.WebSockets
     };
     this.hubConnection = new signalR.HubConnectionBuilder()
-                              .withUrl(`https://localhost:44334/chat/?token=${localStorage["token"]}`,options)
+                              .withUrl(`https://messengerapi20200328051158.azurewebsites.net/chat/?token=${localStorage["token"]}`,options)
                               .build();
 
     this.hubConnection.start().then(()=>console.log("Connection started!!"));
@@ -147,6 +147,7 @@ export class ChatService {
   }
 
   public sendMessage (data:Message) {
+    data.timeCreated=new Date();
     data.chatId=this.currentChatId;
     this.hubConnection.invoke('SendToAll', data)
     .catch(err => console.error(err));

@@ -59,10 +59,10 @@ namespace Infrastructure.Services
             if (!string.IsNullOrEmpty(message.Content) || !string.IsNullOrEmpty(message.photo))
             {
                 var newmessage = new Message()
-                {
+                {           
                     Content = message.Content,
                     photo=message.photo,
-                    TimeCreated = DateTime.Now,
+                    TimeCreated = message.timeCreated,
                     UserId = user.Id,
                     ChatId = message.chatId
                 };

@@ -66,12 +66,12 @@
                 <img src="../../assets/removephoto.png" id="removephoto">
               </a>
             </div>
-            <a class="pr-2">
+            <a class="pr-2" *ngIf="chatservice.currentChatType!==2 || currentUser.id==chatservice.currentChatAdmin">
               <img (click)="photochosen()" src="../../assets/attach.png" id="attach_photo_link" width="50" height="50" for="attach_photo">
             </a>
           </div>
-          <input style="display: none;" id="attach_photo_input" type="file" accept=".jpg,.jpeg,.png" (change)="photoselected($event)">
-              <i id="smileselect"
+          <input *ngIf="chatservice.currentChatType!==2 || currentUser.id==chatservice.currentChatAdmin" style="display: none;" id="attach_photo_input" type="file" accept=".jpg,.jpeg,.png" (change)="photoselected($event)">
+              <i *ngIf="chatservice.currentChatType!==2 || currentUser.id==chatservice.currentChatAdmin" id="smileselect"
           (click)="toggled = !toggled"
           [(emojiPickerIf)]="toggled"
           [emojiPickerDirection]="'bottom' || 'top' || 'left' || 'right'"

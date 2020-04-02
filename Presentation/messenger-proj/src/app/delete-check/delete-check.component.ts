@@ -10,7 +10,7 @@ export class DeleteCheckComponent implements OnInit {
 
   @Input()
   id:number;
-  constructor(private chatservice:  ChatService) { }
+  constructor(public chatservice:  ChatService) { }
 
   ngOnInit() {
   }

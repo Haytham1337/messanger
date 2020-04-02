@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
 
   authResp:any;
 
-  constructor(private auth:AuthenticationService,private route:Router,private user:UserService,private http:HttpClient) { }
+  constructor(public auth:AuthenticationService,public route:Router,public user:UserService,public http:HttpClient) { }
 
   ngOnInit() {
     this.auth.errorOccured=false;

@@ -12,7 +12,7 @@ export class FilluserinfoComponent implements OnInit {
 
   userdata={NickName:'',Sex:0,PhoneNumber:'',Age:null};
   isnotvalid:boolean;
-  constructor(private auth:AuthenticationService) { }
+  constructor(public auth:AuthenticationService) { }
 
   ngOnInit() {
   }

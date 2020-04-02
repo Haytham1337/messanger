@@ -28,6 +28,11 @@
             <div class="col-2 p-0 m-0" *ngIf="item.userId!=currentUser.id">
               <p class="messagetime">{{ transformDate(item.timeCreated)}}</p>
             </div>
+            <div class="col-1 p-0 m-0 pl-2">
+              <a (click)="deleteMessage()">
+                <img class="delmessicon" src="../../assets/delmessage.png">
+              </a>
+            </div>
           </div>
     
           <div class="row left-row" *ngIf="item.userId==currentUser.id">
@@ -41,10 +46,12 @@
                 <img class="mesphoto" *ngIf="item.messagePhoto!=null" [src]="GetUrl(item.messagePhoto)">
             </div>
             <div class="col-1 m-0 pl-1 imgrigth text-right pt-2" id="divwithrigth" *ngIf="item.userId==currentUser.id">
+              <a (click)="deleteMessage()" class="delmessiconrigth">
+                <img class="delmessicon" src="../../assets/delmessage.png">
+              </a>
               <img [src]="currentUser.photoName" class="rigthimgcontent">
-            </div>  
+            </div>
           </div>
-    
           </div>
         </div>
         <nav class="navbar navbar-dark mt-2" id="sendform"  [class.stretchform]="chatservice.currentChatType!==0">

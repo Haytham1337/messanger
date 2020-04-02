@@ -9,5 +9,7 @@ namespace Application.IServices
         Task<string> SavePhotoAsync(IFormFile uploadedFile);
 
         Task<string> SavePhotoFromUriAsync(string uri);
+
+        Task DeletePhotoAsync(string photo);
     }
 }

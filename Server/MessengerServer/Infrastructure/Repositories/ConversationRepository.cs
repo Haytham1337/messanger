@@ -61,5 +61,16 @@ namespace Infrastructure.Repositories
                 .Take(5)
                 .ToListAsync();
         }
+
+        public async Task<bool> isUserConversationMember(int conversationId,int userId)
+        {
+           var conversation= await this.db.Conversations
+                .Where(conv => conv.Id == conversationId)
+                .Include(conv => conv.UserConversations)
+                .Where(conv => conv.UserConversations.Any(uconv => uconv.UserId == userId))
+                .FirstOrDefaultAsync();
+
+            return conversation != null;             
+        }
     }
 }

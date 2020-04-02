@@ -37,7 +37,8 @@ namespace Infrastructure.Services
 
             if (_config[$"PhotoExtensions:{ext}"] != null)
             {
-                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(_config.GetValue<string>("storageKey"));
+                CloudStorageAccount storageAccount = CloudStorageAccount
+                    .Parse(_config.GetValue<string>("storageKey"));
 
                 CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
                 CloudBlobContainer container = blobClient.GetContainerReference("imgcontainer");
@@ -49,7 +50,6 @@ namespace Infrastructure.Services
                 await blockBlob.UploadFromStreamAsync(uploadedFile.OpenReadStream());
 
                 return photo;
-
             }
 
             throw new PhotoInCorrectException("Given extension is incorrect!!", 400);
@@ -61,7 +61,8 @@ namespace Infrastructure.Services
 
             if (httpResponce.IsSuccessStatusCode)
             {
-                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(_config.GetValue<string>("storageKey"));
+                CloudStorageAccount storageAccount = CloudStorageAccount
+                    .Parse(_config.GetValue<string>("storageKey"));
 
                 CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
                 CloudBlobContainer container = blobClient.GetContainerReference("imgcontainer");
@@ -78,6 +79,22 @@ namespace Infrastructure.Services
             }
 
             throw new PhotoInCorrectException("Given photo is incorrect!!", 400);
+        }
+
+        public async Task DeletePhotoAsync(string photo)
+        {
+            if (!string.IsNullOrEmpty(photo))
+            {
+                CloudStorageAccount storageAccount = CloudStorageAccount
+                       .Parse(_config.GetValue<string>("storageKey"));
+
+                CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+                CloudBlobContainer container = blobClient.GetContainerReference("imgcontainer");
+
+                CloudBlockBlob blockBlob = container.GetBlockBlobReference(photo);
+
+                await blockBlob.DeleteAsync();
+            }
         }
 
         public string GeneratePhotoName(int size = 15)

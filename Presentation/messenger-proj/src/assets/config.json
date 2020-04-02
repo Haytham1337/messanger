@@ -10,6 +10,8 @@
     "getmessages":"https://messengerapi20200328051158.azurewebsites.net/api/Message",
     "getchatmessages":"https://messengerapi20200328051158.azurewebsites.net/api/Message/GetConversationMessages",
     "uploadmessagephoto":"https://messengerapi20200328051158.azurewebsites.net/api/Message/LoadMessagePhoto",
+    "deletemessage":"https://messengerapi20200328051158.azurewebsites.net/api/Message/DeleteMessage",
+
 
     "updatephoto":"https://messengerapi20200328051158.azurewebsites.net/api/User/ChangePhoto",
     "getuserinfo":"https://messengerapi20200328051158.azurewebsites.net/api/User/UserInfo",  

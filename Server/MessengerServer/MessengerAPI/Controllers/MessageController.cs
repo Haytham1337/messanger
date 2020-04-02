@@ -2,6 +2,8 @@
 using Application.IServices;
 using Application.Models.ChatDto.Requests;
 using Application.Models.MessageDto;
+using Application.Models.MessageDto.Requests;
+using Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -40,6 +42,16 @@ namespace MessengerAPI.Controllers
             }
 
             return photoName;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteMessage(DeleteMessageRequest request)
+        {
+            request.UserId = HttpContext.GetUserId();
+ 
+            await _messageService.DeleteMessageAsync(request);
+
+            return Ok();
         }
     }
 }

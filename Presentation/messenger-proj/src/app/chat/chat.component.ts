@@ -121,4 +121,8 @@ export class ChatComponent implements OnInit {
     deletePhoto(){
       this.photoservice.UpdateMesPhoto(null);
     }
+
+    deleteMessage(id:number){
+      this.chatservice.DeleteMessage(id);
+    }
 }

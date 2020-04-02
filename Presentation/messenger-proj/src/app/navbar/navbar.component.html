@@ -24,7 +24,7 @@
                 <a class="dropdown-item dropitem" routerLink="/profile">Profile</a>
                 <label class="dropitem" for="file_input_id">Upload photo</label>
                 <input  type="file" id="file_input_id" accept=".jpg,.jpeg,.png" (change)="fileselected($event)">
-                <a class="dropdown-item dropitem" href="#" (click)="auth.signout()">SignOut</a>
+                <a class="dropdown-item dropitem" (click)="auth.signout()">SignOut</a>
               </div>
             </div>
               <li class="nav-item" *ngIf="!auth.looggedIn()">

@@ -24,5 +24,14 @@ namespace Infrastructure.Repositories
                  .Take(10)
                  .ToListAsync();
         }
+
+        public async Task<Message> GetMessageByIdWithConversation(int id)
+        {
+            return await this.db.Messages
+                .Where(mes => mes.Id == id)
+                .Include(mes => mes.Chat)
+                    .ThenInclude(chat => chat.ConversationInfo)
+                .FirstOrDefaultAsync();
+        }
     }
 }

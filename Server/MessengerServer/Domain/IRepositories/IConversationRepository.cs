@@ -15,5 +15,7 @@ namespace Domain.IRepositories
         Task<Conversation> GetWithUsersConversationsAsync(int id);
 
         Task<List<Conversation>> SearchConversationsAsync(string filter, int userId);
+
+        Task<bool> isUserConversationMember(int conversationId, int userId);
     }
 }

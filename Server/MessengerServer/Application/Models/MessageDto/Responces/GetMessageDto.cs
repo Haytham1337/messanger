@@ -4,6 +4,8 @@ namespace Application.Models.MessageDto
 {
     public class GetMessageDto
     {
+        public int MessageId { get; set; }
+
         public string Photo { get; set; }
 
         public string messagePhoto { get; set; }

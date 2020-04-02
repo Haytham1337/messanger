@@ -8,6 +8,7 @@ import { User } from './user.service';
 import { BehaviorSubject } from 'rxjs';
 
 export interface Message{
+  Id:number,
   content:string,
   userId:number,
   timeCreated:Date,
@@ -93,7 +94,7 @@ export class ChatService {
       transport:signalR.HttpTransportType.WebSockets
     };
     this.hubConnection = new signalR.HubConnectionBuilder()
-                              .withUrl(`https://messengerapi20200328051158.azurewebsites.net/chat/?token=${localStorage["token"]}`,options)
+                              .withUrl(`https://localhost:44334/chat/?token=${localStorage["token"]}`,options)
                               .build();
 
     this.hubConnection.start().then(()=>console.log("Connection started!!"));
@@ -120,6 +121,7 @@ export class ChatService {
                return 1;
              }
           })
+          console.log(data.messages);
           this. CurrentContentUpdate(data);
           this.currentChatType=data.type;
           this.currentChatAdmin=data.adminId;
@@ -361,6 +363,22 @@ export class ChatService {
       err=>{
         console.log("error");
   });
+
+  }
+
+  public async DeleteMessage(id:number){
+    let url=await this.config.getConfig("deletemessage");
+
+    let headers = new HttpHeaders();
+    headers= headers.append('content-type', 'application/json');
+
+    this.http.post(url,JSON.stringify({MessageId: id}),{headers:headers}).subscribe(
+      res=>{
+        let messageToDelete= this.messages.value.find(mes=>mes.messageId==id);
+        this.messages.value.splice(this.messages.value.indexOf(messageToDelete),1);
+        this.MessagesUpdate(this.messages.value);
+      },
+      );
 
   }
 }

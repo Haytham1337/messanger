@@ -2,6 +2,7 @@
 using Application.IServices;
 using Application.Models.ChatDto.Requests;
 using Application.Models.MessageDto;
+using Application.Models.MessageDto.Requests;
 using Application.Models.UserDto;
 using AutoMapper;
 using Domain;
@@ -111,6 +112,51 @@ namespace Infrastructure.Services
         public async Task<string> SaveMessagePhotoAsync(IFormFile uploadedFile)
         {
             return await this._photoHelper.SavePhotoAsync(uploadedFile);
+        }
+
+        public async Task DeleteMessageAsync(DeleteMessageRequest request)
+        {
+            var message = await _unit.MessageRepository.GetMessageByIdWithConversation(request.MessageId);
+
+            if (message == null)
+                throw new MessageNotExistException("Givent message not exist!!", 400);
+
+            var user = await _auth.FindByIdUserAsync(request.UserId);
+
+            var ismember = await _unit.ConversationRepository.isUserConversationMember(message.ChatId.Value, request.UserId);
+
+            if (user == null || !ismember)
+                throw new UserNotExistException("Givent user not valid!!", 400);
+
+            if(message.Chat.Type==ConversationType.Chat || 
+                message.Chat.Type == ConversationType.Group)
+            {
+                if (message.UserId == request.UserId)
+                {
+                    await _photoHelper.DeletePhotoAsync(message.photo);
+
+                    await _unit.MessageRepository.DeleteAsync(message.Id);
+                }
+                else
+                {
+                    throw new UserNotHaveRigthsException("Given user not permmited for the action!!", 400);
+                }
+            }
+            else
+            {
+                if (message.Chat.ConversationInfo.AdminId == request.UserId)
+                {
+                    await _photoHelper.DeletePhotoAsync(message.photo);
+
+                    await _unit.MessageRepository.DeleteAsync(message.Id);
+                }
+                else
+                {
+                    throw new UserNotHaveRigthsException("Given user not permmited for the action!!", 400);
+                }
+            }
+
+            await _unit.Commit();
         }
     }
 }

@@ -81,6 +81,22 @@ namespace Infrastructure.Services
             throw new PhotoInCorrectException("Given photo is incorrect!!", 400);
         }
 
+        public async Task DeletePhotoAsync(string photo)
+        {
+            if (!string.IsNullOrEmpty(photo))
+            {
+                CloudStorageAccount storageAccount = CloudStorageAccount
+                       .Parse(_config.GetValue<string>("storageKey"));
+
+                CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+                CloudBlobContainer container = blobClient.GetContainerReference("imgcontainer");
+
+                CloudBlockBlob blockBlob = container.GetBlockBlobReference(photo);
+
+                await blockBlob.DeleteAsync();
+            }
+        }
+
         public string GeneratePhotoName(int size = 15)
         {
             var randomNumber = new byte[size];

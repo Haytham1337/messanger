@@ -13,6 +13,7 @@ using Domain.Exceptions.UserExceptions;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -62,7 +63,7 @@ namespace Infrastructure.Services
                 {           
                     Content = message.Content,
                     photo=message.photo,
-                    TimeCreated = message.timeCreated,
+                    TimeCreated = Convert.ToDateTime(message.timeCreated),
                     UserId = user.Id,
                     ChatId = message.chatId
                 };

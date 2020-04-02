@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Application.Models.MessageDto
 {
     public class AddMessageDto
     {
-        public DateTime timeCreated { get; set; }
+        public string timeCreated { get; set; }
         public string Content { get; set; }
 
         public string photo { get; set; }

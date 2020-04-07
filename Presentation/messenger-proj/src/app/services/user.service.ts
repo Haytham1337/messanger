@@ -44,7 +44,7 @@ export class UserService  {
     let headers = new HttpHeaders();
     headers= headers.append('content-type', 'application/json');
             
-    return this.http.post(url,JSON.stringify(data),{headers:headers}).subscribe(
+    return this.http.put(url,JSON.stringify(data),{headers:headers}).subscribe(
       ()=>{
         this.updateCurrentUser(data);
         this.valid=false;

@@ -362,7 +362,7 @@ export class ChatService {
     let headers = new HttpHeaders();
     headers= headers.append('content-type', 'application/json');
 
-    this.http.post(url,JSON.stringify({ConversationId: id}),{headers:headers}).subscribe(
+    this.http.delete(url,JSON.stringify({ConversationId: id}),{headers:headers}).subscribe(
       res=>{
         this.GetChats();
       },
@@ -378,7 +378,7 @@ export class ChatService {
     let headers = new HttpHeaders();
     headers= headers.append('content-type', 'application/json');
 
-    this.http.post(url,JSON.stringify({MessageId: id}),{headers:headers}).subscribe(
+    this.http.delete(url,JSON.stringify({MessageId: id}),{headers:headers}).subscribe(
       res=>{
         let messageToDelete= this.messages.value.find(mes=>mes.messageId==id);
         this.messages.value.splice(this.messages.value.indexOf(messageToDelete),1);

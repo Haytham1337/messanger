@@ -24,7 +24,7 @@ export class PhotoService {
     const uploadData = new FormData();
     uploadData.append(photo.name, photo, photo.name);
 
-    return this.http.post(url,uploadData);
+    return this.http.put(url,uploadData);
   }
 
   async UploadGroupPhoto(photo,chatId:number){
@@ -43,7 +43,7 @@ export class PhotoService {
     uploadData.append(photo.name, photo, photo.name);
 
 
-    return this.http.post<string>(url,uploadData,{responseType:'text' as 'json'}).subscribe((res)=>this.UpdateMesPhoto(res));
+    return this.http.put<string>(url,uploadData,{responseType:'text' as 'json'}).subscribe((res)=>this.UpdateMesPhoto(res));
   }
 
   public UpdateMesPhoto(photo:string){

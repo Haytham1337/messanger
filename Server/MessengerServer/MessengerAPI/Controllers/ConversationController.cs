@@ -70,7 +70,7 @@ namespace MessengerAPI.Controllers
             return await this._conversationService.SearchConversation(request);
         }
 
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> Delete([FromBody]DeleteRequest request)
         {
             request.UserId = HttpContext.GetUserId();

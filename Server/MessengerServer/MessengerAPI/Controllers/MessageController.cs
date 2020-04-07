@@ -31,7 +31,7 @@ namespace MessengerAPI.Controllers
             return responce;
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<string> LoadMessagePhoto(IFormCollection collection)
         {
             string photoName = string.Empty;
@@ -44,7 +44,7 @@ namespace MessengerAPI.Controllers
             return photoName;
         }
 
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> DeleteMessage(DeleteMessageRequest request)
         {
             request.UserId = HttpContext.GetUserId();

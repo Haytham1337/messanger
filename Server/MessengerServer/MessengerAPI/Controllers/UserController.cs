@@ -34,7 +34,7 @@ namespace MessengerAPI.Controllers
             return Ok(userInfo);
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> UpdateUser(UpdateUserDto model)
         {
             model.UserId = HttpContext.GetUserId();
@@ -72,7 +72,7 @@ namespace MessengerAPI.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> ChangePhoto(IFormCollection collection)
         {
             if (collection.Files[0] != null)

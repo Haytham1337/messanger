@@ -124,7 +124,7 @@ namespace MessengerAPI
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder.WithOrigins("https://chatterangular.azurewebsites.net")
+                    builder => builder.WithOrigins("https://chatterangular.azurewebsites.net", "http://localhost:4200")
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials());

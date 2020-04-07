@@ -37,8 +37,6 @@ namespace MessengerAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHttpClient<IHttpWrapper,HttpWrapper>();
-
             services.AddControllers();
 
             services.AddDbContext<MessengerContext>(options =>

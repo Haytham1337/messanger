@@ -11,6 +11,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -22,7 +23,7 @@ namespace Infrastructure.Services
     }
     public class ProvidersAuthService : IProvidersAuthService
     {
-        private readonly IHttpWrapper _client;
+        private readonly HttpClient _client;
         private readonly FbOptions _fbOptions;
         private readonly UserManager<SecurityUser> _userManager;
         private readonly IUnitOfWork _unit;
@@ -30,11 +31,11 @@ namespace Infrastructure.Services
         private readonly IJwtHelper _jwtHelper;
         private readonly TokenOption _options;
 
-        public ProvidersAuthService(IHttpWrapper client, IOptions<FbOptions> fbOptions,
-            UserManager<SecurityUser> userManager,IUnitOfWork unit,
-            IPhotoHelper photoHelper,IJwtHelper jwtHelper, IOptions<TokenOption> options)
+        public ProvidersAuthService(IOptions<FbOptions> fbOptions,
+            UserManager<SecurityUser> userManager, IUnitOfWork unit,
+            IPhotoHelper photoHelper, IJwtHelper jwtHelper, IOptions<TokenOption> options)
         {
-            _client = client;
+            _client = new HttpClient();
 
             _fbOptions = fbOptions.Value;
 
@@ -51,9 +52,11 @@ namespace Infrastructure.Services
 
         public async Task<SignInResponce> FacebookAuthenticateAsync(FacebookAuthRequest model)
         {
+            var requestUrl = $"{_fbOptions.validUri}input_token=" +
+                $"{model.accessToken}&access_token={_fbOptions.appId}|{_fbOptions.appSecret}";
+           
             var httpResponce =
-                await _client.GetAsync($"{_fbOptions.validUri}input_token=" +
-                $"{model.accessToken}&access_token={_fbOptions.appId}|{_fbOptions.appSecret}");
+                await _client.GetAsync(requestUrl);
 
             if (httpResponce.IsSuccessStatusCode)
             {
@@ -70,23 +73,23 @@ namespace Infrastructure.Services
                         var registerModel = new RegisterModel
                         {
                             Email = model.email,
-                            NickName=model.lastName,
-                            Sex= (Sex)Enum.Parse(typeof(Sex), model.gender)
-                    };
+                            NickName = model.lastName,
+                            Sex = (Sex)Enum.Parse(typeof(Sex), model.gender)
+                        };
 
-                        await RegisterAsync(registerModel,model.photoUrl);
+                        await RegisterAsync(registerModel, model.photoUrl);
                     }
 
                     return await AuthenticateAsync(model.email);
                 }
 
-                throw new AccessTokenIsNotValidException("Specified token not valid",400);
+                throw new AccessTokenIsNotValidException("Specified token not valid", 400);
             }
 
             return await Task.FromResult(default(SignInResponce));
         }
 
-        public async Task<IdentityResult> RegisterAsync(RegisterModel model,string photoUri)
+        public async Task<IdentityResult> RegisterAsync(RegisterModel model, string photoUri)
         {
             SecurityUser user = new SecurityUser();
             user.Email = model.Email;

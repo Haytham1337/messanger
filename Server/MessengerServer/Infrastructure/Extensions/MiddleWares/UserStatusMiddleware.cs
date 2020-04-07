@@ -24,9 +24,7 @@ namespace Infrastructure.Extensions.MiddleWares
         {
             if (context.User.Identity.IsAuthenticated)
             {
-                var id= int.Parse(context.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-                _cache.Set($"{id}", true ,TimeSpan.FromSeconds(cacheOptions.Value.isOnlineTime));
+                _cache.Set($"{context.GetUserId()}", true ,TimeSpan.FromSeconds(cacheOptions.Value.isOnlineTime));
             }
 
             await _next(context);

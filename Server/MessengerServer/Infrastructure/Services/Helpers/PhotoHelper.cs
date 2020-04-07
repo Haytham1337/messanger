@@ -7,6 +7,7 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System;
 using System.IO;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
@@ -18,15 +19,15 @@ namespace Infrastructure.Services
 
         private readonly IWebHostEnvironment _env;
 
-        private readonly IHttpWrapper _client;
+        private readonly HttpClient _client;
 
-        public PhotoHelper(IConfiguration config, IWebHostEnvironment env,IHttpWrapper client)
+        public PhotoHelper(IConfiguration config, IWebHostEnvironment env)
         {
             _config = config;
 
             _env = env;
 
-            _client = client;
+            _client = new HttpClient();
         }
 
      

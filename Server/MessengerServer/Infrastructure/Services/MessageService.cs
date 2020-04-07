@@ -13,7 +13,6 @@ using Domain.Exceptions.UserExceptions;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -59,11 +58,14 @@ namespace Infrastructure.Services
 
             if (!string.IsNullOrEmpty(message.Content) || !string.IsNullOrEmpty(message.photo))
             {
+                DateTime timevalue = new DateTime();
+                DateTime.TryParse(message.timeCreated, out timevalue);
+
                 var newmessage = new Message()
                 {           
                     Content = message.Content,
                     photo=message.photo,
-                    TimeCreated = Convert.ToDateTime(message.timeCreated),
+                    TimeCreated = timevalue,
                     UserId = user.Id,
                     ChatId = message.chatId
                 };
@@ -117,7 +119,7 @@ namespace Infrastructure.Services
 
         public async Task DeleteMessageAsync(DeleteMessageRequest request)
         {
-            var message = await _unit.MessageRepository.GetMessageByIdWithConversation(request.MessageId);
+            var message = await _unit.MessageRepository.GetMessageByIdWithConversationInfo(request.MessageId);
 
             if (message == null)
                 throw new MessageNotExistException("Givent message not exist!!", 400);

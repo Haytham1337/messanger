@@ -8,6 +8,6 @@ namespace Domain.IRepositories
     {
         Task<IEnumerable<Message>> GetMessagesByChat(int chatId,int portionCount);
 
-        Task<Message> GetMessageByIdWithConversation(int id);
+        Task<Message> GetMessageByIdWithConversationInfo(int id);
     }
 }

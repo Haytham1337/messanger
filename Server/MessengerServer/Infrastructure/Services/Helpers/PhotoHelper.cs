@@ -18,9 +18,9 @@ namespace Infrastructure.Services
 
         private readonly IWebHostEnvironment _env;
 
-        private readonly IHttpHelper _client;
+        private readonly IHttpWrapper _client;
 
-        public PhotoHelper(IConfiguration config, IWebHostEnvironment env,IHttpHelper client)
+        public PhotoHelper(IConfiguration config, IWebHostEnvironment env,IHttpWrapper client)
         {
             _config = config;
 

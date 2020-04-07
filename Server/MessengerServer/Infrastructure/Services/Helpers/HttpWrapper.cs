@@ -4,18 +4,18 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Services.Helpers
 {
-    public class HttpHelper:IHttpHelper
+    public class HttpWrapper : IHttpWrapper
     {
         private HttpClient _client;
 
-        public HttpHelper(HttpClient client)
+        public HttpWrapper(HttpClient client)
         {
             _client = client;
         }
 
-        public  Task<HttpResponseMessage> GetAsync(string requestUri)
+        public Task<HttpResponseMessage> GetAsync(string requestUri)
         {
-            return  _client.GetAsync(requestUri);
+            return _client.GetAsync(requestUri);
         }
     }
 }

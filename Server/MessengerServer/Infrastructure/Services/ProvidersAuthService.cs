@@ -22,7 +22,7 @@ namespace Infrastructure.Services
     }
     public class ProvidersAuthService : IProvidersAuthService
     {
-        private readonly IHttpHelper _client;
+        private readonly IHttpWrapper _client;
         private readonly FbOptions _fbOptions;
         private readonly UserManager<SecurityUser> _userManager;
         private readonly IUnitOfWork _unit;
@@ -30,7 +30,7 @@ namespace Infrastructure.Services
         private readonly IJwtHelper _jwtHelper;
         private readonly TokenOption _options;
 
-        public ProvidersAuthService(IHttpHelper client, IOptions<FbOptions> fbOptions,
+        public ProvidersAuthService(IHttpWrapper client, IOptions<FbOptions> fbOptions,
             UserManager<SecurityUser> userManager,IUnitOfWork unit,
             IPhotoHelper photoHelper,IJwtHelper jwtHelper, IOptions<TokenOption> options)
         {

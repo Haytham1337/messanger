@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Application.IServices
 {
-    public interface IHttpHelper
+    public interface IHttpWrapper
     {
        Task<HttpResponseMessage> GetAsync(string requestUri);
     }

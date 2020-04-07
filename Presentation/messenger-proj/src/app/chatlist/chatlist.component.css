@@ -25,6 +25,7 @@ img{
 .contentparagraph{
     width:70px;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .CurrentChat{

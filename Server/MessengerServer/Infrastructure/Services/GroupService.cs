@@ -104,7 +104,9 @@ namespace Infrastructure.Services
 
             await _unit.ConversationInfoRepository.CreateAsync(conversationInfo);
 
-            foreach (var user in (await this._unit.UserRepository.GetUsersIn(request.UsersId)))
+            var usersExistList = await this._unit.UserRepository.GetUsersIn(request.UsersId);
+
+            foreach (var user in usersExistList)
             {
                 await _unit.UserConversationRepository.CreateAsync(new UserConversation
                 {

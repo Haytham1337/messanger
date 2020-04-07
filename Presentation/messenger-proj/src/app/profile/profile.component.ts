@@ -20,7 +20,7 @@ export class ProfileComponent implements OnInit {
 
   UpdateUser(){
     this.userservice.updated=false;
-    if(this.currentUser.age>100 || this.currentUser.age<0 || this.currentUser.nickName==""){
+    if(this.currentUser.age>100 || this.currentUser.age<0 || this.currentUser.nickName=="" || this.currentUser.phone.match(/^((\+3|8|0)+([0-9]){10})$/)){
       this.userservice.valid=true;
       this.userservice.SetCurrentUser();
     }
@@ -28,11 +28,5 @@ export class ProfileComponent implements OnInit {
       this.userservice.valid=false;
       this.userservice.UpdateUser(this.currentUser);
     }
-  }
-
-  validate(event){
-    if(!isFinite(event.key)){
-      this.currentUser.phone=this.currentUser.phone.slice(0,-1);
-    }    
   }
 }

@@ -25,7 +25,7 @@ namespace Infrastructure.Repositories
                  .ToListAsync();
         }
 
-        public async Task<Message> GetMessageByIdWithConversation(int id)
+        public async Task<Message> GetMessageByIdWithConversationInfo(int id)
         {
             return await this.db.Messages
                 .Where(mes => mes.Id == id)

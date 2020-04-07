@@ -9,6 +9,9 @@ namespace Infrastructure.Services.Helpers
 {
     public class EmailSenderHelper : IEmailSenderHelper
     {
+        private const string host = "smtp.gmail.com";
+        private const int port = 587;
+
         private readonly EmailOptions _emailOptions;
 
         public EmailSenderHelper(IOptions<EmailOptions> emailOptions)
@@ -32,7 +35,7 @@ namespace Infrastructure.Services.Helpers
 
             using (var client = new SmtpClient())
             {
-                await client.ConnectAsync("smtp.gmail.com", 587);
+                await client.ConnectAsync(host, port);
                 client.AuthenticationMechanisms.Remove("XOAUTH2");
                 await client.AuthenticateAsync(_emailOptions.email, _emailOptions.password);
                 await client.SendAsync(emailMessage);

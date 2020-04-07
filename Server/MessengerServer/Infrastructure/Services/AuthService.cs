@@ -38,7 +38,7 @@ namespace Infrastructure.Services
         private readonly UserManager<SecurityUser> _userManager;
         private readonly IUnitOfWork _unit;
         private readonly IConfiguration _config;
-        private readonly TokenOption options;
+        private readonly TokenOption _options;
         private readonly IJwtHelper _jwtHelper;
         private readonly IEmailSenderHelper _emailSender;
         private readonly EmailOptions _emailOptions;
@@ -53,7 +53,7 @@ namespace Infrastructure.Services
 
             _config = config;
 
-            this.options = options.Value;
+            _options = options.Value;
 
             _jwtHelper = jwtHelper;
 
@@ -135,19 +135,19 @@ namespace Infrastructure.Services
             var now = DateTime.Now;
 
             var jwt = new JwtSecurityToken(
-                    issuer: options.Issuer,
-                    audience: options.Audience,
+                    issuer: _options.Issuer,
+                    audience: _options.Audience,
                     notBefore: now,
                     claims: identity.Claims,
-                    expires: now.Add(TimeSpan.FromSeconds(options.LifeTime)),
-                    signingCredentials: new SigningCredentials(options.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+                    expires: now.Add(TimeSpan.FromSeconds(_options.LifeTime)),
+                    signingCredentials: new SigningCredentials(_options.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
             return new SignInResponce
             {
                 Access_Token = encodedJwt,
-                ExpiresIn = now.Add(TimeSpan.FromSeconds(options.LifeTime)),
+                ExpiresIn = now.Add(TimeSpan.FromSeconds(_options.LifeTime)),
                 Refresh_Token = refreshToken
             };
         }
@@ -175,19 +175,19 @@ namespace Infrastructure.Services
             var now = DateTime.Now;
 
             var jwt = new JwtSecurityToken(
-                    issuer: options.Issuer,
-                    audience: options.Audience,
+                    issuer: _options.Issuer,
+                    audience: _options.Audience,
                     notBefore: now,
                     claims: principal.Claims,
-                    expires: now.Add(TimeSpan.FromSeconds(options.LifeTime)),
-                    signingCredentials: new SigningCredentials(options.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+                    expires: now.Add(TimeSpan.FromSeconds(_options.LifeTime)),
+                    signingCredentials: new SigningCredentials(_options.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
             return new SignInResponce
             {
                 Access_Token = encodedJwt,
-                ExpiresIn = now.Add(TimeSpan.FromSeconds(options.LifeTime)),
+                ExpiresIn = now.Add(TimeSpan.FromSeconds(_options.LifeTime)),
                 Refresh_Token = newRefreshToken
             };
         }

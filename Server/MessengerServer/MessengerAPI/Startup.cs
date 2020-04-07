@@ -37,7 +37,7 @@ namespace MessengerAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHttpClient<IHttpHelper,HttpHelper>();
+            services.AddHttpClient<IHttpWrapper,HttpWrapper>();
 
             services.AddControllers();
 

@@ -246,15 +246,12 @@
 }
 
 .delmessicon{
-  width: 20px;
-  height: 20px;
-  opacity:0;
+  width: 15px;
+  height: 15px;
 }
 
 .delmessicon:hover{
-  opacity:1;
-  -webkit-transition: opacity .25s ease-in-out .0s;
-  transition: opacity .25s ease-in-out .0s;
+  background-color:green;
 }
 
 .delmessiconrigth{

@@ -6,6 +6,7 @@ using Domain;
 using Domain.Entities;
 using Domain.Exceptions.UserExceptions;
 using Infrastructure.AppSecurity;
+using Infrastructure.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -83,7 +84,7 @@ namespace Infrastructure.Services
                     return await AuthenticateAsync(model.email);
                 }
 
-                throw new AccessTokenIsNotValidException("Specified token not valid", 400);
+                throw new AccessTokenIsNotValidException(ExceptionMessages.InvalidToken, 400);
             }
 
             return await Task.FromResult(default(SignInResponce));
@@ -125,7 +126,7 @@ namespace Infrastructure.Services
             var user = await _userManager.FindByNameAsync(email);
 
             if (user == null)
-                throw new UserNotExistException("Given credentials not valid!!", 400);
+                throw new UserNotExistException(ExceptionMessages.CredentialsNotValid, 400);
 
             var identity = await _jwtHelper.GetIdentityAsync(email);
 

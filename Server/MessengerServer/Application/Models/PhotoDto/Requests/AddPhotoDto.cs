@@ -8,7 +8,8 @@ namespace Application.Models.PhotoDto
     {
         public int UserId { get; set; }
 
-        public int? ConversationId { get; set; }
+        [Required]
+        public int ConversationId { get; set; }
 
         [Required]
         public IFormFile UploadedFile { get; set; }

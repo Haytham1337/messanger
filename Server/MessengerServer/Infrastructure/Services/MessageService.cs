@@ -10,6 +10,7 @@ using Domain.Entities;
 using Domain.Exceptions.ChatExceptions;
 using Domain.Exceptions.MessageExceptions;
 using Domain.Exceptions.UserExceptions;
+using Infrastructure.Extensions;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -49,12 +50,12 @@ namespace Infrastructure.Services
             var user = await _auth.FindByIdUserAsync(message.userId);
 
             if (user == null)
-                throw new UserNotExistException("Given user not exist!!", 400);
+                throw new UserNotExistException(ExceptionMessages.UserNotExist, 400);
 
             var chat = await _unit.ConversationRepository.GetAsync(message.chatId);
 
             if (chat == null)
-                throw new ConversationNotExistException("Given chatid is incorrect!!", 400);
+                throw new ConversationNotExistException(ExceptionMessages.ConversationNotExist, 400);
 
             if (!string.IsNullOrEmpty(message.Content) || !string.IsNullOrEmpty(message.photo))
             {
@@ -79,7 +80,7 @@ namespace Infrastructure.Services
                 return _map.Map<GetMessageDto>(newmessage);
             }
 
-            throw new MessageInCorrectException("Given message is incorrect!!", 400);
+            throw new MessageInCorrectException(ExceptionMessages.MessageInCorrect, 400);
 
         }
 
@@ -93,7 +94,7 @@ namespace Infrastructure.Services
 
 
             if (chatContent == null)
-                throw new ConversationNotExistException("Given chat not exist!!", 400);
+                throw new ConversationNotExistException(ExceptionMessages.ConversationNotExist, 400);
 
             var result = new AllMessagesDto()
             {
@@ -122,14 +123,14 @@ namespace Infrastructure.Services
             var message = await _unit.MessageRepository.GetMessageByIdWithConversationInfo(request.MessageId);
 
             if (message == null)
-                throw new MessageNotExistException("Givent message not exist!!", 400);
+                throw new MessageNotExistException(ExceptionMessages.MessageInCorrect, 400);
 
             var user = await _auth.FindByIdUserAsync(request.UserId);
 
             var ismember = await _unit.ConversationRepository.isUserConversationMember(message.ChatId.Value, request.UserId);
 
             if (user == null || !ismember)
-                throw new UserNotExistException("Givent user not valid!!", 400);
+                throw new UserNotExistException(ExceptionMessages.UserNotExist, 400);
 
             if (message.Chat.Type == ConversationType.Chat ||
                 message.Chat.Type == ConversationType.Group)
@@ -142,7 +143,7 @@ namespace Infrastructure.Services
                 }
                 else
                 {
-                    throw new UserNotHaveRigthsException("Given user not permmited for the action!!", 400);
+                    throw new UserNotHaveRigthsException(ExceptionMessages.NotHaveRigths, 400);
                 }
             }
             else
@@ -155,7 +156,7 @@ namespace Infrastructure.Services
                 }
                 else
                 {
-                    throw new UserNotHaveRigthsException("Given user not permmited for the action!!", 400);
+                    throw new UserNotHaveRigthsException(ExceptionMessages.NotHaveRigths, 400);
                 }
             }
 

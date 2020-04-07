@@ -11,6 +11,7 @@ using Domain;
 using Domain.Entities;
 using Domain.Exceptions.ChatExceptions;
 using Domain.Exceptions.UserExceptions;
+using Infrastructure.Extensions;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -53,8 +54,8 @@ namespace Infrastructure.Services
         {
             var user = await _auth.FindByIdUserAsync(request.userId);
 
-            if (user == null)
-                throw new UserNotExistException("user not exist", 400);
+            if (user == null)       
+                throw new UserNotExistException(ExceptionMessages.UserNotExist, 400);
 
             if ((await this._unit.ConversationRepository.ChatExistAsync(user.Id, request.id)))
             {
@@ -84,17 +85,17 @@ namespace Infrastructure.Services
                     Conversation = chat
                 };
 
-                await this._unit.ConversationRepository.CreateAsync(chat);
+                await _unit.ConversationRepository.CreateAsync(chat);
 
-                await this._unit.UserConversationRepository.CreateAsync(firstUserConversation);
+                await _unit.UserConversationRepository.CreateAsync(firstUserConversation);
 
-                await this._unit.UserConversationRepository.CreateAsync(secondUserConversation);
+                await _unit.UserConversationRepository.CreateAsync(secondUserConversation);
 
-                await this._unit.Commit();
+                await _unit.Commit();
             }
             else
             {
-                throw new ConversationAlreadyExistException("chat already exist", 400);
+                throw new ConversationAlreadyExistException(ExceptionMessages.ConversationAlreadyExist, 400);
             }
         }
 
@@ -103,7 +104,7 @@ namespace Infrastructure.Services
             var user = await this._unit.UserRepository.GetUserWithBlackList(request.UserName);
 
             if (user == null)
-                throw new UserNotExistException("Given user not exist!", 400);
+                throw new UserNotExistException(ExceptionMessages.UserNotExist, 400);
 
             var conversationList = await _unit.ConversationRepository.GetUserChatsAsync(user.Id);
 
@@ -147,13 +148,13 @@ namespace Infrastructure.Services
 
         public async Task ChangePhotoAsync(AddPhotoDto model)
         {
-            if (model.ConversationId == null)
-                throw new ConversationNotExistException("Given id is null", 400);
-
             var conversation = await _unit.ConversationRepository.GetChatContentAsync((int)model.ConversationId);
 
-            if (conversation == null || conversation.ConversationInfo.AdminId != model.UserId)
-                throw new ConversationNotExistException("Conversation photo cannot be changed!!", 400);
+            if (conversation == null)
+                throw new ConversationNotExistException(ExceptionMessages.ConversationNotExist, 400);
+
+            if (conversation.ConversationInfo.AdminId != model.UserId)
+                throw new UserNotHaveRigthsException(ExceptionMessages.NotHaveRigths, 400);
 
             conversation.ConversationInfo.PhotoName = await this._photoHelper.SavePhotoAsync(model.UploadedFile);
 
@@ -187,7 +188,7 @@ namespace Infrastructure.Services
             var conversation = await _unit.ConversationRepository.GetWithUsersConversationsAsync(request.ConversationId);
 
             if (conversation == null)
-                throw new ConversationNotExistException("Given id is not set!!", 400);
+                throw new ConversationNotExistException(ExceptionMessages.ConversationNotExist, 400);
 
             if (conversation.Type == ConversationType.Chat)
             {
@@ -198,7 +199,7 @@ namespace Infrastructure.Services
                 }
                 else
                 {
-                    throw new UserNotHaveRigthsException("user is not a member!!", 400);
+                    throw new UserNotHaveRigthsException(ExceptionMessages.NotMember, 400);
                 }
             }
             else
@@ -209,7 +210,7 @@ namespace Infrastructure.Services
                 }
                 else
                 {
-                    throw new UserNotHaveRigthsException("user is not an admin!!", 400);
+                    throw new UserNotHaveRigthsException(ExceptionMessages.NotHaveRigths, 400);
                 }
             }
 

@@ -6,6 +6,7 @@ using Domain.Entities;
 using Domain.Exceptions.ChatExceptions;
 using Domain.Exceptions.ConversationExceptions;
 using Domain.Exceptions.UserExceptions;
+using Infrastructure.Extensions;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
@@ -34,12 +35,12 @@ namespace Infrastructure.Services
             var conversation = await _unit.ConversationRepository.GetWithUsersConversationsAsync(request.ConversationId);
 
             if (conversation == null || conversation.Type == ConversationType.Chat)
-                throw new ConversationNotExistException("Conversation not exist!!", 400);
+                throw new ConversationNotExistException(ExceptionMessages.ConversationNotExist, 400);
 
             var userConversation = conversation.UserConversations.FirstOrDefault(uconv => uconv.UserId == request.UserToLeaveId);
 
             if (userConversation == null)
-                throw new UserConversationNotExistException("user is not a member og the conversation!!", 400);
+                throw new UserConversationNotExistException(ExceptionMessages.NotMember, 400);
 
             if (request.UserId == request.UserToLeaveId)
             {
@@ -48,7 +49,7 @@ namespace Infrastructure.Services
                     var newAdmin = conversation.UserConversations.Where(uconv => uconv.UserId != request.UserId).FirstOrDefault();
 
                     if (newAdmin == null)
-                        throw new UserNotExistException("There is no user to be an admin!!", 400);
+                        throw new UserNotExistException(ExceptionMessages.UserNotExist, 400);
 
                     conversation.ConversationInfo.AdminId = newAdmin.UserId;
 
@@ -62,7 +63,7 @@ namespace Infrastructure.Services
                 if (conversation.ConversationInfo.AdminId == request.UserId)
                     await _unit.UserConversationRepository.DeleteAsync(userConversation.Id);
                 else
-                    throw new UserNotHaveRigthsException("User is not an admin of the conversation!!", 400);
+                    throw new UserNotHaveRigthsException(ExceptionMessages.NotHaveRigths, 400);
             }
 
             await _unit.Commit();
@@ -73,7 +74,7 @@ namespace Infrastructure.Services
             var currentUser = await _auth.FindByIdUserAsync(request.UserId);
 
             if (currentUser == null)
-                throw new UserNotExistException("Given user not exist!!", 400);
+                throw new UserNotExistException(ExceptionMessages.UserNotExist, 400);
 
             request.UsersId.Add(currentUser.Id);
 
@@ -123,10 +124,10 @@ namespace Infrastructure.Services
             var conversation = await _unit.ConversationRepository.GetWithUsersConversationsAsync(request.id);
 
             if (conversation.Type != ConversationType.Channel)
-                throw new ConversationNotExistException("Conversation is not a channel!!", 400);
+                throw new ConversationNotExistException(ExceptionMessages.InvalidConversationType, 400);
 
             if (conversation.UserConversations.Any(uconv => uconv.UserId == request.userId))
-                throw new UserAlreadyExistException("User is in the group", 400);
+                throw new UserAlreadyExistException(ExceptionMessages.AlreadyMember, 400);
 
             var userConversation = new UserConversation
             {
@@ -144,12 +145,12 @@ namespace Infrastructure.Services
             var conversation = await _unit.ConversationRepository.GetWithUsersConversationsAsync(request.ConversationId);
 
             if (conversation == null || conversation.Type != ConversationType.Group)
-                throw new ConversationNotExistException("Conversation not exist!!", 400);
+                throw new ConversationNotExistException(ExceptionMessages.ConversationNotExist, 400);
 
             var userConversation = conversation.UserConversations.FirstOrDefault(uconv => uconv.UserId == request.UserId);
 
             if (userConversation == null)
-                throw new UserConversationNotExistException("user is not a member of the conversation!!", 400);
+                throw new UserConversationNotExistException(ExceptionMessages.NotMember, 400);
 
             var userToAddConversation = conversation.UserConversations.FirstOrDefault(uconv => uconv.UserId == request.UserToAdd);
 
@@ -167,9 +168,8 @@ namespace Infrastructure.Services
             }
             else
             {
-                throw new UserAlreadyExistException("User is already conversation member!!", 400);
+                throw new UserAlreadyExistException(ExceptionMessages.AlreadyMember, 400);
             }
-
         }
     }
 }

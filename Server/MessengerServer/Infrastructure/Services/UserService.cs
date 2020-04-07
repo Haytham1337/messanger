@@ -9,6 +9,7 @@ using Domain.Entities;
 using Domain.Exceptions.BlockedUserExceptions;
 using Domain.Exceptions.ChatExceptions;
 using Domain.Exceptions.UserExceptions;
+using Infrastructure.Extensions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -37,7 +38,7 @@ namespace Infrastructure.Services
             var user = await _unit.UserRepository.GetWithPhotoAsync(request.UserName);
 
             if (user == null)
-                throw new UserNotExistException("Given user not exist!!", 400);
+                throw new UserNotExistException(ExceptionMessages.UserNotExist, 400);
 
             return _map.Map<GetUserDto>(user);
         }
@@ -47,7 +48,7 @@ namespace Infrastructure.Services
             var user = await _auth.FindByIdUserAsync(model.UserId);
 
             if (user == null)
-                throw new UserNotExistException("Given user not exist!!", 400);
+                throw new UserNotExistException(ExceptionMessages.UserNotExist, 400);
 
             user.Age = model.Age;
 
@@ -63,7 +64,7 @@ namespace Infrastructure.Services
             var currentUser = await _auth.FindByIdUserAsync(request.UserId);
 
             if (currentUser == null)
-                throw new UserNotExistException("Given user not exist!!", 400);
+                throw new UserNotExistException(ExceptionMessages.UserNotExist, 400);
 
             var users = (await _unit.UserRepository.SearchUsersAsync(request.Filter));
 
@@ -79,19 +80,19 @@ namespace Infrastructure.Services
             var currentUser = await this._auth.FindByIdUserAsync(request.UserId);
 
             if (currentUser == null)
-                throw new UserNotExistException("Given user not exist!!", 400);
+                throw new UserNotExistException(ExceptionMessages.UserNotExist, 400);
 
             var userToBlock = await this._unit.UserRepository.GetAsync(request.UserIdToBlock);
 
             if (userToBlock == null)
-                throw new UserNotExistException("User to block not exist!!", 400);
+                throw new UserNotExistException(ExceptionMessages.UserNotExist, 400);
 
 
             var blockedUser = await this._unit.BlockedUserRepository
                               .IsBlockedUserAsync(currentUser.Id, request.UserIdToBlock);
 
             if (blockedUser != null)
-                throw new BlockedUserAlreadyExistException("Given user to block is already blocked!!", 400);
+                throw new BlockedUserAlreadyExistException(ExceptionMessages.UserAlreadyBlocked, 400);
 
 
             var newBlockedUser = new BlockedUser()
@@ -100,29 +101,29 @@ namespace Infrastructure.Services
                 UserToBlockId = request.UserIdToBlock
             };
 
-            await this._unit.BlockedUserRepository
+            await _unit.BlockedUserRepository
                     .CreateAsync(newBlockedUser);
 
-            await this._unit.Commit();
+            await _unit.Commit();
         }
 
         public async Task UnBlockUserAsync(BlockUserRequest request)
         {
-            var currentUser = await this._auth.FindByIdUserAsync(request.UserId);
+            var currentUser = await _auth.FindByIdUserAsync(request.UserId);
 
             if (currentUser == null)
-                throw new UserNotExistException("Given user not exist!!", 400);
+                throw new UserNotExistException(ExceptionMessages.UserNotExist, 400);
 
-            var blockedUser = await this._unit.BlockedUserRepository
+            var blockedUser = await _unit.BlockedUserRepository
                               .IsBlockedUserAsync(currentUser.Id, request.UserIdToBlock);
 
             if (blockedUser == null)
-                throw new BlockedUserNotExistException("User to unblock not exist!!", 400);
+                throw new BlockedUserNotExistException(ExceptionMessages.UserNotExist, 400);
 
 
-            await this._unit.BlockedUserRepository.DeleteAsync(blockedUser.Id);
+            await _unit.BlockedUserRepository.DeleteAsync(blockedUser.Id);
 
-            await this._unit.Commit();
+            await _unit.Commit();
         }
 
         public async Task<bool> CheckStatusAsync(AddMessageDto request)
@@ -130,7 +131,7 @@ namespace Infrastructure.Services
             var chat = await this._unit.ConversationRepository.GetWithUsersConversationsAsync(request.chatId);
 
             if (chat == null)
-                throw new ConversationNotExistException("Given chat not exist!!", 400);
+                throw new ConversationNotExistException(ExceptionMessages.ConversationNotExist, 400);
 
             if (chat.Type != ConversationType.Chat)
                 return false;
@@ -138,7 +139,7 @@ namespace Infrastructure.Services
             var currentUser = await this._auth.FindByIdUserAsync(request.userId);
 
             if (currentUser == null)
-                throw new UserNotExistException("Given user not exist!!", 400);
+                throw new UserNotExistException(ExceptionMessages.UserNotExist, 400);
 
             var requestedUserId = chat.UserConversations[0].UserId == currentUser.Id ? chat.UserConversations[1].UserId : chat.UserConversations[0].UserId;
 
@@ -155,9 +156,9 @@ namespace Infrastructure.Services
             var user = await _auth.FindByIdUserAsync(model.UserId);
 
             if (user == null)
-                throw new UserNotExistException("Given user not exist!!", 400);
+                throw new UserNotExistException(ExceptionMessages.UserNotExist, 400);
 
-            user.Photo = await this._photoHelper.SavePhotoAsync(model.UploadedFile);
+            user.Photo = await _photoHelper.SavePhotoAsync(model.UploadedFile);
 
             await _unit.Commit();
         }

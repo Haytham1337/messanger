@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Application.Models.AuthModels;
 using System.Web;
+using Infrastructure.Extensions;
 
 namespace Infrastructure.Services
 {
@@ -117,12 +118,12 @@ namespace Infrastructure.Services
             var isPasswordValid = await _userManager.CheckPasswordAsync(user, model.Password);
 
             if (user == null || !isPasswordValid)
-                throw new UserNotExistException("Given credentials not valid!!", 400);
+                throw new UserNotExistException(ExceptionMessages.CredentialsNotValid, 400);
 
             var isemailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
 
             if (!isemailConfirmed)
-                throw new UserNotExistException("Email is not confirmed!!", 400);
+                throw new UserNotExistException(ExceptionMessages.EmaisNotConfirmed, 400);
 
             var identity = await _jwtHelper.GetIdentityAsync(model.Email);
 
@@ -161,10 +162,10 @@ namespace Infrastructure.Services
             var user = await this._userManager.FindByNameAsync(userName);
 
             if (user == null)
-                throw new UserNotExistException("User not exist!!", 400);
+                throw new UserNotExistException(ExceptionMessages.UserNotExist, 400);
 
             if (user.RefreshToken != request.RefreshToken)
-                throw new SecurityTokenException("Invalid refresh token");
+                throw new SecurityTokenException(ExceptionMessages.InvalidToken);
 
             var newRefreshToken = _jwtHelper.GenerateRefreshToken();
 
@@ -197,7 +198,7 @@ namespace Infrastructure.Services
             var user = await _userManager.FindByNameAsync(userName);
 
             if (user == null)
-                throw new UserNotExistException("Given user not exist!!", 400);
+                throw new UserNotExistException(ExceptionMessages.UserNotExist, 400);
 
             var confirmResult = await _userManager.ConfirmEmailAsync(user, code);
 

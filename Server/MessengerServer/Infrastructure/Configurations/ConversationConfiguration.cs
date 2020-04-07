@@ -16,6 +16,6 @@ namespace Infrastructure.Configurations
                 .WithOne(mes => mes.Chat)
                 .HasForeignKey(mes => mes.ChatId)
                 .OnDelete(DeleteBehavior.Cascade);
-       }
+        }
     }
 }

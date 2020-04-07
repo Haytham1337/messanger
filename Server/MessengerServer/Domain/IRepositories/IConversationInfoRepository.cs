@@ -2,7 +2,7 @@
 
 namespace Domain.IRepositories
 {
-    public interface IConversationInfoRepository:IRepository<ConversationInfo>
+    public interface IConversationInfoRepository : IRepository<ConversationInfo>
     {
     }
 }

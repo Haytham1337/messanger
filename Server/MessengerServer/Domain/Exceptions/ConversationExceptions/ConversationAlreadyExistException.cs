@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Domain.Exceptions.ChatExceptions
 {
-    public class ConversationAlreadyExistException:BaseException
+    public class ConversationAlreadyExistException : BaseException
     {
-        public ConversationAlreadyExistException(string message,int statusCode):base(message,statusCode)
+        public ConversationAlreadyExistException(string message, int statusCode) : base(message, statusCode)
         {
 
         }

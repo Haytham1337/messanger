@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.IRepositories
 {
-    public interface IUserRepository:IRepository<User>
+    public interface IUserRepository : IRepository<User>
     {
         Task<User> GetWithPhotoAsync(string userName);
 

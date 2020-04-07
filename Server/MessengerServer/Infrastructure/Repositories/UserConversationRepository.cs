@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class UserConversationRepository:Repository<UserConversation>,IUserConversationRepository
+    public class UserConversationRepository : Repository<UserConversation>, IUserConversationRepository
     {
-        public UserConversationRepository(MessengerContext context):base(context)
+        public UserConversationRepository(MessengerContext context) : base(context)
         {
 
         }

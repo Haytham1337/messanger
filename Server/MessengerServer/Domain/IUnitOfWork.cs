@@ -10,7 +10,7 @@ namespace Domain
         IUserRepository UserRepository { get; }
         IConversationRepository ConversationRepository { get; }
         IBlockedUserRepository BlockedUserRepository { get; }
-        IUserConversationRepository UserConversationRepository { get;}
+        IUserConversationRepository UserConversationRepository { get; }
 
         Task Commit();
     }

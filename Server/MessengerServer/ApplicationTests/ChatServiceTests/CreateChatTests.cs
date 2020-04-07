@@ -39,7 +39,7 @@ namespace ApplicationTests.ChatServiceTests
             var fixture = new Fixture().Customize(new AutoMoqCustomization());
 
             var mockUnit = fixture.Freeze<Mock<IUnitOfWork>>();
-            mockUnit.Setup(a => a.ConversationRepository.ChatExistAsync(It.IsAny<int>(),It.IsAny<int>()))
+            mockUnit.Setup(a => a.ConversationRepository.ChatExistAsync(It.IsAny<int>(), It.IsAny<int>()))
                 .ReturnsAsync(false);
 
             var chatService = fixture.Create<ConversationService>();

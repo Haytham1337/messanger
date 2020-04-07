@@ -13,13 +13,13 @@ namespace Infrastructure.Configurations
             builder.HasKey(bu => bu.Id);
 
             builder.HasOne(bu => bu.User)
-                .WithMany(u=>u.BlockedUsers)
-                .HasForeignKey(bu=>bu.UserId)
+                .WithMany(u => u.BlockedUsers)
+                .HasForeignKey(bu => bu.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(bu => bu.UserToBlock);
 
-            
+
         }
     }
 }

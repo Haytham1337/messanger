@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Domain.Exceptions.BlockedUserExceptions
 {
-   public class BlockedUserNotExistException:BaseException
+    public class BlockedUserNotExistException : BaseException
     {
-        public BlockedUserNotExistException(string message,int statusCode):base(message,statusCode)
+        public BlockedUserNotExistException(string message, int statusCode) : base(message, statusCode)
         {
 
         }

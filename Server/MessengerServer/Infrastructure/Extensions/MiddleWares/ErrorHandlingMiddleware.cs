@@ -12,7 +12,7 @@ namespace Infrastructure
         private readonly RequestDelegate _next;
         private readonly TelemetryClient _telemetryClient;
 
-        public ErrorHandlingMiddleware(RequestDelegate next,TelemetryClient telemetryClient)
+        public ErrorHandlingMiddleware(RequestDelegate next, TelemetryClient telemetryClient)
         {
             _next = next;
 
@@ -23,9 +23,9 @@ namespace Infrastructure
         {
             try
             {
-                  await _next(context);
+                await _next(context);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 context.Response.Clear();
 

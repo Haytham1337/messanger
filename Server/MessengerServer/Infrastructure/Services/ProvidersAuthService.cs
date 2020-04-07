@@ -54,7 +54,7 @@ namespace Infrastructure.Services
         {
             var requestUrl = $"{_fbOptions.validUri}input_token=" +
                 $"{model.accessToken}&access_token={_fbOptions.appId}|{_fbOptions.appSecret}";
-           
+
             var httpResponce =
                 await _client.GetAsync(requestUrl);
 

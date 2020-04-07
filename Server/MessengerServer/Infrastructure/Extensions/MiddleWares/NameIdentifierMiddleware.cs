@@ -13,7 +13,7 @@ namespace Infrastructure.Extensions
             _next = next;
         }
 
-        public  async Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context)
         {
             if (context.User.Identity.IsAuthenticated)
             {
@@ -21,7 +21,7 @@ namespace Infrastructure.Extensions
                      int.Parse(context.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             }
 
-            await _next(context);       
+            await _next(context);
         }
     }
 }

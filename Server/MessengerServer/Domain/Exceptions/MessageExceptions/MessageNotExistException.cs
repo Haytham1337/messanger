@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Domain.Exceptions.MessageExceptions
 {
-    public class MessageNotExistException:BaseException
+    public class MessageNotExistException : BaseException
     {
-        public MessageNotExistException(string message,int statusCode):base(message,statusCode)
+        public MessageNotExistException(string message, int statusCode) : base(message, statusCode)
         {
 
         }

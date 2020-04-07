@@ -3,9 +3,9 @@ using Domain.IRepositories;
 
 namespace Infrastructure.Repositories
 {
-    public class ConversationInfoRepository:Repository<ConversationInfo>,IConversationInfoRepository
+    public class ConversationInfoRepository : Repository<ConversationInfo>, IConversationInfoRepository
     {
-        public ConversationInfoRepository(MessengerContext context):base(context)
+        public ConversationInfoRepository(MessengerContext context) : base(context)
         {
         }
     }

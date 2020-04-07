@@ -7,26 +7,26 @@ using Domain.Entities;
 
 namespace Infrastructure
 {
-    public class MappingProfile:Profile
+    public class MappingProfile : Profile
     {
         public MappingProfile()
         {
             CreateMap<Message, GetMessageDto>()
                 .ForMember(dest => dest.Photo, src => src.MapFrom(u => u.User.Photo))
-                .ForMember(dest=>dest.messagePhoto,src=>src.MapFrom(mes=>mes.photo))
-                .ForMember(dest=>dest.MessageId,src=>src.MapFrom(mes=>mes.Id));
+                .ForMember(dest => dest.messagePhoto, src => src.MapFrom(mes => mes.photo))
+                .ForMember(dest => dest.MessageId, src => src.MapFrom(mes => mes.Id));
 
             CreateMap<User, GetPhotoDto>();
 
             CreateMap<User, GetUserDto>()
                 .ForMember(dest => dest.Id, src => src.MapFrom(u => u.Id))
-                .ForMember(dest=>dest.PhotoName,src=>src.MapFrom(u=>u.Photo))
-                .ForMember(dest=>dest.Age,src=>src.MapFrom(u=>u.Age))
-                .ForMember(dest=>dest.NickName,src=>src.MapFrom(u=>u.NickName))
-                .ForMember(dest=>dest.Phone,src=>src.MapFrom(u=>u.PhoneNumber));
+                .ForMember(dest => dest.PhotoName, src => src.MapFrom(u => u.Photo))
+                .ForMember(dest => dest.Age, src => src.MapFrom(u => u.Age))
+                .ForMember(dest => dest.NickName, src => src.MapFrom(u => u.NickName))
+                .ForMember(dest => dest.Phone, src => src.MapFrom(u => u.PhoneNumber));
 
             CreateMap<User, SearchUserDto>()
-                .ForMember(dest=>dest.PhotoName,src=>src.MapFrom(u=>u.Photo));
+                .ForMember(dest => dest.PhotoName, src => src.MapFrom(u => u.Photo));
 
             CreateMap<User, SearchConversationResponce>()
                 .ForMember(dest => dest.id, src => src.MapFrom(u => u.Id))

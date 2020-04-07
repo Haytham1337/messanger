@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Domain.IRepositories
 {
-    public interface IUserConversationRepository:IRepository<UserConversation>
+    public interface IUserConversationRepository : IRepository<UserConversation>
     {
         Task<List<UserConversation>> GetUsersByConversationAsync(int id);
     }

@@ -26,7 +26,7 @@ namespace Infrastructure.Repositories
         public async Task<List<Conversation>> GetUserChatsAsync(int userid)
         {
             return await this.db.Conversations
-                .Include(conv=>conv.ConversationInfo)
+                .Include(conv => conv.ConversationInfo)
                 .Include(conv => conv.UserConversations)
                 .Where(conv => conv.UserConversations.Any(uconv => uconv.UserId == userid))
                 .Include(c => c.LastMessage)
@@ -38,7 +38,7 @@ namespace Infrastructure.Repositories
         {
             return await this.db.Conversations
                   .Where(c => c.Id == id)
-                  .Include(conv=>conv.ConversationInfo)
+                  .Include(conv => conv.ConversationInfo)
                   .FirstOrDefaultAsync();
         }
 
@@ -46,31 +46,31 @@ namespace Infrastructure.Repositories
         {
             return await db.Conversations
                          .Include(conv => conv.UserConversations)
-                         .Include(conv=>conv.ConversationInfo)
+                         .Include(conv => conv.ConversationInfo)
                          .FirstOrDefaultAsync(conv => conv.Id == id);
         }
 
-        public async Task<List<Conversation>> SearchConversationsAsync(string filter,int userId)
+        public async Task<List<Conversation>> SearchConversationsAsync(string filter, int userId)
         {
             return await this.db.Conversations
-                .Include(conv=>conv.UserConversations)
-                .Where(conv => (conv.Type == ConversationType.Channel ||(conv.Type == ConversationType.Group && 
-                   conv.UserConversations.Any(uconv=>uconv.UserId==userId))))
+                .Include(conv => conv.UserConversations)
+                .Where(conv => (conv.Type == ConversationType.Channel || (conv.Type == ConversationType.Group &&
+                   conv.UserConversations.Any(uconv => uconv.UserId == userId))))
                 .Include(conv => conv.ConversationInfo)
                 .Where(conv => conv.ConversationInfo.GroupName.Contains(filter))
                 .Take(5)
                 .ToListAsync();
         }
 
-        public async Task<bool> isUserConversationMember(int conversationId,int userId)
+        public async Task<bool> isUserConversationMember(int conversationId, int userId)
         {
-           var conversation= await this.db.Conversations
-                .Where(conv => conv.Id == conversationId)
-                .Include(conv => conv.UserConversations)
-                .Where(conv => conv.UserConversations.Any(uconv => uconv.UserId == userId))
-                .FirstOrDefaultAsync();
+            var conversation = await this.db.Conversations
+                 .Where(conv => conv.Id == conversationId)
+                 .Include(conv => conv.UserConversations)
+                 .Where(conv => conv.UserConversations.Any(uconv => uconv.UserId == userId))
+                 .FirstOrDefaultAsync();
 
-            return conversation != null;             
+            return conversation != null;
         }
     }
 }

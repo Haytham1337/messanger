@@ -38,7 +38,7 @@ namespace MessengerAPI.Controllers
 
             if (collection.Files[0] != null)
             {
-                photoName=await _messageService.SaveMessagePhotoAsync(collection.Files[0]);
+                photoName = await _messageService.SaveMessagePhotoAsync(collection.Files[0]);
             }
 
             return photoName;
@@ -48,7 +48,7 @@ namespace MessengerAPI.Controllers
         public async Task<IActionResult> DeleteMessage([FromQuery]DeleteMessageRequest request)
         {
             request.UserId = HttpContext.GetUserId();
- 
+
             await _messageService.DeleteMessageAsync(request);
 
             return Ok();

@@ -7,9 +7,9 @@ using System.Text;
 
 namespace Infrastructure.AppSecurity
 {
-    public class SecurityContext:IdentityDbContext<SecurityUser,IdentityRole<int>,int>
+    public class SecurityContext : IdentityDbContext<SecurityUser, IdentityRole<int>, int>
     {
-        public SecurityContext(DbContextOptions<SecurityContext> options):base(options)
+        public SecurityContext(DbContextOptions<SecurityContext> options) : base(options)
         {
 
         }

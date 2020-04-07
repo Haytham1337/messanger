@@ -65,7 +65,7 @@ namespace MessengerAPI.Controllers
         {
             var result = await _auth.ConfirmEmailAsync(userName, code);
 
-            if(result.Succeeded)
+            if (result.Succeeded)
                 return Redirect("/htmlresponces/emailConfirmed.html");
 
             return Redirect("/htmlresponces/emailNotConfirmed.html");

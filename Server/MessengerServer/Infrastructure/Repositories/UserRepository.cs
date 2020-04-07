@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class UserRepository:Repository<User>,IUserRepository
+    public class UserRepository : Repository<User>, IUserRepository
     {
-        public UserRepository(MessengerContext db):base(db)
+        public UserRepository(MessengerContext db) : base(db)
         {
-            
+
         }
 
         public async Task<User> GetWithPhotoAsync(string userName)
@@ -24,10 +24,10 @@ namespace Infrastructure.Repositories
 
         public async Task<List<User>> SearchUsersAsync(string filter)
         {
-          return await this.db.Users
-                .Where(u =>u.NickName.Contains(filter) || u.Email.Contains(filter))
-                .Take(5)
-                .ToListAsync();
+            return await this.db.Users
+                  .Where(u => u.NickName.Contains(filter) || u.Email.Contains(filter))
+                  .Take(5)
+                  .ToListAsync();
         }
 
         public async Task<User> GetUserWithBlackList(string userName)

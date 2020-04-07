@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Infrastructure
 {
-    public class UnitOfWork:IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         public MessengerContext _db { get; private set; }
 
-        private Lazy<IUserRepository> userRepository;     
-        private Lazy<IConversationInfoRepository> photoRepository;     
+        private Lazy<IUserRepository> userRepository;
+        private Lazy<IConversationInfoRepository> photoRepository;
         private Lazy<IMessageRepository> messageRepository;
         private Lazy<IConversationRepository> chatRepository;
         private Lazy<IBlockedUserRepository> blockeduserRepository;
@@ -37,7 +37,7 @@ namespace Infrastructure
         {
             get
             {
-               return this.blockeduserRepository.Value;
+                return this.blockeduserRepository.Value;
             }
         }
         public IConversationInfoRepository ConversationInfoRepository
@@ -54,7 +54,7 @@ namespace Infrastructure
                 return this.messageRepository.Value;
             }
         }
-        public IUserRepository UserRepository 
+        public IUserRepository UserRepository
         {
             get
             {
@@ -67,7 +67,7 @@ namespace Infrastructure
         {
             _db = db;
 
-            this.userRepository= new Lazy<IUserRepository>(() => new UserRepository(_db));
+            this.userRepository = new Lazy<IUserRepository>(() => new UserRepository(_db));
 
             this.chatRepository = new Lazy<IConversationRepository>(() => new ConversationRepository(_db));
 

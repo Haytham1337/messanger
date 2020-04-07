@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Services.Helpers
 {
-    public class JwtHelper:IJwtHelper
+    public class JwtHelper : IJwtHelper
     {
         private readonly UserManager<SecurityUser> _userManager;
 

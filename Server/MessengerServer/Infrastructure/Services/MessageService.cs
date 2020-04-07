@@ -30,7 +30,7 @@ namespace Infrastructure.Services
 
         private readonly IPhotoHelper _photoHelper;
 
-        public MessageService(IUnitOfWork unit, IAuthService auth, IMapper map, 
+        public MessageService(IUnitOfWork unit, IAuthService auth, IMapper map,
             ICache cache, IPhotoHelper photoHelper)
         {
             _unit = unit;
@@ -62,9 +62,9 @@ namespace Infrastructure.Services
                 DateTime.TryParse(message.timeCreated, out timevalue);
 
                 var newmessage = new Message()
-                {           
+                {
                     Content = message.Content,
-                    photo=message.photo,
+                    photo = message.photo,
                     TimeCreated = timevalue,
                     UserId = user.Id,
                     ChatId = message.chatId
@@ -106,7 +106,7 @@ namespace Infrastructure.Services
 
             result.Users.ForEach(user =>
             {
-                user.isOnline = _cache.Exists($"{user.Id}")? (bool)_cache.Get($"{user.Id}") : false;
+                user.isOnline = _cache.Exists($"{user.Id}") ? (bool)_cache.Get($"{user.Id}") : false;
             });
 
             return result;
@@ -131,7 +131,7 @@ namespace Infrastructure.Services
             if (user == null || !ismember)
                 throw new UserNotExistException("Givent user not valid!!", 400);
 
-            if(message.Chat.Type==ConversationType.Chat || 
+            if (message.Chat.Type == ConversationType.Chat ||
                 message.Chat.Type == ConversationType.Group)
             {
                 if (message.UserId == request.UserId)

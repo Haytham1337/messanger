@@ -20,11 +20,11 @@ namespace Infrastructure.Extensions.MiddleWares
             _cache = cache;
         }
 
-        public async Task Invoke(HttpContext context,IOptions<CacheOptions> cacheOptions)
+        public async Task Invoke(HttpContext context, IOptions<CacheOptions> cacheOptions)
         {
             if (context.User.Identity.IsAuthenticated)
             {
-                _cache.Set($"{context.GetUserId()}", true ,TimeSpan.FromSeconds(cacheOptions.Value.isOnlineTime));
+                _cache.Set($"{context.GetUserId()}", true, TimeSpan.FromSeconds(cacheOptions.Value.isOnlineTime));
             }
 
             await _next(context);

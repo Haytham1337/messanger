@@ -44,7 +44,7 @@ namespace Infrastructure.Services
         private readonly EmailOptions _emailOptions;
 
         public AuthService(UserManager<SecurityUser> userManager, IOptions<TokenOption> options,
-         IUnitOfWork unit, IConfiguration config,IJwtHelper jwtHelper,
+         IUnitOfWork unit, IConfiguration config, IJwtHelper jwtHelper,
          IEmailSenderHelper emailSender, IOptions<EmailOptions> emailOptions)
         {
             _userManager = userManager;
@@ -69,7 +69,7 @@ namespace Infrastructure.Services
             user.UserName = model.Email;
 
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
-           
+
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, "Chatter");
@@ -89,11 +89,11 @@ namespace Infrastructure.Services
 
                 await _unit.Commit();
 
-                var code  = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
                 var callbackUrl = $"{_emailOptions.confirmlink}userName={user.UserName}&code={HttpUtility.UrlEncode(code)}";
 
-                await _emailSender.SendEmailAsync(model.Email,_emailOptions.subject,
+                await _emailSender.SendEmailAsync(model.Email, _emailOptions.subject,
                     $"{_emailOptions.message} <a href='{callbackUrl}'>Confirm</a>");
             }
 
@@ -154,7 +154,7 @@ namespace Infrastructure.Services
 
         public async Task<SignInResponce> ExchangeTokensAsync(ExchangeTokenRequest request)
         {
-            var principal =_jwtHelper.GetPrincipalFromExpiredToken(request.AccessToken);
+            var principal = _jwtHelper.GetPrincipalFromExpiredToken(request.AccessToken);
 
             var userName = principal.Identity.Name;
 
@@ -192,12 +192,12 @@ namespace Infrastructure.Services
             };
         }
 
-        public async Task<IdentityResult> ConfirmEmailAsync(string userName,string code)
+        public async Task<IdentityResult> ConfirmEmailAsync(string userName, string code)
         {
             var user = await _userManager.FindByNameAsync(userName);
 
             if (user == null)
-                throw new UserNotExistException("Given user not exist!!",400);
+                throw new UserNotExistException("Given user not exist!!", 400);
 
             var confirmResult = await _userManager.ConfirmEmailAsync(user, code);
 

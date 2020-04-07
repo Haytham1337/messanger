@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Domain.IRepositories
 {
-    public interface IConversationRepository:IRepository<Conversation>
+    public interface IConversationRepository : IRepository<Conversation>
     {
         Task<bool> ChatExistAsync(int firstUserId, int secondUserId);
 

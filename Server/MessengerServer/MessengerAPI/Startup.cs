@@ -128,7 +128,7 @@ namespace MessengerAPI
                     .AllowCredentials());
             });
 
-            services.AddSignalR(configure=> 
+            services.AddSignalR(configure =>
             {
                 configure.ClientTimeoutInterval = TimeSpan.FromSeconds(200);
             });

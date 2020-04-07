@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.IRepositories
 {
-    public interface IBlockedUserRepository:IRepository<BlockedUser>
+    public interface IBlockedUserRepository : IRepository<BlockedUser>
     {
         Task<BlockedUser> IsBlockedUserAsync(int userId, int blockedUserId);
     }

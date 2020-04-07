@@ -2,7 +2,7 @@
 
 namespace Infrastructure.AppSecurity
 {
-    public class SecurityUser:IdentityUser<int>
+    public class SecurityUser : IdentityUser<int>
     {
         public string RefreshToken { get; set; }
     }

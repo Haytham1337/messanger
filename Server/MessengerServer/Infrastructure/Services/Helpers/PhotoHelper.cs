@@ -30,7 +30,7 @@ namespace Infrastructure.Services
             _client = new HttpClient();
         }
 
-     
+
 
         public async Task<string> SavePhotoAsync(IFormFile uploadedFile)
         {
@@ -68,7 +68,7 @@ namespace Infrastructure.Services
                 CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
                 CloudBlobContainer container = blobClient.GetContainerReference("imgcontainer");
 
-                var photo = uri.Split('/')[3]+".jpg";
+                var photo = uri.Split('/')[3] + ".jpg";
 
                 using var responseStream = await httpResponce.Content.ReadAsStreamAsync();
 
@@ -104,7 +104,7 @@ namespace Infrastructure.Services
             using (var rng = RandomNumberGenerator.Create())
             {
                 rng.GetBytes(randomNumber);
-                return Convert.ToBase64String(randomNumber).Replace('+','p');
+                return Convert.ToBase64String(randomNumber).Replace('+', 'p');
             }
         }
     }

@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Domain.Exceptions.UserExceptions
 {
-   public class UserNotExistException:BaseException
+    public class UserNotExistException : BaseException
     {
-        public UserNotExistException(string message,int statusCode):base(message,statusCode)
+        public UserNotExistException(string message, int statusCode) : base(message, statusCode)
         {
 
         }

@@ -6,7 +6,7 @@ namespace Domain.IRepositories
 {
     public interface IMessageRepository : IRepository<Message>
     {
-        Task<IEnumerable<Message>> GetMessagesByChat(int chatId,int portionCount);
+        Task<IEnumerable<Message>> GetMessagesByChat(int chatId, int portionCount);
 
         Task<Message> GetMessageByIdWithConversationInfo(int id);
     }

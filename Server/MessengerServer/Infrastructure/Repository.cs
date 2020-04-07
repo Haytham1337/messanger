@@ -36,7 +36,7 @@ namespace Infrastructure
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-             return await db.Set<T>().ToListAsync();
+            return await db.Set<T>().ToListAsync();
         }
 
         public T Update(T item)

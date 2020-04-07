@@ -12,6 +12,12 @@ namespace Infrastructure.Cache
         {
             _cache = cache;
         }
+
+        public bool Exists(object key)
+        {
+           return  _cache.GetString(key.ToString())==null;
+        }
+
         public object Get(object key)
         {
             return _cache.GetString((string)key);

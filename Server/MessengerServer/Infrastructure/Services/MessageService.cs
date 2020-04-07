@@ -106,7 +106,7 @@ namespace Infrastructure.Services
 
             result.Users.ForEach(user =>
             {
-                user.isOnline = _cache.Get($"{user.Id}") == null ? false : true;
+                user.isOnline = _cache.Exists($"{user.Id}")? (bool)_cache.Get($"{user.Id}") : false;
             });
 
             return result;

@@ -357,12 +357,12 @@ export class ChatService {
   }
 
   public async DeleteConversation(id:number){
-    let url=await this.config.getConfig("delete");
+    let url=`${await this.config.getConfig("delete")}?ConversationId=${id}`;
 
     let headers = new HttpHeaders();
     headers= headers.append('content-type', 'application/json');
 
-    this.http.delete(url,JSON.stringify({ConversationId: id}),{headers:headers}).subscribe(
+    this.http.delete(url,{headers:headers}).subscribe(
       res=>{
         this.GetChats();
       },
@@ -373,12 +373,12 @@ export class ChatService {
   }
 
   public async DeleteMessage(id:number){
-    let url=await this.config.getConfig("deletemessage");
+    let url=`${await this.config.getConfig("deletemessage")}?MessageId=${id}`;
 
     let headers = new HttpHeaders();
     headers= headers.append('content-type', 'application/json');
 
-    this.http.delete(url,JSON.stringify({MessageId: id}),{headers:headers}).subscribe(
+    this.http.delete(url,{headers:headers}).subscribe(
       res=>{
         let messageToDelete= this.messages.value.find(mes=>mes.messageId==id);
         this.messages.value.splice(this.messages.value.indexOf(messageToDelete),1);

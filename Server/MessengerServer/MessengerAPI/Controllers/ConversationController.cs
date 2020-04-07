@@ -71,7 +71,7 @@ namespace MessengerAPI.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromBody]DeleteRequest request)
+        public async Task<IActionResult> Delete([FromQuery]DeleteRequest request)
         {
             request.UserId = HttpContext.GetUserId();
 

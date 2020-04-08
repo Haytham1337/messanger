@@ -126,7 +126,7 @@ namespace Infrastructure.Services
                         Content = conversation.LastMessage?.Content,
                         messageTime = conversation.LastMessage?.TimeCreated,
                         SecondUserId = secondUserId,
-                        isOnline = _cache.Exists($"{secondUserId}") ? (bool)_cache.Get($"{secondUserId}") : false,
+                        isOnline = _cache.Exists($"{secondUserId}") ? true : false,
                         IsBlocked = user.BlockedUsers.Any(
                         bl => bl.UserToBlockId == secondUserId) ? true : false
                     }); ;

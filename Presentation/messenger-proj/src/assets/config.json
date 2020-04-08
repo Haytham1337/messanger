@@ -17,7 +17,7 @@
     "getuserinfo":"https://messengerapi20200328051158.azurewebsites.net/api/User/UserInfo",  
     "updateuser":"https://messengerapi20200328051158.azurewebsites.net/api/User/UpdateUser",
     "search":"https://messengerapi20200328051158.azurewebsites.net/api/User/Search",      
-    "blockuser":"https://messengerapi20200328051158.azurewebsites.net/api/User/BlockUser",
+    "blockuser":"https://localhost:44334/api/User/BlockUser",
     "unblockuser":"https://messengerapi20200328051158.azurewebsites.net/api/User/UnBlockUser",
 
 

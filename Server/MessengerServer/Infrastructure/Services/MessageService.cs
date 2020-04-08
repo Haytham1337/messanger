@@ -107,7 +107,7 @@ namespace Infrastructure.Services
 
             result.Users.ForEach(user =>
             {
-                user.isOnline = _cache.Exists($"{user.Id}") ? (bool)_cache.Get($"{user.Id}") : false;
+                user.isOnline = _cache.Exists($"{user.Id}") ? true : false;
             });
 
             return result;
@@ -115,7 +115,7 @@ namespace Infrastructure.Services
 
         public async Task<string> SaveMessagePhotoAsync(IFormFile uploadedFile)
         {
-            return await this._photoHelper.SavePhotoAsync(uploadedFile);
+            return await _photoHelper.SavePhotoAsync(uploadedFile);
         }
 
         public async Task DeleteMessageAsync(DeleteMessageRequest request)

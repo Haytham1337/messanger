@@ -22,7 +22,7 @@ constructor(private client:HttpClient,private config:ConfigService,private route
 
   if(Date.parse(localStorage["expiresIn"])<Date.now()){
     localStorage.setItem('expiresIn',"");
-    let url= `https://messengerapi20200328051158.azurewebsites.net/api/Auth/ExchangeTokens`;
+    let url= `https://localhost:44334/api/Auth/ExchangeTokens`;
 
     var data={
       AccessToken:localStorage["token"],

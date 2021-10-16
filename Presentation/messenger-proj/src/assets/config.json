@@ -1,39 +1,39 @@
 {
-    "photopath":"https://imgstorage123.blob.core.windows.net/imgcontainer",
+    "photopath":"https://localhost:44334",
 
-    "signin":"https://messengerapi20200328051158.azurewebsites.net/api/Auth/SignIn",
-    "signup":"https://messengerapi20200328051158.azurewebsites.net/api/Auth/Register",
-    "checkemail":"https://messengerapi20200328051158.azurewebsites.net/api/Auth/EmailExist",  
-    "exchangetokens":"https://messengerapi20200328051158.azurewebsites.net/api/Auth/ExchangeTokens",
-    "signinFB":"https://messengerapi20200328051158.azurewebsites.net/api/Auth/FacebookAuthenticate",
+    "signin":"https://localhost:44334/api/Auth/SignIn",
+    "signup":"https://localhost:44334/api/Auth/Register",
+    "checkemail":"https://localhost:44334/api/Auth/EmailExist",  
+    "exchangetokens":"https://localhost:44334/api/Auth/ExchangeTokens",
+    "signinFB":"https://localhost:44334/api/Auth/FacebookAuthenticate",
     
-    "getmessages":"https://messengerapi20200328051158.azurewebsites.net/api/Message",
-    "getchatmessages":"https://messengerapi20200328051158.azurewebsites.net/api/Message/GetConversationMessages",
-    "uploadmessagephoto":"https://messengerapi20200328051158.azurewebsites.net/api/Message/LoadMessagePhoto",
-    "deletemessage":"https://messengerapi20200328051158.azurewebsites.net/api/Message/DeleteMessage",
+    "getmessages":"https://localhost:44334/api/Message",
+    "getchatmessages":"https://localhost:44334/api/Message/GetConversationMessages",
+    "uploadmessagephoto":"https://localhost:44334/api/Message/LoadMessagePhoto",
+    "deletemessage":"https://localhost:44334/api/Message/DeleteMessage",
 
 
-    "updatephoto":"https://messengerapi20200328051158.azurewebsites.net/api/User/ChangePhoto",
-    "getuserinfo":"https://messengerapi20200328051158.azurewebsites.net/api/User/UserInfo",  
-    "updateuser":"https://messengerapi20200328051158.azurewebsites.net/api/User/UpdateUser",
-    "search":"https://messengerapi20200328051158.azurewebsites.net/api/User/Search",      
+    "updatephoto":"https://localhost:44334/api/User/ChangePhoto",
+    "getuserinfo":"https://localhost:44334/api/User/UserInfo",  
+    "updateuser":"https://localhost:44334/api/User/UpdateUser",
+    "search":"https://localhost:44334/api/User/Search",      
     "blockuser":"https://localhost:44334/api/User/BlockUser",
-    "unblockuser":"https://messengerapi20200328051158.azurewebsites.net/api/User/UnBlockUser",
+    "unblockuser":"https://localhost:44334/api/User/UnBlockUser",
 
 
-    "subscribeForChannel":"https://messengerapi20200328051158.azurewebsites.net/api/Channel/SubscribeForChannel",
-    "createChannel":"https://messengerapi20200328051158.azurewebsites.net/api/Channel/CreateChannel",
-    "leaveChannel":"https://messengerapi20200328051158.azurewebsites.net/api/Channel/LeaveChannel",
+    "subscribeForChannel":"https://localhost:44334/api/Channel/SubscribeForChannel",
+    "createChannel":"https://localhost:44334/api/Channel/CreateChannel",
+    "leaveChannel":"https://localhost:44334/api/Channel/LeaveChannel",
 
 
-    "createchat":"https://messengerapi20200328051158.azurewebsites.net/api/Conversation/CreateChat",
-    "getchats":"https://messengerapi20200328051158.azurewebsites.net/api/Conversation/GetConversations",
-    "searchconversation":"https://messengerapi20200328051158.azurewebsites.net/api/Conversation/Search",
-    "delete":"https://messengerapi20200328051158.azurewebsites.net/api/Conversation/Delete",
-    "updateGroupphoto":"https://messengerapi20200328051158.azurewebsites.net/api/Conversation/ChangeConversationPhoto",
+    "createchat":"https://localhost:44334/api/Conversation/CreateChat",
+    "getchats":"https://localhost:44334/api/Conversation/GetConversations",
+    "searchconversation":"https://localhost:44334/api/Conversation/Search",
+    "delete":"https://localhost:44334/api/Conversation/Delete",
+    "updateGroupphoto":"https://localhost:44334/api/Conversation/ChangeConversationPhoto",
 
 
-    "addNewGroupMember":"https://messengerapi20200328051158.azurewebsites.net/api/Group/AddNewGroupMember",
-    "leaveGroup":"https://messengerapi20200328051158.azurewebsites.net/api/Group/LeaveGroup",
-    "createGroup":"https://messengerapi20200328051158.azurewebsites.net/api/Group/CreateGroup"
+    "addNewGroupMember":"https://localhost:44334/api/Group/AddNewGroupMember",
+    "leaveGroup":"https://localhost:44334/api/Group/LeaveGroup",
+    "createGroup":"https://localhost:44334/api/Group/CreateGroup"
 }

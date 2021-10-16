@@ -94,13 +94,16 @@ export class ChatService {
       transport:signalR.HttpTransportType.WebSockets
     };
     this.hubConnection = new signalR.HubConnectionBuilder()
-                              .withUrl(`https://messengerapi20200328051158.azurewebsites.net/chat/?token=${localStorage["token"]}`,options)
+                              .withUrl(`https://localhost:44334/chat/?token=${localStorage["token"]}`,options)
                               .build();
 
     this.hubConnection.start().then(()=>console.log("Connection started!!"));
   }
 
   public async getMessages(chatid:number){
+    if(!chatid){
+      return;
+    }
     this.currentChatId=chatid;
     this.portion=1;
     let url = `${await this.config.getConfig("getchatmessages")}?id=${chatid}&portion=${this.portion}`;
@@ -131,6 +134,9 @@ export class ChatService {
     }
 
     public async loadMessages(){
+      if(!this.currentChatId){
+        return;
+      }
       let url = `${await this.config.getConfig("getchatmessages")}?id=${this.currentChatId}&portion=${this.portion+1}`;
     
     let photopath = await this.config.getConfig("photopath");
@@ -261,7 +267,7 @@ export class ChatService {
           return chat;
         })
 
-        if(!leaveCurrent){
+        if(!leaveCurrent&&mappedres.length>0){
           this.currentChatId=mappedres[0].id;
           this.getMessages(this.currentChatId);
           this.ChatsUpdate(res);

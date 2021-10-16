@@ -121,6 +121,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "messenger-proj"
+    }
+  },
+  "defaultProject": "messenger-proj",
+  "cli": {
+    "analytics": "f54c8c6a-bcde-46a3-976e-f6d6b5cbdb5a"
+  }
 }

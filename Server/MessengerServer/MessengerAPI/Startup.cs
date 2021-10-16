@@ -178,7 +178,8 @@ namespace MessengerAPI
             services.AddApplicationInsightsTelemetry();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<SecurityUser> userManager,
+            RoleManager<IdentityRole<int>> roleManager, SecurityContext context, MessengerContext mescontext, IConfiguration config)
         {
             if (env.IsDevelopment())
             {
@@ -197,6 +198,8 @@ namespace MessengerAPI
             app.UseRouting();
 
             app.UseStaticFiles();
+
+            DataInitializer.SeedData(userManager, roleManager, context, mescontext, config).Wait();
 
             app.UseCors("CorsPolicy");
 
